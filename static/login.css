@@ -1,0 +1,47 @@
+div.login{
+    border-radius: 5px;
+    background-color: rgb(193, 215, 223);
+    padding: 20px;
+}
+body{
+    font-family: 'Courier New', Courier, monospace;
+}
+input[type = text], select{
+    width: 100%;
+    padding: 12px 20px;
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 8px 0;
+    border: 1px solid;
+    cursor: pointer;
+    border-radius: 4px;
+}
+input[type = password], select{
+    width: 100%;
+    padding: 12px 20px;
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 8px 0;
+    border: 1px solid;
+    cursor: pointer;
+    border-radius: 4px;
+}
+h1{
+    text-align: center;
+}
+button[type = submit]{
+    width: 20%;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 12px 12px;
+    display: block;
+    margin: auto;
+    border: none;
+    background-color: rgb(57, 119, 119);
+    color: azure;
+}
+button[type = submit]:hover{
+    background-color: aqua;
+    color: black;
+}
+
