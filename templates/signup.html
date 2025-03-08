@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up</title>
+</head>
+<body>
+    <h1>Sign up</h1>
+    <form action="/signup" method="POST">
+        <label for="login">Name: </label>
+        <input type="text" name="name" placeholder="Enter your name">
+        <span>{{name_err}}</span>
+        <br><br>
+        <label for="login">Username: </label>
+        <input type="text" name="userInput" placeholder="Enter your user name">
+        <span>{{username_err}}</span>
+        <br><br>
+        <label for="password">Password: </label>
+        <input type="password" name="password" placeholder="Enter your password">
+        <span>{{password_err}}</span>
+        <br><br>
+        <button type="submit">Sign up</button>
+        <br>
+        <span>{{success_register}}</span>
+        <a href="/">Back to homepage</a>
+    </form>
+</body>
+</html>

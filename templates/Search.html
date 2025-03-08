@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+</head>
+<body>
+    <h1>Search: </h1>
+    <form action="/search" method="POST">
+        <label for="search">Search</label>
+        <input type="text" name="userInput" placeholder="Enter bank name">
+        <button type="submit">Submit</button>
+    </form>
+    <p>
+        You search for:{{usertxt}}
+        {% for row in table %}
+        <li>
+            {{row[0]}}
+            - {{row[1]}}
+            - {{row[2]}}
+        </li>
+        {% endfor %}
+    </p>
+</body>
+</html>
