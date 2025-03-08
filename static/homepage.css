@@ -1,0 +1,16 @@
+.tonav{
+    overflow: hidden;
+    background-color: black;
+}
+.tonav a{
+    display: block;
+    padding: 16px 14px;
+    color: azure;
+    text-decoration: none;
+    text-align: center;
+    float:right
+}
+.tonav a:hover{
+    color: black;
+    background-color: white;
+}
