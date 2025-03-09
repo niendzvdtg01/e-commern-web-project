@@ -1,10 +1,53 @@
-.tonav{
+header{
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     overflow: hidden;
-    background-color: black;
+    background-color: rgb(223, 122, 28);
+    width: 100%;
+    height: auto;
+}
+body{
+    margin: 0;
+}
+main{
+    font-family: Arial, Helvetica, sans-serif;
+}
+.searchbox form {
+    height: 30px;
+    margin: 8px;
+    display: flex;
+    width: 400px; /* Chiều rộng thanh tìm kiếm */
+    border-radius: 20px;
+    overflow: hidden; /* Giữ bo góc đúng */
+    border: 1px solid #ccc; /* Viền chung */
+}
+.searchbox{
+    display: flex;
+    width: auto;
+    height: auto;
+    position: absolute;
+    left: 250px;
+}
+.searchbox input[type = text]{
+    flex: 1;
+    padding: 8px 12px;
+    margin: 8px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+}
+.searchbox button{
+    padding: 8px 12px;
+    border: none;
+    border-radius: 0 20px 20px 0;
+    background-color: #d46724;
+}
+.searchbox button:hover{
+    background-color: #f8f8f8;
+    color: rgb(225, 120, 46)
 }
 .tonav a{
     display: block;
-    padding: 16px 14px;
+    padding: 10px 16px;
     color: azure;
     text-decoration: none;
     text-align: center;
