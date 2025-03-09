@@ -8,14 +8,23 @@ header{
 body{
     margin: 0;
 }
+p.font{
+    font-size: medium;
+    margin: 0;
+    float: left;
+    padding: 8px 12px;
+    font-family: cursive;
+    color:aliceblue;
+    font-style:oblique;
+}
 main{
     font-family: Arial, Helvetica, sans-serif;
 }
 .searchbox form {
-    height: 30px;
+    height: 40px;
     margin: 8px;
     display: flex;
-    width: 400px; /* Chiều rộng thanh tìm kiếm */
+    width: 600px; /* Chiều rộng thanh tìm kiếm */
     border-radius: 20px;
     overflow: hidden; /* Giữ bo góc đúng */
     border: 1px solid #ccc; /* Viền chung */
@@ -24,8 +33,7 @@ main{
     display: flex;
     width: auto;
     height: auto;
-    position: absolute;
-    left: 250px;
+    padding-bottom: 8px; /* Tạo khoảng cách giữa phần tìm kiếm và viền */
 }
 .searchbox input[type = text]{
     flex: 1;
@@ -42,12 +50,12 @@ main{
     background-color: #d46724;
 }
 .searchbox button:hover{
-    background-color: #f8f8f8;
+    background-color: #064b15;
     color: rgb(225, 120, 46)
 }
 .tonav a{
     display: block;
-    padding: 10px 16px;
+    padding: 10px 12px;
     color: azure;
     text-decoration: none;
     text-align: center;
@@ -56,4 +64,26 @@ main{
 .tonav a:hover{
     color: black;
     background-color: white;
+}
+img{
+    margin: none;
+    padding: auto;
+    display: flex;
+    max-width: 35px;
+    max-height: 48px;
+}
+.border {
+    width: 100%;
+    border-bottom: 6px solid transparent; /* Cần để border-bottom có màu trong suốt */
+    border-image: linear-gradient(to right, 
+        #008000 10%, #FFA500 10%, 
+        #FFA500 20%, #008000 20%, 
+        #008000 30%, #FFA500 30%, 
+        #FFA500 40%, #008000 40%, 
+        #008000 50%, #FFA500 50%, 
+        #FFA500 60%, #008000 60%, 
+        #008000 70%, #FFA500 70%, 
+        #FFA500 80%, #008000 80%, 
+        #008000 90%, #FFA500 90%) 1;
+    box-sizing: border-box;
 }
