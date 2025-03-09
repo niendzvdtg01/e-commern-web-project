@@ -7,10 +7,19 @@
     <link rel="stylesheet" href="/static/homepage.css">
 </head>
 <body>
-    <h1>Welcome to my page!</h1>
-    <div class="tonav">
-        <a href="/login">Login</a>
-        <a href="/signup">Sign up</a>
-    </div>
+    <header>
+        <div class="tonav">
+            <a href="/login">Login</a>
+            <a href="/signup">Sign up</a>
+        </div>
+    </header>
+    <main>
+        <div class="searchbox">
+            <form action="/search" method="POST">
+                <input type="text" name="userInput" placeholder="Tìm kiếm">
+                <button type="submit">🔍</button>
+            </form>
+        </div>
+    </main>
 </body>
 </html>
