@@ -1,4 +1,8 @@
-header{
+
+.container {
+    display: flex;
+    gap: 200px; /* Khoảng cách giữa ảnh và danh mục */
+}header{
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     overflow: hidden;
     background-color: rgb(223, 122, 28);
@@ -65,7 +69,7 @@ main{
     color: black;
     background-color: white;
 }
-img{
+img.icon{
     margin: none;
     padding: auto;
     display: flex;
@@ -92,7 +96,7 @@ img{
     border: 1px solid #ccc;
     border-radius: 8px;
     margin: 16px;
-    max-width: 220px;
+    width: 220px;
     overflow: hidden;
 }
 
@@ -123,4 +127,14 @@ img{
 }
 .list li:hover{
    background-color: #ccc;
+}
+img.brand {
+    position: absolute;
+    right: 300px;
+    display: block;
+    margin: 30px;
+    width: 800px;
+    max-height: 300px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
 }
