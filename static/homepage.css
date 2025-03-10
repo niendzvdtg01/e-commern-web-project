@@ -87,3 +87,40 @@ img{
         #008000 90%, #FFA500 90%) 1;
     box-sizing: border-box;
 }
+.list {
+    background-color: transparent; /* Sửa lỗi */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin: 16px;
+    max-width: 220px;
+    overflow: hidden;
+}
+
+.list li{
+    display: flex;
+    padding: 12px;
+    border-bottom: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+    display: block; /* Sửa lỗi */
+    text-align: center;
+}
+.list a{
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+}
+.menu_header{
+    background-color: #008000;
+    color: aliceblue;
+    padding: 10px 12px;
+}
+.menu_list{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.list li:hover{
+   background-color: #ccc;
+}
