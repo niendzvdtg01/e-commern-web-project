@@ -2,17 +2,14 @@ from flask import Flask, render_template, request, url_for, redirect, session
 import searchUser, Login, loadtodb
 app = Flask(__name__)
 app.secret_key = "lolse"
-@app.route('/')
+@app.route('/', methods = ['GET', 'POST'])
 def index():
-    return render_template("Homepage.html")
-@app.route('/search', methods = ['GET', 'POST'])
-def searchtxt():
     data = []
     usersearch = ""
     if request.method == 'POST':
         usersearch = request.form['userInput']
         data =  searchUser.searchUser(usersearch)
-    return render_template("Search.html", table = data, usertxt = usersearch)
+    return render_template("Homepage.html", table = data, usertxt = usersearch)
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -21,7 +18,7 @@ def login():
         password = request.form['password']  
         if Login.checkuser(user, password):
             session['username'] = user
-            return redirect(url_for('searchtxt'))
+            return redirect(url_for('index'))
         else:
             return render_template("login.html", username_err = username_err, password_err = password_err)
     return render_template("login.html", username_err = "", password_err = "")

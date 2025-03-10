@@ -9,7 +9,7 @@
 <body>
     <header>
         <div class="tonav">
-            <p class="font">Mai more mood</p>
+            <p class="font">Chào mừng đến với Mai more mood</p>
             <a href="/login">Đăng nhập</a>
             <a href="/signup">Đăng ký</a>
         </div>
@@ -18,17 +18,46 @@
         <div  class="border">
         <div class="searchbox">
             <img src="/static/logo.jpg" alt="">
-            <form action="/search" method="POST">
+            <form action="/" method="POST">
                 <input type="text" name="userInput" placeholder="Tìm kiếm">
                 <button type="submit">🔍</button>
             </form>
         </div>
     </div>
     <div>
-        <form action="">
-            
-        </form>
+        <div class="list">
+            <div class="menu_header">
+                <span>🎖️</span>
+                <span>Danh mục</span>
+            </div>
+            <nav>
+                <ul class="menu_list">
+                    <li>
+                        <a href="#">SP1</a>
+                    </li>
+                    <li>
+                        <a href="#">SP2</a>
+                    </li>
+                    <li>
+                        <a href="#">SP3</a>
+                    </li>
+                    <li>
+                        <a href="#">SP4</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
+    <p>
+        You search for:{{usertxt}}
+        {% for row in table %}
+        <li>
+            {{row[0]}}
+            - {{row[1]}}
+            - {{row[2]}}
+        </li>
+        {% endfor %}
+    </p>
     </main>
 </body>
 </html>
