@@ -1,7 +1,7 @@
 
 .container {
     display: flex;
-    gap: 200px; /* Khoảng cách giữa ảnh và danh mục */
+    gap: 50px; /* Khoảng cách giữa ảnh và danh mục */
 }header{
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     overflow: hidden;
@@ -34,6 +34,8 @@ main{
     border: 1px solid #ccc; /* Viền chung */
 }
 .searchbox{
+    position: relative;
+    left:70px;
     display: flex;
     width: auto;
     height: auto;
@@ -92,6 +94,8 @@ img.icon{
     box-sizing: border-box;
 }
 .list {
+    position: relative;
+    left:60px;
     background-color: transparent; /* Sửa lỗi */
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -129,12 +133,11 @@ img.icon{
    background-color: #ccc;
 }
 img.brand {
-    position: absolute;
-    right: 300px;
+    position: relative;
+    left: 1px;
     display: block;
-    margin: 30px;
+    margin: 60px;
     width: 800px;
     max-height: 300px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
+    border-radius: 16px;
 }
