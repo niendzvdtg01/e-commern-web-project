@@ -83,7 +83,7 @@ img.icon{
 }
 img.cart{
     position: relative;
-    left:1050px;
+    left:1020px;
     margin: 6px;
     padding: auto;
     display: flex;
@@ -92,7 +92,7 @@ img.cart{
 }
 img.save{
     position: relative;
-    left:880px;
+    left:860px;
     margin: 13px;
     padding: auto;
     display: flex;
@@ -125,7 +125,6 @@ img.save{
     overflow: hidden;
     height: auto;
 }
-
 .list li{
     display: flex;
     padding: 12px;
@@ -154,12 +153,60 @@ img.save{
 .list li:hover{
    background-color: #ccc;
 }
-img.brand {
+/* Tao ra phan thanh lua chon */
+.intro a{ 
+    margin: 2px;
+    position: relative;
+    right: 540px;
+    display: block;
+    padding: 20px 20px;
+    color: rgb(0, 7, 7);
+    text-decoration: none;
+    float: left;
+    font-size:large;
+    font-weight:bolder;
+}
+.intro a:hover{
+    background-color:#ccc;
+    border-radius: 8px;
+}
+  /* Tao slideshow */
+  .brand {
     position: relative;
     left: 1px;
     display: block;
     margin: 60px;
     width: 800px;
-    height: auto;
+    height: 400px;
     border-radius: 16px;
+    overflow: hidden;
 }
+img.size{
+    width: 100%;
+    height: 100%;
+}
+  .brand .slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    animation: slideShow 9s infinite;
+  }
+  
+  .brand .slide:nth-child(1) {
+    animation-delay: 0s;
+  }
+  .brand .slide:nth-child(2) {
+    animation-delay: 3s;
+  }
+  .brand .slide:nth-child(3) {
+    animation-delay: 6s;
+  }
+  
+  @keyframes slideShow {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    30% { opacity: 1; }
+    40% { opacity: 0; }
+    100% { opacity: 0; }
+  }
