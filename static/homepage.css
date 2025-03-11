@@ -1,7 +1,7 @@
-
 .container {
     display: flex;
     gap: 50px; /* Khoảng cách giữa ảnh và danh mục */
+    align-items: stretch;
 }header{
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     overflow: hidden;
@@ -25,21 +25,22 @@ main{
     font-family: Arial, Helvetica, sans-serif;
 }
 .searchbox form {
+    position: relative;
     height: 40px;
-    margin: 8px;
+    margin: 10px;
     display: flex;
-    width: 600px; /* Chiều rộng thanh tìm kiếm */
+    width:250px; /* Chiều rộng thanh tìm kiếm */
     border-radius: 20px;
     overflow: hidden; /* Giữ bo góc đúng */
     border: 1px solid #ccc; /* Viền chung */
 }
 .searchbox{
     position: relative;
-    left:70px;
+    left:1000px;
     display: flex;
     width: auto;
     height: auto;
-    padding-bottom: 8px; /* Tạo khoảng cách giữa phần tìm kiếm và viền */
+    padding-bottom: 4px; /* Tạo khoảng cách giữa phần tìm kiếm và viền */
 }
 .searchbox input[type = text]{
     flex: 1;
@@ -72,11 +73,31 @@ main{
     background-color: white;
 }
 img.icon{
-    margin: none;
+    position: relative;
+    left:40px;
+    margin: 2px;
     padding: auto;
     display: flex;
     max-width: 35px;
     max-height: 48px;
+}
+img.cart{
+    position: relative;
+    left:1050px;
+    margin: 6px;
+    padding: auto;
+    display: flex;
+    max-width: 45px;
+    height: 50px;
+}
+img.save{
+    position: relative;
+    left:880px;
+    margin: 13px;
+    padding: auto;
+    display: flex;
+    width: 32px;
+    height: 35px;
 }
 .border {
     width: 100%;
@@ -95,13 +116,14 @@ img.icon{
 }
 .list {
     position: relative;
-    left:60px;
+    left:25px;
     background-color: transparent; /* Sửa lỗi */
     border: 1px solid #ccc;
     border-radius: 8px;
     margin: 16px;
     width: 220px;
     overflow: hidden;
+    height: auto;
 }
 
 .list li{
@@ -138,6 +160,6 @@ img.brand {
     display: block;
     margin: 60px;
     width: 800px;
-    max-height: 300px;
+    height: auto;
     border-radius: 16px;
 }
