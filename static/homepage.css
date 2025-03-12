@@ -235,7 +235,7 @@ img.size{
 }
 .services_box li .box_item {
     width: 100%; /* Đảm bảo item bên trong chiếm toàn bộ diện tích */
-    border: 3px solid;
+    border: 2px solid;
     border-radius: 5px;
     text-align: center;
     padding: 15px;
