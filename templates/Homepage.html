@@ -19,19 +19,21 @@
     <main>
         <div  class="border">
         <div class="container">
-        <img src="/static/logo.jpg" alt="" class="icon">
+        <img src="/static/logo-removebg-preview.png" alt="" class="icon">
         <div class="searchbox">
             <form action="/" method="POST">
                 <input type="text" name="userInput" placeholder="Tìm kiếm">
                 <button type="submit">🔍</button>
             </form>
         </div>
-        <a href="#">
-            <img src="/static/cart.png" alt="" class = "cart">
-        </a>
-        <a href="#">
-            <img src="/static/save.png" alt="" class = "save">
-        </a>
+        <div class="container">
+            <a href="#">
+                <img src="/static/cart-removebg-preview.png" alt="" class = "cart">
+            </a>
+            <a href="#">
+                <img src="/static/save.png" alt="" class = "save">
+            </a>
+        </div>
         <div class="intro">
             <a href="#">TRANG CHỦ</a>
             <a href="#">SẢN PHẨM</a>
@@ -81,17 +83,35 @@
                 <img src="/static/brand2.webp" alt="" class="size">
             </div>
         </div>
+        <div class="col-lg-2 col-md-2 col-xs-12 d-none d-sm-block">
+            <ul class="services_box">
+                <li>
+                    <div class="box_item">
+                        <h4>Cam kết</h4>
+                        <p>Giá cả hợp lý</p>
+                    </div>
+                </li>
+                <li> 
+                    <div class="box_item">
+                    <h4>Cam kết</h4>
+                    <p>Giá cả hợp lý</p>
+                    </div>
+                </li>
+                <li> 
+                    <div class="box_item">
+                    <h4>Cam kết</h4>
+                    <p>Giá cả hợp lý</p>
+                    </div>
+                </li>
+                <li> 
+                    <div class="box_item">
+                    <h4>Cam kết</h4>
+                    <p>Giá cả hợp lý</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
-    <p>
-        You search for:{{usertxt}}
-        {% for row in table %}
-        <li>
-            {{row[0]}}
-            - {{row[1]}}
-            - {{row[2]}}
-        </li>
-        {% endfor %}
-    </p>
     </main>
 </body>
 </html>

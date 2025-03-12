@@ -1,6 +1,9 @@
+*{
+    box-sizing: border-box;
+}
 .container {
     display: flex;
-    gap: 50px; /* Khoảng cách giữa ảnh và danh mục */
+    gap: 10px; /* Khoảng cách giữa ảnh và danh mục */
     align-items: stretch;
 }header{
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
@@ -8,6 +11,9 @@
     background-color: rgb(223, 122, 28);
     width: 100%;
     height: auto;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 body{
     margin: 0;
@@ -25,7 +31,6 @@ main{
     font-family: Arial, Helvetica, sans-serif;
 }
 .searchbox form {
-    position: relative;
     height: 40px;
     margin: 10px;
     display: flex;
@@ -35,8 +40,8 @@ main{
     border: 1px solid #ccc; /* Viền chung */
 }
 .searchbox{
-    position: relative;
-    left:1000px;
+    position: sticky;
+    left:1080px;
     display: flex;
     width: auto;
     height: auto;
@@ -73,7 +78,7 @@ main{
     background-color: white;
 }
 img.icon{
-    position: relative;
+    position: fixed;
     left:40px;
     margin: 2px;
     padding: auto;
@@ -83,7 +88,7 @@ img.icon{
 }
 img.cart{
     position: relative;
-    left:1020px;
+    left:1160px;
     margin: 6px;
     padding: auto;
     display: flex;
@@ -92,7 +97,7 @@ img.cart{
 }
 img.save{
     position: relative;
-    left:860px;
+    left: 1030px;
     margin: 13px;
     padding: auto;
     display: flex;
@@ -121,7 +126,7 @@ img.save{
     border: 1px solid #ccc;
     border-radius: 8px;
     margin: 16px;
-    width: 220px;
+    width: 400px;
     overflow: hidden;
     height: auto;
 }
@@ -157,7 +162,7 @@ img.save{
 .intro a{ 
     margin: 2px;
     position: relative;
-    right: 540px;
+    right:330px;
     display: block;
     padding: 20px 20px;
     color: rgb(0, 7, 7);
@@ -176,7 +181,7 @@ img.save{
     left: 1px;
     display: block;
     margin: 60px;
-    width: 800px;
+    min-width: 850px;
     height: 400px;
     border-radius: 16px;
     overflow: hidden;
@@ -192,7 +197,6 @@ img.size{
     opacity: 0;
     animation: slideShow 9s infinite;
   }
-  
   .brand .slide:nth-child(1) {
     animation-delay: 0s;
   }
@@ -202,7 +206,6 @@ img.size{
   .brand .slide:nth-child(3) {
     animation-delay: 6s;
   }
-  
   @keyframes slideShow {
     0% { opacity: 0; }
     10% { opacity: 1; }
@@ -210,3 +213,37 @@ img.size{
     40% { opacity: 0; }
     100% { opacity: 0; }
   }
+  @media  screen and (max-width: 1024px) {
+    .service_box{
+        transform: scale(0.8);
+    }
+  }
+  .services_box {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    list-style: none; /* Xóa dấu chấm của <ul> */
+    padding: 0;
+    margin: 0;
+    margin-top: 45px;
+}
+.services_box li {
+    width: 120px;
+    display: flex;
+    justify-content: center; /* Căn giữa nội dung */
+    padding: 5px; /* Tạo khoảng cách giữa các ô */
+}
+.services_box li .box_item {
+    width: 100%; /* Đảm bảo item bên trong chiếm toàn bộ diện tích */
+    border: 3px solid;
+    border-radius: 5px;
+    text-align: center;
+    padding: 15px;
+    min-height: 50px;
+}
+.services_box li:first-child .box_item, .services_box li:nth-child(4) .box_item {
+    border-color: #f58831;
+}
+.services_box li:nth-child(2) .box_item, .services_box li:nth-child(3) .box_item {
+    border-color: #00833d;
+}
