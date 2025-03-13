@@ -128,7 +128,7 @@ img.save{
     margin: 16px;
     width: 400px;
     overflow: hidden;
-    height: auto;
+    height: 495px;
 }
 .list li{
     display: flex;
@@ -182,7 +182,7 @@ img.save{
     display: block;
     margin: 60px;
     min-width: 850px;
-    height: 400px;
+    height: 450px;
     border-radius: 16px;
     overflow: hidden;
 }
@@ -225,7 +225,7 @@ img.size{
     list-style: none; /* Xóa dấu chấm của <ul> */
     padding: 0;
     margin: 0;
-    margin-top: 45px;
+    margin-top: 55px;
 }
 .services_box li {
     width: 120px;
@@ -239,11 +239,15 @@ img.size{
     border-radius: 5px;
     text-align: center;
     padding: 15px;
-    min-height: 50px;
+    height: 220px;
 }
 .services_box li:first-child .box_item, .services_box li:nth-child(4) .box_item {
     border-color: #f58831;
 }
 .services_box li:nth-child(2) .box_item, .services_box li:nth-child(3) .box_item {
     border-color: #00833d;
+}
+.services_box li .box_item img {
+    height: 72px;
+    width: auto;
 }
