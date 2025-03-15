@@ -1,6 +1,7 @@
 *{
     box-sizing: border-box;
 }
+
 .container {
     display: flex;
     gap: 10px; /* Khoảng cách giữa ảnh và danh mục */
@@ -8,9 +9,9 @@
 }header{
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     overflow: hidden;
-    background-color: rgb(223, 122, 28);
+    background-color: rgb(0, 0, 0);
     width: 100%;
-    height: auto;
+    height: 50px;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -20,10 +21,10 @@ body{
 }
 p.font{
     font-size: medium;
-    margin: 0;
-    float: left;
-    padding: 8px 12px;
-    font-family: cursive;
+    margin-top: 10px;
+    padding: 0;
+    text-align: center;
+    font-family: 'Times New Roman';
     color:aliceblue;
     font-style:oblique;
 }
@@ -38,6 +39,12 @@ main{
     border-radius: 20px;
     overflow: hidden; /* Giữ bo góc đúng */
     border: 1px solid #ccc; /* Viền chung */
+}
+.searchbox img{
+    position: relative;
+    width: 30px;
+    height: 30px;
+    padding: 5px;
 }
 .searchbox{
     position: sticky;
@@ -55,17 +62,8 @@ main{
     border: none;
     outline: none;
 }
-.searchbox button{
-    padding: 8px 12px;
-    border: none;
-    border-radius: 0 20px 20px 0;
-    background-color: #d46724;
-}
-.searchbox button:hover{
-    background-color: #064b15;
-    color: rgb(225, 120, 46)
-}
-.tonav a{
+
+.tonav button{
     display: block;
     padding: 10px 12px;
     color: azure;
@@ -73,7 +71,7 @@ main{
     text-align: center;
     float:right
 }
-.tonav a:hover{
+.tonav button:hover{
     color: black;
     background-color: white;
 }
@@ -89,20 +87,20 @@ img.icon{
 img.cart{
     position: relative;
     left:1160px;
-    margin: 6px;
+    margin: 10px;
     padding: auto;
     display: flex;
     max-width: 45px;
-    height: 50px;
+    height: 40px;
 }
 img.save{
     position: relative;
     left: 1030px;
-    margin: 13px;
+    margin: 10px;
     padding: auto;
     display: flex;
-    width: 32px;
-    height: 35px;
+    width: 50px;
+    height: 40px;
 }
 .border {
     width: 100%;
@@ -251,3 +249,32 @@ img.size{
     height: 72px;
     width: auto;
 }
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    z-index: 1000;
+  }
+  .popup-content {
+    text-align: center;
+  }
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  .btn {
+    padding: 10px 20px;
+    background: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
