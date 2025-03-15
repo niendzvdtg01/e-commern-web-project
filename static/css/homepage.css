@@ -1,17 +1,19 @@
 *{
     box-sizing: border-box;
+    margin: 0;
 }
 
 .container {
     display: flex;
     gap: 10px; /* Khoảng cách giữa ảnh và danh mục */
     align-items: stretch;
+    justify-content: center;
 }header{
-    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-family: Arial, Helvetica, sans-serif;
     overflow: hidden;
     background-color: rgb(0, 0, 0);
     width: 100%;
-    height: 50px;
+    min-height: 50px;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -20,13 +22,15 @@ body{
     margin: 0;
 }
 p.font{
-    font-size: medium;
-    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 20px;;
     padding: 0;
     text-align: center;
-    font-family: 'Times New Roman';
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color:aliceblue;
-    font-style:oblique;
+    font-style:normal
 }
 main{
     font-family: Arial, Helvetica, sans-serif;
@@ -76,18 +80,27 @@ main{
     background-color: white;
 }
 img.icon{
-    position: fixed;
-    left:40px;
+    align-items: center;
+    position: relative;
     margin: 2px;
     padding: auto;
     display: flex;
-    max-width: 20px;
-    max-height: 20px;
+    width: 320px;;
+    height: 70px;
 }
 img.search{
     position: fixed;
-    left:1360px;
-    margin-top: 20px;
+    left:1390px;
+    margin-top: 30px;
+    padding: auto;
+    display: flex;
+    max-width: 25x;
+    height: 25px;
+}
+img.account{
+    position: fixed;
+    left:1450px;
+    margin-top: 30px;
     padding: auto;
     display: flex;
     max-width: 25x;
@@ -95,17 +108,8 @@ img.search{
 }
 img.cart{
     position: fixed;
-    left:1400px;
-    margin-top: 20px;
-    padding: auto;
-    display: flex;
-    max-width: 25x;
-    height: 25px;
-}
-img.save{
-    position: fixed;
-    left: 1300px;
-    margin-top: 20px;
+    left: 1340px;
+    margin-top: 30px;
     padding: auto;
     display: flex;
     width: 25px;
@@ -117,7 +121,7 @@ img.save{
     background-color: transparent; /* Sửa lỗi */
     border: 1px solid #ccc;
     border-radius: 8px;
-    margin: 16px;
+    margin-top: 160px;
     width: 400px;
     overflow: hidden;
     height: 495px;
@@ -170,13 +174,11 @@ img.save{
   /* Tao slideshow */
   .brand {
     position: relative;
-    left: 1px;
     display: block;
-    margin: 60px;
-    min-width: 850px;
+    width: 100%;
     height: 450px;
-    border-radius: 16px;
     overflow: hidden;
+    margin-top: 15px;
 }
 img.size{
     width: 100%;
