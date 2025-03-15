@@ -4,34 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mai more mood</title>
-    <link rel="stylesheet" href="/static/homepage.css">
-    <link rel="icon" type = "img/png" href="/static/logo-removebg-preview.png" sizes="192x192">
+    <link rel="stylesheet" href="/static/css/homepage.css">
+    <link rel="icon" type = "img/png" href="/static/pictures/logorgb copy.png" sizes="192x192">
 </head>
 <body>
+<div id="loginPopup" class="popup">
+  <div class="popup-content">
+    <span class="close" onclick="closePopup()">&times;</span>
+    <h3>Đăng nhập</h3>
+    <form method="post">
+      <label for="email">Email:</label>
+      <input type="email" id="email" required>
+      <label for="password">Mật khẩu:</label>
+      <input type="password" id="password" required>
+      <button type="submit">Đăng nhập</button>
+    </form>
+  </div>
+</div>
+<script>
+  function openPopup() {
+    document.getElementById("loginPopup").style.display = "block";
+  }
+  function closePopup() {
+    document.getElementById("loginPopup").style.display = "none";
+  }
+</script>
+
     <header>
         <div class="tonav">
             <p class="font">Chào mừng đến với Mai more mood</p>
-            <a href="/login">Đăng nhập</a>
-            <a href="/signup">Đăng ký</a>
-            <a href="#">Hỗ trợ</a>
+            <button onclick="openPopup()" class="btn" >Đăng nhập</button>
+            <button onclick="openPopup()" class="btn" >Đăng ký</button>
         </div>
     </header>
     <main>
         <div  class="border">
         <div class="container">
-        <img src="/static/logo-removebg-preview.png" alt="" class="icon">
+        <img src="/static/pictures/logo-removebg-preview.png" alt="logo" class="icon">
         <div class="searchbox">
             <form action="/" method="POST">
                 <input type="text" name="userInput" placeholder="Tìm kiếm">
-                <button type="submit">🔍</button>
+                <img src="/pictures/search-svgrepo-com.svg" alt="search icon" width="20px" height="20px">
             </form>
         </div>
         <div class="container">
             <a href="#">
-                <img src="/static/cart-removebg-preview.png" alt="" class = "cart">
+                <img src="/pictures/cart-shopping-svgrepo-com.svg" alt="cart" class = "cart" width="50px" height="50px">
             </a>
             <a href="#">
-                <img src="/static/save.png" alt="" class = "save">
+                <img src="/pictures/account-svgrepo-com.svg" alt="account" class = "save" width="100px" height="100px">
             </a>
         </div>
         <div class="intro">
