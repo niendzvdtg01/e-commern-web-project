@@ -81,41 +81,35 @@ img.icon{
     margin: 2px;
     padding: auto;
     display: flex;
-    max-width: 35px;
-    max-height: 48px;
+    max-width: 20px;
+    max-height: 20px;
+}
+img.search{
+    position: fixed;
+    left:1360px;
+    margin-top: 20px;
+    padding: auto;
+    display: flex;
+    max-width: 25x;
+    height: 25px;
 }
 img.cart{
-    position: relative;
-    left:1160px;
-    margin: 10px;
+    position: fixed;
+    left:1400px;
+    margin-top: 20px;
     padding: auto;
     display: flex;
-    max-width: 45px;
-    height: 40px;
+    max-width: 25x;
+    height: 25px;
 }
 img.save{
-    position: relative;
-    left: 1030px;
-    margin: 10px;
+    position: fixed;
+    left: 1300px;
+    margin-top: 20px;
     padding: auto;
     display: flex;
-    width: 50px;
-    height: 40px;
-}
-.border {
-    width: 100%;
-    border-bottom: 6px solid transparent; /* Cần để border-bottom có màu trong suốt */
-    border-image: linear-gradient(to right, 
-        #008000 10%, #FFA500 10%, 
-        #FFA500 20%, #008000 20%, 
-        #008000 30%, #FFA500 30%, 
-        #FFA500 40%, #008000 40%, 
-        #008000 50%, #FFA500 50%, 
-        #FFA500 60%, #008000 60%, 
-        #008000 70%, #FFA500 70%, 
-        #FFA500 80%, #008000 80%, 
-        #008000 90%, #FFA500 90%) 1;
-    box-sizing: border-box;
+    width: 25px;
+    height: 25px;
 }
 .list {
     position: relative;
