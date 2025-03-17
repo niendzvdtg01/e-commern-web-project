@@ -2,7 +2,6 @@
     box-sizing: border-box;
     margin: 0;
 }
-
 .container {
     display: flex;
     gap: 10px; /* Khoảng cách giữa ảnh và danh mục */
@@ -44,41 +43,25 @@ main{
     overflow: hidden; /* Giữ bo góc đúng */
     border: 1px solid #ccc; /* Viền chung */
 }
-.searchbox img{
+.menu {
+    display: inline-block;
+    cursor: pointer;
     position: relative;
+    margin-top: 20px;
+    right:530px;
+  }
+  
+  .bar {
     width: 30px;
-    height: 30px;
-    padding: 5px;
-}
-.searchbox{
-    position: sticky;
-    left:1080px;
-    display: flex;
-    width: auto;
-    height: auto;
-    padding-bottom: 4px; /* Tạo khoảng cách giữa phần tìm kiếm và viền */
-}
-.searchbox input[type = text]{
-    flex: 1;
-    padding: 8px 12px;
-    margin: 8px;
-    border-radius: 20px;
-    border: none;
-    outline: none;
-}
-
-.tonav button{
-    display: block;
-    padding: 10px 12px;
-    color: azure;
-    text-decoration: none;
-    text-align: center;
-    float:right
-}
-.tonav button:hover{
-    color: black;
-    background-color: white;
-}
+    height: 4px;
+    background-color: black;
+    margin: 6px 0;
+    border-radius: 5px;
+  } 
+  .menu:hover {
+    transform: scale(1.05);
+    background-color: rgba(255, 255, 255, 0.9);
+}   
 img.icon{
     align-items: center;
     position: relative;
@@ -97,6 +80,10 @@ img.search{
     max-width: 25x;
     height: 25px;
 }
+.search:hover {
+    transform: scale(1.05);
+    background-color: rgba(255, 255, 255, 0.9);
+}
 img.account{
     position: fixed;
     left:1450px;
@@ -106,6 +93,10 @@ img.account{
     max-width: 25x;
     height: 25px;
 }
+.account:hover {
+    transform: scale(1.05);
+    background-color: rgba(255, 255, 255, 0.9);
+}
 img.cart{
     position: fixed;
     left: 1340px;
@@ -114,6 +105,10 @@ img.cart{
     display: flex;
     width: 25px;
     height: 25px;
+}
+.cart:hover {
+    transform: scale(1.05);
+    background-color: rgba(255, 255, 255, 0.9);
 }
 .list {
     position: relative;
@@ -212,39 +207,6 @@ img.size{
         transform: scale(0.8);
     }
   }
-  .services_box {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    list-style: none; /* Xóa dấu chấm của <ul> */
-    padding: 0;
-    margin: 0;
-    margin-top: 55px;
-}
-.services_box li {
-    width: 120px;
-    display: flex;
-    justify-content: center; /* Căn giữa nội dung */
-    padding: 5px; /* Tạo khoảng cách giữa các ô */
-}
-.services_box li .box_item {
-    width: 100%; /* Đảm bảo item bên trong chiếm toàn bộ diện tích */
-    border: 2px solid;
-    border-radius: 5px;
-    text-align: center;
-    padding: 15px;
-    height: 220px;
-}
-.services_box li:first-child .box_item, .services_box li:nth-child(4) .box_item {
-    border-color: #f58831;
-}
-.services_box li:nth-child(2) .box_item, .services_box li:nth-child(3) .box_item {
-    border-color: #00833d;
-}
-.services_box li .box_item img {
-    height: 72px;
-    width: auto;
-}
 .popup {
     display: none;
     position: fixed;
@@ -257,20 +219,50 @@ img.size{
     border-radius: 10px;
     z-index: 1000;
   }
-  .popup-content {
+.popup-content {
     text-align: center;
   }
-  .close {
+.close {
     position: absolute;
     top: 10px;
     right: 15px;
     cursor: pointer;
     font-size: 20px;
   }
-  .btn {
+.btn {
     padding: 10px 20px;
     background: blue;
     color: white;
     border: none;
     cursor: pointer;
   }
+  .banner__buttons {
+    position: absolute  ;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 10px 20px;
+    color: black;
+    transition: 0.3s ease-in-out;
+    font: inherit;
+    width: 400px;
+    height: 60px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    transition: all 0.3s ease-in-out; /* Hiệu ứng mượt mà */
+}
+.banner__buttons a{
+    text-decoration: none;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 18px;
+    color: black;
+    font-weight:400;
+}
+.banner__buttons:hover {
+    transform: translateX(-50%) scale(1.03);
+    background-color: rgba(255, 255, 255, 0.9); /* Làm sáng nền nhẹ */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Tăng độ đổ bóng */
+}
