@@ -213,17 +213,33 @@ img.size{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: white;
+    background-color:#f7f7f7;
     padding: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     z-index: 1000;
   }
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color:#f7f7f7;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    z-index: 1000;
+  }
+.popup button{
+   background-color: rgb(223, 231, 231);
+  }
+  .popup button:hover{
+    background-color: rgb(181, 182, 182);
+   }
 .popup-content {
     text-align: center;
-}
-input[type = text], select{
-    border-radius: 10px;
+    margin: 0;
 }
 .close {
     position: absolute;
@@ -268,4 +284,87 @@ input[type = text], select{
     transform: translateX(-50%) scale(1.03);
     background-color: rgba(255, 255, 255, 0.9); /* Làm sáng nền nhẹ */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Tăng độ đổ bóng */
+}
+.nav-tab{
+    display: flex;
+    width: 100%;
+    position: relative;
+    left:20px;
+    margin-bottom: 30px;
+}
+.nav-buttons{
+    margin-top: 20px;
+    border: none;
+    background-color: #ffffff;
+    justify-content: center;
+}
+.nav-buttons h2{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    color: #bfb6b6;
+}
+.nav-buttons h2:hover{
+    color: black;
+}
+.btitles{
+    position: absolute;
+    right: 60px;
+    background-color: black;
+    margin-top: 20px;
+    padding: 5px 30px;
+    text-align: center;
+    justify-content: center;
+    display: flex;;
+}
+.btitles a{
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 200;
+    font-size: 16px;
+    white-space: nowrap;
+    padding: 4px 4px;    
+}
+.btitles:hover{
+    transform: scale(1.03); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+}
+.product-list{
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    position: relative;
+    list-style: none;
+    padding: 0;
+    z-index: 1;
+    margin: 0;
+}
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Điều chỉnh cột linh hoạt */
+    width: 100%;
+    margin: auto; /* Căn giữa */
+    box-sizing: border-box;
+}
+
+.flex-product {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Căn chỉnh nội dung */
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng nhẹ */
+    transition: transform 0.2s ease-in-out;
+    gap: 20px;
+}
+.img-product {
+    width: 100%; /* Để hình ảnh không bị méo */
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px; /* Làm mềm góc ảnh */
 }

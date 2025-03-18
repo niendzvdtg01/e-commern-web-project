@@ -12,15 +12,17 @@
 <div id="loginPopup" class="popup">
   <div class="popup-content">
     <span class="close" onclick="closepopup()">&times;</span>
-    <h3>Đăng nhập</h3>
-    <form method="post">
+    <div class="popup-header">
+        <h3>Đăng nhập</h3>
+    </div>
+    <form action="/" method="post">
       <label for="email">Email:</label>
       <input type="email" id="email" required style="border-radius: 4px; padding: 6px 6px; margin: 4px; width: 100%;">
       <br>
       <label for="password">Mật khẩu:</label>
       <input type="password" id="password" required style="border-radius: 4px; padding: 6px 6px; margin: 4px; width: 100%;">
       <br>
-      <button type="submit">Đăng nhập</button>
+      <button type="submit" style="border-radius: 4px; padding: 4px 4px; margin: 4px;">Đăng nhập</button>
     </form>
   </div>
 </div>
@@ -76,38 +78,48 @@
                 <a href="#">Xem sản phẩm</a>
             </div>
         </div>
-        <!-- <div class="col-lg-2 col-md-2 col-xs-12 d-none d-sm-block">
-            <ul class="services_box">
-                <li>
-                    <div class="box_item">
-                        <img src="/static/boxservices0.png" alt="">
-                        <h4>Chất lượng</h4>
-                        <p> Tươi ngon mỗi ngày</p>
-                    </div>
-                </li>
-                <li> 
-                    <div class="box_item">
-                    <img src="/static/boxservices1.png" alt="">
-                    <h4>Nhanh chóng</h4>
-                    <p>Giao ngay, tiện lợi</p>
-                    </div>
-                </li>
-                <li> 
-                    <div class="box_item">
-                    <img src="/static/boxservieces2.png" alt="">
-                    <h4>An toàn</h4>
-                    <p> Đảm bảo vệ sinh</p>
-                    </div>
-                </li>
-                <li> 
-                    <div class="box_item">
-                        <img src="/static/boxserviecs3.png" alt="">
-                    <h4>Bền vững</h4>
-                    <p>Vì sức khỏe, môi trường</p>
-                    </div>
-                </li>
-            </ul>
-        </div> -->
+    </div>
+    <!--Tao -->
+    <div class="container">
+        <div class="nav-tab">
+            <button class="nav-buttons">
+                <h2>BEST SELLER</h2>
+            </button>
+            <button class="nav-buttons">
+                <h2>NEW ARRIVALS</h2>
+            </button>
+            <div class="btitles">
+                <a href="">
+                    Xem tất cả
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="product-list">
+        <div class="product-grid">
+            <div class="flex-product">
+                <div>
+                    <a href="#">
+                        <img src="/static/pictures/1.png" alt="" class="img-product">
+                    </a>
+                </div>
+                <div>
+                    <a href="#">
+                        <img src="/static/pictures/2.png" alt="" class="img-product">
+                    </a>
+                </div>
+                <div>
+                    <a href="#">
+                        <img src="/static/pictures/3.png" alt="" class="img-product">
+                    </a>
+                </div>
+                <div>
+                    <a href="#">
+                        <img src="/static/pictures/4.png" alt="" class="img-product">
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
     </main>
 </body>
