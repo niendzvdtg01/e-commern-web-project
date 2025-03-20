@@ -4,7 +4,6 @@
 }
 .container {
     display: flex;
-    gap: 10px; /* Khoảng cách giữa ảnh và danh mục */
     align-items: stretch;
     justify-content: center;
 }header{
@@ -34,21 +33,13 @@ p.font{
 main{
     font-family: Arial, Helvetica, sans-serif;
 }
-.searchbox form {
-    height: 40px;
-    margin: 10px;
-    display: flex;
-    width:250px; /* Chiều rộng thanh tìm kiếm */
-    border-radius: 20px;
-    overflow: hidden; /* Giữ bo góc đúng */
-    border: 1px solid #ccc; /* Viền chung */
-}
+/*Thanh phan tinh nang o dau*/
 .menu {
     display: inline-block;
     cursor: pointer;
     position: relative;
     margin-top: 20px;
-    right:530px;
+    right:480px;
   }
   
   .bar {
@@ -63,17 +54,16 @@ main{
     background-color: rgba(255, 255, 255, 0.9);
 }   
 img.icon{
-    align-items: center;
     position: relative;
-    margin: 2px;
+    left: 35px;
     padding: auto;
     display: flex;
     width: 320px;;
     height: 70px;
 }
 img.search{
-    position: fixed;
-    left:1390px;
+    position: relative;
+    left:450px;
     margin-top: 30px;
     padding: auto;
     display: flex;
@@ -85,8 +75,8 @@ img.search{
     background-color: rgba(255, 255, 255, 0.9);
 }
 img.account{
-    position: fixed;
-    left:1450px;
+    position: relative;
+    left:460px;
     margin-top: 30px;
     padding: auto;
     display: flex;
@@ -98,8 +88,8 @@ img.account{
     background-color: rgba(255, 255, 255, 0.9);
 }
 img.cart{
-    position: fixed;
-    left: 1340px;
+    position:relative;
+    left: 480px;
     margin-top: 30px;
     padding: auto;
     display: flex;
@@ -109,45 +99,6 @@ img.cart{
 .cart:hover {
     transform: scale(1.05);
     background-color: rgba(255, 255, 255, 0.9);
-}
-.list {
-    position: relative;
-    left:25px;
-    background-color: transparent; /* Sửa lỗi */
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin-top: 160px;
-    width: 400px;
-    overflow: hidden;
-    height: 495px;
-}
-.list li{
-    display: flex;
-    padding: 12px;
-    border-bottom: 1px solid #ccc;
-    width: 100%;
-    box-sizing: border-box;
-    display: block; /* Sửa lỗi */
-    text-align: center;
-}
-.list a{
-    text-decoration: none;
-    color: black;
-    font-size: 16px;
-    font-weight: bold;
-}
-.menu_header{
-    background-color: #008000;
-    color: aliceblue;
-    padding: 10px 12px;
-}
-.menu_list{
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-.list li:hover{
-   background-color: #ccc;
 }
 /* Tao ra phan thanh lua chon */
 .intro a{ 
@@ -333,6 +284,7 @@ img.size{
     transform: scale(1.03); 
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
 }
+/*Hinh anh sam pham*/
 .product-list{
     position: relative;
     overflow: hidden;
@@ -378,4 +330,40 @@ img.size{
     height: 500px;
     object-fit: cover;
     border-radius: 10px; /* Làm mềm góc ảnh */
-};
+}
+/*video gioi thieu*/
+.product-intro{
+    display: flex;
+    justify-content: stretch;
+    background-color: #f5f1f1;
+    gap: 40px;
+}
+.collumn-left{
+    margin-left: 20px;
+    display: flex;
+    margin-top: 40px;
+    width: 50%;
+    float: left;
+}
+.collumn-left iframe{
+    width: 100%;
+    height: 400px;
+}
+.collumn-right{
+    margin-right: 20px;
+        margin-top: 150px;
+        width: 50%;
+        justify-content: center;
+        text-align: left;
+        height: 100%;
+        align-items: center;
+        font-size:17px;
+    }
+.collumn-right p{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.slogan{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight:400;
+    font-size: 25px;
+}
