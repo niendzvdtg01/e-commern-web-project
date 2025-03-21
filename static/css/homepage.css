@@ -336,14 +336,14 @@ img.size{
     display: flex;
     justify-content: stretch;
     background-color: #f5f1f1;
-    gap: 40px;
 }
 .collumn-left{
     margin-left: 20px;
-    display: flex;
     margin-top: 40px;
     width: 50%;
     float: left;
+    justify-content: center;
+    align-items: center;
 }
 .collumn-left iframe{
     width: 100%;
@@ -351,19 +351,81 @@ img.size{
 }
 .collumn-right{
     margin-right: 20px;
-        margin-top: 150px;
-        width: 50%;
-        justify-content: center;
-        text-align: left;
-        height: 100%;
-        align-items: center;
-        font-size:17px;
-    }
+    margin-top: 80px;
+    width: 50%;
+    justify-content: center;
+    text-align: left;
+    height: 100%;
+    align-items: center;
+    font-size:17px;
+}
 .collumn-right p{
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-left: 40px;
 }
 .slogan{
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight:400;
     font-size: 25px;
+}
+/*Nut xem them*/
+.more{
+        float: left;
+        background-color: black;
+        margin-top: 20px;
+        margin-left: 40px;
+        padding: 14px 80px;
+        text-align: center;
+        justify-content: center;
+        display: flex;;
+    }
+.more a{
+        color: #ffffff;
+        text-decoration: none;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 200;
+        font-size: 18px;
+        white-space: nowrap;
+        padding: 4px 4px;    
+    }
+.more:hover{
+        transform: scale(1.03); 
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+}
+/* Dong va anh duoi */
+.collumn-right img{
+    max-width: 100%;
+    height: inherit;
+}
+.collumn-left p{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 20px;
+}
+/* vouncher */
+p.sales{
+    margin-top: 200px;
+    font-size: 30px;
+    font-weight: 500;
+}
+.sale-button{
+    float: left;
+    background-color: black;
+    margin-top: 20px;
+    padding: 14px 80px;
+    text-align: center;
+    justify-content: center;
+    display: flex;;
+}
+.sale-button a{
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 200;
+    font-size: 18px;
+    white-space: nowrap;
+    padding: 4px 4px;    
+}
+.sale-button:hover{
+    transform: scale(1.03); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
 }
