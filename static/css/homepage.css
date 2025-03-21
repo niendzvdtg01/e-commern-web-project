@@ -225,7 +225,7 @@ img.size{
     justify-content: center;
     align-items: center;
     display: flex;
-    transition: all 0.3s ease-in-out; /* Hiệu ứng mượt mà */
+    transition: all 0.3s ease-in-out; /* Hiệu ứng mượt mà */;
 }
 .banner__buttons a{
     text-decoration: none;
@@ -336,6 +336,10 @@ img.size{
     display: flex;
     justify-content: stretch;
     background-color: #f5f1f1;
+    padding-bottom: 30px;
+    width: 100%;
+    margin: 0;
+    overflow: hidden;
 }
 .collumn-left{
     margin-left: 20px;
@@ -428,4 +432,79 @@ p.sales{
 .sale-button:hover{
     transform: scale(1.03); 
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+}
+.slider-wraper{
+    position: relative;
+    margin-top: 40px;
+    margin-left: 20px;
+    margin-bottom: 40px;
+    width: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 25px;
+}
+.slider{
+    margin-top: 40px;
+    display: flex;
+    gap: 20px;
+    transition: transform 0.5s ease-in-out;
+   
+}
+.head-slider{
+    display: flex;
+}
+.btitles-slide{
+    position: absolute;
+    right: 60px;
+    background-color: black;
+    padding: 5px 30px;
+    text-align: center;
+    justify-content: center;
+    display: flex;;
+}
+.btitles-slide a{
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 200;
+    font-size: 16px;
+    white-space: nowrap;
+    padding: 4px 4px;    
+}
+.btitles-slide:hover{
+    transform: scale(1.03); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+}
+.slider-img img{
+    width: 400px;
+    height: 250px;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+button.slide-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+.prev {
+    left: 0px;
+}
+.next {
+    right: 20px;
+}
+footer{
+    background-color: black;
+    color: white;
+}
+.footer-container{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+}
+.footer-container h1{
+    margin-top: 40px;
 }

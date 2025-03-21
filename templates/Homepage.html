@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="/static/css/homepage.css">
     <link rel="icon" type = "img/png" href="/static/pictures/logorgb copy.png" sizes="192x192">
     <script src="/js/menu.js"></script>
+    <!-- Thêm CSS của Swiper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
+    <!-- Thêm JavaScript của Swiper -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 </head>
 <body>
 <div id="loginPopup" class="popup">
@@ -193,6 +197,31 @@
             <img src="/static/pictures/anhdd.webp" alt="">
         </div>
     </div>
+    <div class="slider-wraper mySwiper">
+        <div class="head-slider">
+            <div>OUR PRODUCTS</div>
+            <div class="btitles-slide">
+                <a href="">
+                    Xem tất cả
+                </a>
+            </div>
+        </div>
+        <div class="slider">
+            <div class="slider-img"><img src="/static/pictures/slider.jpg" alt=""></div>
+            <div class="slider-img"><img src="/static/pictures/slider1.jpg" alt=""></div>
+            <div class="slider-img"><img src="/static/pictures/slider2.jpg" alt=""></div>
+            <div class="slider-img"><img src="/static/pictures/slider3.jpg" alt=""></div>
+            <div class="slider-img"><img src="/static/pictures/slider4.jpg" alt=""></div>
+            <div class="slider-img"><img src="/static/pictures/slider5.jpg" alt=""></div>
+        </div>
+            <button class="prev slide-button" onclick="prevSlide()">&#10094;</button>
+            <button class="next slide-button" onclick="nextSlide()">&#10095;</button>
+    </div>
     </main>
+    <footer>
+        <div class="footer-container">
+            <h1>Liên kết</h1>
+        </div>
+    </footer>
 </body>
 </html>
