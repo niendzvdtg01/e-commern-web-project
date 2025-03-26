@@ -1,3 +1,10 @@
+from flask_wtf import Flaskform
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
+
+class Search(Flaskform):
+    username = StringField()
+
 def searchUser(searchtxt):
     if searchtxt != "":
         import pyodbc
