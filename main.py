@@ -9,7 +9,7 @@ def index():
     if request.method == 'POST':
         usersearch = request.form['userInput']
         data =  searchUser.searchUser(usersearch)
-    return render_template("Homepage.html", table = data, usertxt = usersearch)
+    return render_template("main.html", table = data, usertxt = usersearch)
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == 'POST':
