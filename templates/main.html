@@ -31,7 +31,21 @@
     </form>
   </div>
 </div>
-<!-- End popup -->
+<!-- end thanh dang nhap -->
+
+<!-- Tao thanh tim kiem -->
+<div id="search-popup" class="search-popup">
+  <div class="popup-content">
+    <span class="close" onclick="closesearch()">&times;</span>
+    <form action="/" method="post">
+      <div class="search-bar">
+        <input type="text" id="search" placeholder="Tìm kiếm">
+        <button type = "submit">🔍</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- End thanh tim kiem -->
     <header>
             <p class="font">_ Thêm một chút mai, thêm trọn cảm hứng. _</p>
     </header>
@@ -49,7 +63,7 @@
                 </a>
             </div>
             <div class="features">
-                <a href="#">
+                <a href="#" onclick="opensearch()">
                     <img src="/static/pictures/search-svgrepo-com.svg" alt="cart" class = "search">
                 </a>
                 <a href="/login" onclick="openpopup()">

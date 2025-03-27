@@ -4,31 +4,18 @@ function openpopup(){
 function closepopup(){
     document.getElementById("loginPopup").style.display="none";
 }
-document.addEventListener("DOMContentLoaded", function () {
-    let currentIndex = 0;
-    const slides = document.querySelectorAll(".slider-img");
-    const slider = document.querySelector(".slider");
-    const slideWidth = slides[0].offsetWidth + 20; // Lấy kích thước ảnh + khoảng cách
+function opensearch() {
+    let popup = document.getElementById("search-popup");
+    popup.style.display = "block"; // Hiển thị popup trước khi thêm hiệu ứng
+    setTimeout(() => {
+        popup.classList.add("active");
+    }, 10); // Delay nhỏ để hiệu ứng hoạt động
+}
 
-    function updateSlider() {
-        slider.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
-    }
-
-    document.querySelector(".next").addEventListener("click", function () {
-        if (currentIndex < slides.length - 4) {
-            currentIndex++;
-        } else {
-            currentIndex = 0; // Quay lại đầu
-        }
-        updateSlider();
-    });
-
-    document.querySelector(".prev").addEventListener("click", function () {
-        if (currentIndex > 0) {
-            currentIndex--;
-        } else {
-            currentIndex = slides.length - 1; // Quay về cuối
-        }
-        updateSlider();
-    });
-});
+function closesearch() {
+    let popup = document.getElementById("search-popup");
+    popup.classList.remove("active");
+    setTimeout(() => {
+        popup.style.display = "none"; // Ẩn sau khi hiệu ứng kết thúc
+    }, 300); // Đợi transition hoàn thành (0.3s)
+}
