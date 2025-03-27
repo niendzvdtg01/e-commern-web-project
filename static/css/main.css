@@ -39,7 +39,6 @@ header{
     margin: 0;
     padding: 0;
     line-height: normal;
-    border-bottom: #bfb6b6 2px solid;
 }
 .container1 img{
     width: 30px;
@@ -157,6 +156,7 @@ h2 {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    border-bottom: 1px solid #ccc;
 }
 .product {
     width: 25%;
@@ -212,18 +212,6 @@ h2 {
     border-radius: 10px;
     z-index: 1000;
   }
-.popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color:#f7f7f7;
-    padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    z-index: 1000;
-  }
 .popup button{
    background-color: rgb(223, 231, 231);
   }
@@ -250,7 +238,6 @@ h2 {
     background-color: #f5f1f1;
     padding-bottom: 30px;
     width: 100%;
-    border-top: #bfb6b6 2px solid;
     margin: 0;
     overflow: hidden;
 }
@@ -421,6 +408,49 @@ p.sales{
 
 .footer-links a:hover, .footer-policy a:hover {
     text-decoration: underline;
+<<<<<<< HEAD
+}
+/* Tao tahnh tim kiem */
+.search-popup{
+    position: fixed;
+    background-color: #f5f1f1;
+    width: 100%;
+    z-index: 1000;
+    padding: 10px;
+    opacity: 0;
+    transform: translateY(-20px);
+    visibility: hidden;
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+.search-popup.active {
+    display: block;
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+.search-bar{
+    display: flex;
+    justify-content: center;
+    height: 30px;
+
+}
+.search-bar button{
+    background-color: black;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    width: 60px;
+    cursor: pointer;
+}
+.search-bar input[type = text]{
+    border: 1px solid #ccc;
+    border-radius: 8px 0 0 8px;
+    border-right: none;
+    width: 800px;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+=======
 
 }
 /* end footer */
+>>>>>>> 80805d73043d1e053eee64df8561d1d1bf284595
