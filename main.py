@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect, session
 import searchUser, Login, loadtodb
 app = Flask(__name__)
-app.secret_key = "lolse"
+app.secret_key = "maimoremood@123"
 @app.route('/', methods = ['GET', 'POST'])
 def index():
     data = []
