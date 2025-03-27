@@ -1,8 +1,8 @@
-from flask_wtf import Flaskform
+from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 
-class Search(Flaskform):
+class Search(FlaskForm):
     username = StringField()
 
 def searchUser(searchtxt):
