@@ -25,3 +25,17 @@ function closesearch() {
     }, 300); // Đợi transition hoàn thành (0.3s)
 }
 
+document.getElementById("search").oninput = function() {
+    let popup = document.getElementById("search-result");
+
+    if (popup) {
+        if (this.value.trim() !== "") {
+            popup.classList.add("active"); // Hiển thị bảng nếu có nhập liệu
+        } else {
+            popup.classList.remove("active"); // Ẩn bảng nếu không có dữ liệu nhập
+        }
+    } else {
+        console.error("Không tìm thấy phần tử có ID 'search-result'");
+    }
+};
+
