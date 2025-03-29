@@ -11,7 +11,7 @@ function opensearch() {
         popup.style.display = "block";
         setTimeout(() => {
             popup.classList.add("active");
-        }, 10);
+        }, 300);
     } else {
         console.error("Không tìm thấy phần tử có ID 'search-popup'");
     }

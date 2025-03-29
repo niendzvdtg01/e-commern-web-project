@@ -441,10 +441,9 @@ p.sales{
     background-color: black;
     color: white;
     border: none;
-    border-radius: 0 8px 8px 0;
+    border-radius: 0 10px 10px 0;
     width: 60px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
 .search-bar button:hover {
@@ -453,12 +452,14 @@ p.sales{
 
 .search-bar input[type="text"] {
     border: 1px solid #ccc;
-    border-radius: 8px 0 0 8px;
+    border-radius: 10px 0 0 10px;
     padding: 8px;
     width: 800px;
     text-align: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+/* end footer */
+
 
 /* Hiển thị kết quả tìm kiếm */
 .search-result {
@@ -474,7 +475,6 @@ p.sales{
     visibility: hidden;
     transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 }
-
 .search-result.active {
     opacity: 1;
     transform: translateY(0);
