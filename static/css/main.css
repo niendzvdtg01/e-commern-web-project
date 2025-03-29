@@ -464,6 +464,7 @@ p.sales{
 .search-result {
     position: fixed;
     background-color: #f5f1f1;
+    top: 30%;
     width: 100%;
     z-index: 1000;
     padding: 10px;
