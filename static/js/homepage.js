@@ -11,7 +11,7 @@ function opensearch() {
         popup.style.display = "block";
         setTimeout(() => {
             popup.classList.add("active");
-        }, 300);
+        }, 10);
     } else {
         console.error("Không tìm thấy phần tử có ID 'search-popup'");
     }
@@ -25,17 +25,22 @@ function closesearch() {
     }, 300); // Đợi transition hoàn thành (0.3s)
 }
 
-document.getElementById("search").oninput = function() {
+document.addEventListener("DOMContentLoaded", function () {
+    let searchInput = document.getElementById("search");
     let popup = document.getElementById("search-result");
 
-    if (popup) {
-        if (this.value.trim() !== "") {
-            popup.classList.add("active"); // Hiển thị bảng nếu có nhập liệu
-        } else {
-            popup.classList.remove("active"); // Ẩn bảng nếu không có dữ liệu nhập
-        }
-    } else {
-        console.error("Không tìm thấy phần tử có ID 'search-result'");
+    if (!searchInput || !popup) {
+        console.error("Không tìm thấy phần tử cần thiết!");
+        return;
     }
-};
 
+    searchInput.oninput = function () {
+        console.log("Text nhập:", this.value);
+
+        if (this.value.trim() !== "") {
+            popup.classList.add("active"); // Hiển thị bảng
+        } else {
+            popup.classList.remove("active"); // Ẩn bảng
+        }
+    };
+});
