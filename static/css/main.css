@@ -408,10 +408,14 @@ p.sales{
 
 .footer-links a:hover, .footer-policy a:hover {
     text-decoration: underline;
+<<<<<<< HEAD
 
+=======
+>>>>>>> c682db74338e1ab3cacc6d8ec9adbadb0d74c6d4
 }
+/* End footer */
 /* Tao tahnh tim kiem */
-.search-popup{
+.search-popup {
     position: fixed;
     background-color: #f5f1f1;
     width: 100%;
@@ -420,34 +424,68 @@ p.sales{
     opacity: 0;
     transform: translateY(-20px);
     visibility: hidden;
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out, visibility 0s linear 0.3s;
+    pointer-events: none;
 }
+
 .search-popup.active {
-    display: block;
     transform: translateY(0);
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
 }
-.search-bar{
+
+.search-bar {
     display: flex;
     justify-content: center;
-    height: 30px;
-
+    height: 40px;
 }
-.search-bar button{
+
+.search-bar button {
     background-color: black;
+    color: white;
     border: none;
     border-radius: 0 8px 8px 0;
     width: 60px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
-.search-bar input[type = text]{
+
+.search-bar button:hover {
+    background-color: #333;
+}
+
+.search-bar input[type="text"] {
     border: 1px solid #ccc;
     border-radius: 8px 0 0 8px;
-    border-right: none;
+    padding: 8px;
     width: 800px;
     text-align: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+<<<<<<< HEAD
 /* end footer */
 
+=======
+
+/* Hiển thị kết quả tìm kiếm */
+.search-result {
+    position: fixed;
+    background-color: #f5f1f1;
+    width: 100%;
+    z-index: 1000;
+    padding: 10px;
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.search-result.active {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    pointer-events: auto;
+}
+>>>>>>> c682db74338e1ab3cacc6d8ec9adbadb0d74c6d4
