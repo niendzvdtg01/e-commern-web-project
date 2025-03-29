@@ -298,7 +298,7 @@ h2 {
 }
 /* Dong va anh duoi */
 .collumn-right img{
-    max-width: 100%;
+    width: 100%;
     height: inherit;
 }
 .collumn-left p{
@@ -465,7 +465,7 @@ p.sales{
 .search-result {
     position: fixed;
     background-color: #f5f1f1;
-    top: 30%;
+    top:8%;    
     width: 100%;
     z-index: 1000;
     padding: 10px;
@@ -474,6 +474,7 @@ p.sales{
     pointer-events: none;
     visibility: hidden;
     transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    align-items: center;
 }
 .search-result.active {
     opacity: 1;

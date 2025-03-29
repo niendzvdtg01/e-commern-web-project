@@ -40,7 +40,7 @@
     <span class="close" onclick="closesearch()">&times;</span>
     <form action="/" method="post">
       <div class="search-bar">
-        <input type="text" id="search" placeholder="Tìm kiếm">
+        <input type="text" id="search" name="userInput" placeholder="Tìm kiếm">
         <button type = "submit">🔍</button>
       </div>
     </form>
@@ -58,9 +58,11 @@
         </thead>
         <tbody>
             <tr>
-                <td>ssa</td>
-                <td>3</td>
-                <td>35000</td>
+                {% for row in rows %}
+                <td>{{row[0]}}</td>
+                <td>{{row[1]}}</td>
+                <td>{{row[2]}}</td>
+                {% endfor %}
             </tr>
         </tbody>
     </table>
