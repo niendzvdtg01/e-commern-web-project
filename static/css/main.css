@@ -408,7 +408,7 @@ p.sales{
 
 .footer-links a:hover, .footer-policy a:hover {
     text-decoration: underline;
-<<<<<<< HEAD
+
 }
 /* Tao tahnh tim kiem */
 .search-popup{
@@ -449,8 +449,5 @@ p.sales{
     text-align: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-=======
-
-}
 /* end footer */
->>>>>>> 80805d73043d1e053eee64df8561d1d1bf284595
+
