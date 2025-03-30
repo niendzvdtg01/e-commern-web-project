@@ -53,7 +53,3 @@ function searchProduct() {
         })
         .catch(error => console.error("❌ Lỗi API:", error));
 }
-
-
-
-
