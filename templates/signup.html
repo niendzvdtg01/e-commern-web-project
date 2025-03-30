@@ -4,26 +4,133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign up</title>
+    <link rel="stylesheet" href="/static/css/login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tektur:wdth,wght@75..100,400..900&display=swap" rel="stylesheet">
+    <style>
+        .login{
+            background-color: white;
+            color: #999;
+        }
+        .register{
+            background-color: #999;
+        }
+        .register a{
+            color: black;
+            text-decoration: none;
+        }
+        .register a:hover{
+            color: black;
+        }
+        .login a{
+            color: rgb(160, 163, 161);
+            text-decoration: none;
+        }
+        .login a:hover{
+            color: red;
+        }        
+    </style>
 </head>
 <body>
-    <h1>Sign up</h1>
-    <form action="/signup" method="POST">
-        <label for="login">Name: </label>
-        <input type="text" name="name" placeholder="Enter your name">
-        <span>{{name_err}}</span>
-        <br><br>
-        <label for="login">Username: </label>
-        <input type="text" name="userInput" placeholder="Enter your user name">
-        <span>{{username_err}}</span>
-        <br><br>
-        <label for="password">Password: </label>
-        <input type="password" name="password" placeholder="Enter your password">
-        <span>{{password_err}}</span>
-        <br><br>
-        <button type="submit">Sign up</button>
-        <br>
-        <span>{{success_register}}</span>
-        <a href="/">Back to homepage</a>
-    </form>
+    <header>
+        <p class="font">_ Thêm một chút mai, thêm trọn cảm hứng. _</p>
+    </header>
+<!-- Start Thanh chức năng -->
+<div class="container1">
+    <div class="menu">
+        <a href="#">
+            <img src="/static/pictures/menu-svgrepo-com.svg" alt="menu" class = "menu">
+        </a>
+    </div>
+    <div class="logo">
+        <a href="#">
+            <img src="/static/pictures/logo ngang.png" alt="logo">
+        </a>
+    </div>
+    <div class="features">
+        <a href="#">
+            <img src="/static/pictures/search-svgrepo-com.svg" alt="cart" class = "search">
+        </a>
+        <a href="/login" onclick="openpopup()">
+            <img src="/static/pictures/account-svgrepo-com.svg" alt="cart" class = "account">
+        </a>
+        <a href="#">
+            <img src="/static/pictures/cart-shopping-svgrepo-com.svg" alt="account" class = "cart">
+        </a>
+    </div>
+</div>
+<!-- End Thanh chức năng -->
+<main>
+    <div class="container">
+        <div class="login-register">
+            <div class="login"><a href="/login"><h2>Đăng nhập</h2></a></div>
+            <div class="register"><a href="/signup"><h2>Đăng ký</h2></a></div>
+        </div>
+        <form method="post" action="/">
+            <p>HỌ TÊN*</p>
+            <input type="text" placeholder="Nhập Họ tên" required>
+            <p>EMAIL*</p>
+            <input type="email" placeholder="Nhập Địa chỉ Email" required>
+            <p>MẬT KHẨU*</p>
+            <input type="password" placeholder="Nhập Mật khẩu" required>
+            <button type="submit" class="btn login-btn">ĐĂNG KÝ</button>
+        </form>
+        <div class="gachngang"></div>
+        <p style="text-align: center; font-weight: normal;">hoặc đăng nhập bằng</p>
+        <div class="social-login">
+            <button class="social-btn facebook">Facebook</button>
+            <button class="social-btn google">Google</button>
+        </div>
+    </div>
+</main>
+<!-- Start footer -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-logo">
+            <h2>MAI MORE MOOD</h2>
+            <p>LIÊN HỆ:</p>
+            <p><strong>Nguyễn Thành Đạt</strong></p>
+            <p>Địa chỉ: Số 128, Nguyễn Đức Cảnh, quận Hoàng Mai, Tp. Hà Nội, Việt Nam</p>
+            <p>Email: maimoremood@gmail.com</p>
+            <p>Điện thoại: 0338242425</p>
+        </div>
+
+        <div class="footer-subscribe">
+            <h3>ĐĂNG KÝ</h3>
+            <div class="subscribe-box">
+                <input type="email" placeholder="Nhập địa chỉ email">
+                <button>➤</button>
+            </div>
+            <p>Theo dõi Mai More Mood từ các nền tảng khác nhau nhé!</p>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/profile.php?id=61571870681009"><img src="/static/pictures/facebook.svg" alt="Facebook"></a>
+                <a href="#"><img src="/static/pictures/instagram.svg" alt="Instagram"></a>
+                <a href="#"><img src="/static/pictures/tiktok.svg" alt="Tiktok"></a>
+            </div>
+        </div>
+
+        <div class="footer-links">
+            <h3>ABOUT US</h3>
+            <ul>
+                <li><a href="#">Trang chủ</a></li>
+                <li><a href="#">Tất cả sản phẩm</a></li>
+                <li><a href="#">Kiểm tra đơn hàng</a></li>
+                <li><a href="#">Hệ Thống Cửa Hàng</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-policy">
+            <h3>CHÍNH SÁCH</h3>
+            <ul>
+                <li><a href="#">Chính sách mua hàng</a></li>
+                <li><a href="#">Chính sách bảo mật</a></li>
+                <li><a href="#">Phương thức thanh toán</a></li>
+                <li><a href="#">Chính sách giao nhận, vận chuyển, kiểm hàng</a></li>
+                <li><a href="#">Chính sách đổi trả</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
