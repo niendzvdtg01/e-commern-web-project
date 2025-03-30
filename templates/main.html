@@ -36,15 +36,13 @@
 
 <!-- Tao thanh tim kiem -->
 <div id="search-popup" class="search-popup">
-  <div class="popup-content">
-    <span class="close" onclick="closesearch()">&times;</span>
-    <form action="/" method="post">
-      <div class="search-bar">
-        <input type="text" id="search" name="userInput" placeholder="Tìm kiếm">
-        <button type = "submit">🔍</button>
-      </div>
-    </form>
-  </div>
+    <div class="popup-content">
+        <span class="close" onclick="closesearch()">&times;</span>
+        <div class="search-bar">
+            <input type="text" id="search" name="userInput" placeholder="Tìm kiếm" onkeyup="searchProduct()">
+            <button type="button" onclick="searchProduct()">🔍</button>
+        </div>
+    </div>
 </div>
 
 <div id="search-result" class="search-result">
@@ -56,14 +54,8 @@
                 <th>giá</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                {% for row in rows %}
-                <td>{{row[0]}}</td>
-                <td>{{row[1]}}</td>
-                <td>{{row[2]}}</td>
-                {% endfor %}
-            </tr>
+        <tbody id="result-body">
+            <!-- Dữ liệ được cập nhạt tại đây -->
         </tbody>
     </table>
 </div>

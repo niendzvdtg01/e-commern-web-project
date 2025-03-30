@@ -307,7 +307,7 @@ h2 {
 }
 /* vouncher */
 p.sales{
-    margin-top: 200px;
+    margin-top: 150px;
     font-size: 30px;
     font-weight: 500;
 }
@@ -441,7 +441,7 @@ p.sales{
     background-color: black;
     color: white;
     border: none;
-    border-radius: 0 10px 10px 0;
+    border-radius: 0 20px 20px 0;
     width: 60px;
     cursor: pointer;
 }
@@ -452,7 +452,7 @@ p.sales{
 
 .search-bar input[type="text"] {
     border: 1px solid #ccc;
-    border-radius: 10px 0 0 10px;
+    border-radius: 20px 0 0 20px;
     padding: 8px;
     width: 800px;
     text-align: center;
@@ -474,7 +474,6 @@ p.sales{
     pointer-events: none;
     visibility: hidden;
     transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-    align-items: center;
 }
 .search-result.active {
     opacity: 1;
