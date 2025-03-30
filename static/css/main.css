@@ -420,7 +420,7 @@ p.sales{
     opacity: 0;
     transform: translateY(-20px);
     visibility: hidden;
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out, visibility 0s linear 0.3s;
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
     pointer-events: none;
 }
 
@@ -465,7 +465,7 @@ p.sales{
 .search-result {
     position: fixed;
     background-color: #f5f1f1;
-    top:8%;    
+    top:100%;    
     width: 100%;
     z-index: 1000;
     padding: 10px;
