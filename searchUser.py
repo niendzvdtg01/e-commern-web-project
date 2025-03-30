@@ -1,19 +1,26 @@
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
-
-class Search(FlaskForm):
-    username = StringField()
+from flask import jsonify
+import pyodbc
 
 def searchUser(searchtxt):
-    if searchtxt != "":
-        import pyodbc
-        conn = pyodbc.connect('DRIVER={SQL Server}; SERVER=LAPTOP-QTP9VMF9\\SQLEXPRESS; DATABASE=product_list; Trusted_Connection=yes;')
+    if not searchtxt:  # Nếu không có input, trả về danh sách rỗng
+        return jsonify([])
+
+    try:
+        conn = pyodbc.connect(
+            'DRIVER={SQL Server}; SERVER=LAPTOP-QTP9VMF9\\SQLEXPRESS; DATABASE=product_list; Trusted_Connection=yes;'
+        )
         cursor = conn.cursor()
+
         sql_command = """
-        select * from product_list.dbo.product_name
-        where pro_name like ?
+        SELECT * FROM product_list.dbo.product_name
+        WHERE pro_name LIKE ?
         """
-        cursor.execute(sql_command, (searchtxt))
-        data = cursor.fetchall()
-        return data
+        cursor.execute(sql_command, ('%' + searchtxt + '%',))
+        rows = cursor.fetchall()
+        conn.close()
+
+        return jsonify([list(row) for row in rows])  # Trả về JSON danh sách
+
+    except Exception as e:
+        return jsonify({"error": str(e)})  # Debug lỗi nếu có
+

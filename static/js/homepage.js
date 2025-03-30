@@ -25,22 +25,35 @@ function closesearch() {
     }, 300); // Đợi transition hoàn thành (0.3s)
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    let searchInput = document.getElementById("search");
+function searchProduct() {
+    let query = document.getElementById("search").value.trim();
     let popup = document.getElementById("search-result");
 
-    if (!searchInput || !popup) {
-        console.error("Không tìm thấy phần tử cần thiết!");
+    if (query.length === 0) {
+        popup.classList.remove("active");
+        document.getElementById("result-body").innerHTML = "";
         return;
+    } else {
+        popup.classList.add("active");
     }
 
-    searchInput.oninput = function () {
-        console.log("Text nhập:", this.value);
+    fetch(`/search?q=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Dữ liệu nhận được:", data);
+            let resultHTML = "";
+            data.forEach(row => {
+                resultHTML += `<tr>
+                    <td>${row[0]}</td>
+                    <td>${row[1]}</td>
+                    <td>${row[2]}</td>
+                </tr>`;
+            });
+            document.getElementById("result-body").innerHTML = resultHTML;
+        })
+        .catch(error => console.error("❌ Lỗi API:", error));
+}
 
-        if (this.value.trim() !== "") {
-            popup.classList.add("active"); // Hiển thị bảng
-        } else {
-            popup.classList.remove("active"); // Ẩn bảng
-        }
-    };
-});
+
+
+

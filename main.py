@@ -2,14 +2,14 @@ from flask import Flask, render_template, request, url_for, redirect, session
 import searchUser, Login, loadtodb
 app = Flask(__name__)
 app.secret_key = "maimoremood@123"
-@app.route('/', methods = ['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    data = []
-    usersearch = ""
-    if request.method == 'POST':
-        usersearch = request.form['userInput']
-        data =  searchUser.searchUser(usersearch)
-    return render_template("main.html", rows = data, usertxt = usersearch)
+    return render_template("main.html")  # Không lấy dữ liệu ngay tại đây
+
+@app.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('q', '')
+    return searchUser.searchUser(query)  # Gọi API để lấy dữ liệu
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == 'POST':
