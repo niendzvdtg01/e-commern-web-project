@@ -1,5 +1,5 @@
-import pyodbc
+import psycopg2
 
 def add_cart():
-    conn = pyodbc.connect('DRIVER={SQL Server}; SERVER=LAPTOP-QTP9VMF9\\SQLEXPRESS; DATABASE=webUsername; Trusted_Connection=yes;')
+    conn = psycopg2.connect("postgresql://postgres:maimoremood123@db.fxmeevciubcbiyqppdln.supabase.co:5432/postgres")
     cursor = conn.cursor()  
