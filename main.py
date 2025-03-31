@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, url_for, redirect, session, j
 import searchUser, Login, loadtodb
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash
+import hashlib
 
 db = SQLAlchemy()
 
@@ -29,56 +30,64 @@ with app.app_context():
     db.create_all()
 
 app.secret_key = "maimoremood@123"
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    data = []
-    usersearch = ""
-    if request.method == 'POST':
-        usersearch = request.form['userInput']
-        data = searchUser.searchUser(usersearch)
-    return render_template("main.html", table=data, usertxt=usersearch)
-
+    return render_template("main.html")  # Không lấy dữ liệu ngay tại đây
+#search api
+@app.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('q', '')
+    return searchUser.searchUser(query)  # Gọi API để lấy dữ liệu
+#login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username_err = "incorrect username!"
-        password_err = "incorrect password!"
-        user = request.form['userInput']
-        password = request.form['password']  
+        user = request.form.get('userInput', '').strip()
+        password = request.form.get('password', '').strip()
+
+        if not user or not password:
+            return render_template("login.html", username_err="Invalid input!", password_err="Invalid input!")
+
         if Login.checkuser(user, password):
             session['username'] = user
+            session.permanent = True  # Session sẽ tồn tại trong thời gian nhất định
             return redirect(url_for('index'))
-        else:
-            return render_template("login.html", username_err=username_err, password_err=password_err)
-    return render_template("login.html", username_err="", password_err="")
 
-@app.route('/signup', methods=['GET','POST'])
+        return render_template("login.html", username_err="Incorrect username!", password_err="Incorrect password!")
+
+    return render_template("login.html")
+#signup page
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if request.method == 'POST':
+        name = request.form.get('name', '').strip()
+        user = request.form.get('userInput', '').strip()
+        password = request.form.get('password', '').strip()
+
+        name_err, username_err, password_err, success_register = "", "", "", ""
+
+        if not name:
+            name_err = "Invalid name!"
+        if not user:
+            username_err = "Invalid username!"
+        if not password:
+            password_err = "Invalid password!"
+
+        # Kiểm tra nếu tài khoản đã tồn tại
+        if Login.checkuser(user):
+            username_err = "Username already exists!"
+
+        # Nếu có lỗi, không tiếp tục lưu
+        if name_err or username_err or password_err:
+            return render_template("signup.html", name_err=name_err, username_err=username_err, password_err=password_err)
+
+        # Mã hóa mật khẩu trước khi lưu
+        hashed_password = hashlib.sha256(password.encode()).hexdigest()
+        loadtodb.saveto_db(name, user, hashed_password)
+
+        success_register = "Successful registration!"
+        return render_template("signup.html", success_register=success_register)
+
     return render_template("signup.html")
-# def signup():
-#     if not request.is_json:
-#         return jsonify({"error": "Content-Type must be application/json"}), 415
-    
-#     data = request.get_json()
-#     username = data.get("username")
-#     email = data.get("email")
-#     password = data.get("password")
-
-#     if not username or not email or not password:
-#         return jsonify({"error": "Missing username, email, or password"}), 400
-
-#     # Kiểm tra xem user đã tồn tại chưa
-#     existing_user = User.query.filter_by(username=username).first()
-#     if existing_user:
-#         return jsonify({"error": "Username already exists"}), 409
-
-#     # Hash mật khẩu và lưu vào DB
-#     hashed_password = generate_password_hash(password)
-#     new_user = User(username=username, email=email, password_hash=hashed_password)
-#     db.session.add(new_user)
-#     db.session.commit()
-
-#     return jsonify({"message": f"User {username} registered successfully!"}), 201
 if __name__ == '__main__':
     app.run(debug=True)
