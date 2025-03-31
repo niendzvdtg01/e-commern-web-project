@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mai more mood</title>
-    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/sanpham.css">
     <link rel="icon" type = "img/png" href="/static/pictures/logorgb copy.png" sizes="192x192">
     <!-- Them font chu cho header -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,9 +13,9 @@
     <script src="{{ url_for('static', filename='js/homepage.js') }}"></script>
     <script src="/static/js/homepage.js"></script>
 </head>
-<body>
 
-<!-- Tao thanh tim kiem -->
+<body>
+    <!-- Tao thanh tim kiem -->
 <div id="search-popup" class="search-popup">
     <div class="popup-content">
         <span class="close" onclick="closesearch()">&times;</span>
@@ -25,7 +25,7 @@
         </div>
     </div>
     <div id="search-result" class="search-result">
-        <table style="border: 1px solid #ccc;">
+        <table border="1">
             <thead>
                 <tr>
                     <th>Tên sản phẩm</th>
@@ -39,6 +39,8 @@
         </table>
     </div>
 </div>
+
+
 <!-- End thanh tim kiem -->
     <header>
             <p class="font">_ Thêm một chút mai, thêm trọn cảm hứng. _</p>
@@ -69,93 +71,70 @@
             </div>
         </div>
 <!-- End Thanh chức năng -->
-<!--start slideshow -->
-<div class="slideshow">
-    <div class="slide slide1"></div>
-    <div class="slide slide2"></div>
-    <div class="slide slide3"></div>
-    <div class="slide slide4"></div>
-</div>
-<!-- End slideshow -->
+        <nav class="sub-menu">
+            <a href="#">Tất cả sản phẩm</a>
+            <a href="#">Mận dẻo</a>
+            <a href="#">Mận xí muội</a>
+            <a href="#">Mận khía</a>
+            <a href="#">Sấu bao tử</a>
+        </nav>
+    
 
-<!-- Start Sản phẩm -->
-<div class="container">
-    <div class="nav-tab">
-        <h2>PRODUCTS</h2>
-        <div class="btitles">
-            <a href="">
-                Xem tất cả
-            </a>
-        </div>
-    </div>
-    <div class="product-list">
-        <div class="product">
-            <span class="discount">-44%</span>
-            <img src="/static/pictures/1.png" alt="Mận dẻo chua ngọt">
-            <p>Mận dẻo chua ngọt</p>
-            <p class="price">55.000đ <span class="old-price">350.000đ</span></p>
-            <button class="btn"> Mua ngay </button>
-        </div>
-        <div class="product">
-            <span class="discount">-44%</span>
-            <img src="/static/pictures/2.png" alt="Mận xí muội không hạt">
-            <p>Mận xí muội không hạt</p>
-            <p class="price">70.000đ <span class="old-price">350.000đ</span></p>
-            <button class="btn"> Mua ngay </button>
-        </div>
-        <div class="product">
-            <span class="discount">-44%</span>
-            <img src="/static/pictures/3.png" alt="Mận khía xào me">
-            <p>Mận khía xào me</p>
-            <p class="price">55.000đ <span class="old-price">350.000đ</span></p>
-            <button class="btn"> Mua ngay </button>
-        </div>
-        <div class="product">
-            <span class="discount">-40%</span>
-            <img src="/static/pictures/4.png" alt="sấu bao tử">
-            <p>Sấu bao tử</p>
-            <p class="price">35.000đ <span class="old-price">350.000đ</span></p>
-            <button class="btn"> Mua ngay </button>
-        </div>
-    </div>
-</div>
-<!-- End Sản phẩm -->
-    <div class="product-intro">
-        <div class="collumn-left">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/H9Ym93qDWDY?si=k8VGAAzlRZLK0Mq8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-        <div class="collumn-right">
-            <p class="slogan">
-              Mai more mood, Thêm một chút mai, thêm trọn cảm hứng! 
-            </p>
-            <br>
-            <p>
-                Từ những trái cây tươi ngon được chọn lọc kỹ lưỡng, chúng tôi tạo ra những viên ô mai đậm đà hương vị chua cay, mặn ngọt hòa quyện trong từng miếng nhỏ. Mỗi viên ô mai không chỉ là một món ăn vặt mà còn là một phần ký ức,
-                 gợi nhớ về hương vị quê hương và những câu chuyện thân thương bên tách trà ấm.Với tâm huyết và bí quyết gia truyền, Mai More Mood cam kết mang đến những sản phẩm ô mai chất lượng, an toàn và đầy đủ hương vị truyền thống. 
-                 Hãy để từng viên ô mai đánh thức vị giác và làm ấm lòng những khoảnh khắc sum vầy!
-            </p>
-            <div class="more">
-                <a href="">
-                    Xem thêm
-                </a>
+    <main>
+        <div class="product-container">
+            <div class="product-image-section">
+                <div class="product-image">
+                    <img id="main-image" src="/static/pictures/1.png" alt="Mận dẻo chua ngọt">
+                </div>
+                <div class="thumbnail-gallery">
+                    <img class="thumbnail" data-src="pictures/1.png" src="pictures/1.png" alt="Thumbnail 1">
+                    <img class="thumbnail" data-src="pictures/2.png" src="pictures/2.png" alt="Thumbnail 2">
+                    <img class="thumbnail" data-src="pictures/3.png" src="pictures/3.png" alt="Thumbnail 3">
+                    <img class="thumbnail" data-src="pictures/4.png" src="pictures/4.png" alt="Thumbnail 4">
+                </div>
+            </div>
+            <div class="product-details">
+                <h1>Mận dẻo chua ngọt</h1>
+                <div class="rating">
+                    <span>★★★★★</span>
+                    <a href="#" class="reviews">Viết đánh giá của bạn</a>
+                </div>
+                <div class="price">
+                    <span class="current-price">55.000đ</span>
+                    <span class="original-price">100.000đ</span>
+                    <span class="discount">-44%</span>
+                </div>
+                <div class="options">
+                    <span class="option-label">Đổi trả dễ dàng</span>
+                    <span class="option-label">Chính hãng 100%</span>
+                    <span class="option-label">Giao toàn quốc</span>
+                </div>
+                <div class="best-seller">
+                    <span>🏆 Top bán chạy</span>
+                </div>
+                <div class="info">
+                    <p><strong>Thông tin sản phẩm:</strong></p>
+                    <p>- Chất liệu: Mận tươi tự nhiên</p>
+                    <p>- Hương vị: Chua ngọt</p>
+                    <p>- Đóng gói: Hộp 500g</p>
+                    <p>- Bảo quản: Nơi khô ráo, thoáng mát</p>
+                </div>
+                <div class="quantity">
+                    <p><strong>Số lượng:</strong></p>
+                    <input type="number" value="1" min="1">
+                </div>
+                <div class="actions">
+                    <button class="add-to-cart">Thêm vào giỏ hàng</button>
+                    <button class="buy-now">Mua ngay</button>
+                </div>
+            </div>
+            <div class="comment">
+                <button class="describe">Mô tả sản phẩm</button>
+                <button class="Evaluate">Đánh giá sản phẩm</button>
             </div>
         </div>
-    </div>
-    <div class="product-intro">
-        <div class="collumn-left">
-            <p class="sales">ƯU ĐÃI MUA SẮM ĐẶC BIỆT</p>
-            <p>Giảm đến 20.000đ | Voucher 20%</p>
-            <div class="sale-button">
-                <a href="/login">
-                    Đăng ký ngay
-                </a>
-            </div>
-        </div>
-        <div class="collumn-right">
-            <img src="/static/pictures/voucher.png" alt="Voucher">
-        </div>
-    </div>
     </main>
+
     <!-- Start footer -->
     <footer class="footer">
         <div class="footer-container">
@@ -176,9 +155,9 @@
                 </div>
                 <p>Theo dõi Mai More Mood từ các nền tảng khác nhau nhé!</p>
                 <div class="social-icons">
-                    <a href="https://www.facebook.com/profile.php?id=61571870681009"><img src="/static/pictures/facebook.svg" alt="Facebook"></a>
-                    <a href="#"><img src="/static/pictures/instagram.svg" alt="Instagram"></a>
-                    <a href="#"><img src="/static/pictures/tiktok.svg" alt="Tiktok"></a>
+                    <a href="https://www.facebook.com/profile.php?id=61571870681009"><img src="/pictures/facebook.svg" alt="Facebook"></a>
+                    <a href="#"><img src="/pictures/instagram.svg" alt="Instagram"></a>
+                    <a href="#"><img src="/pictures/tiktok.svg" alt="Tiktok"></a>
                 </div>
             </div>
     
@@ -205,5 +184,22 @@
         </div>
     </footer>
     <!-- end footer -->
+
+    <!-- Thêm JavaScript để xử lý sự kiện thay đổi ảnh -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mainImage = document.getElementById('main-image');
+            const thumbnails = document.querySelectorAll('.thumbnail');
+
+            thumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', function () {
+                    // Lấy đường dẫn ảnh lớn từ thuộc tính data-src
+                    const newSrc = this.getAttribute('data-src');
+                    // Thay đổi src của ảnh chính
+                    mainImage.setAttribute('src', newSrc);
+                });
+            });
+        });
+    </script>
 </body>
 </html>

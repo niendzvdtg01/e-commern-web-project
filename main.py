@@ -1,7 +1,34 @@
-from flask import Flask, render_template, request, url_for, redirect, session
+from flask import Flask, render_template, request, url_for, redirect, session, jsonify
 import searchUser, Login, loadtodb
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash
 import hashlib
+
+db = SQLAlchemy()
+
 app = Flask(__name__)
+# thay vì dùng sql đơn thuần thì dùng sqlalchemy(dùng ORM) để biến các thao tác với database thành các class và object
+# Kết nối đến cơ sở dữ liệu PostgreSQL
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:maimoremood123@db.fxmeevciubcbiyqppdln.supabase.co:5432/postgres"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db.init_app(app)
+# Tạo bảng trong cơ sở dữ liệu nếu chưa tồn tại
+class Product(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(256), nullable=False)
+
+# Chạy tạo bảng trong application context
+with app.app_context():
+    db.create_all()
+
 app.secret_key = "maimoremood@123"
 @app.route('/', methods=['GET', 'POST'])
 def index():
