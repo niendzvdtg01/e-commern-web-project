@@ -4,49 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mai more mood</title>
-    <link rel="stylesheet" href="sanpham.css">
-    <link rel="stylesheet" href="sanpham.java">
-    <link rel="icon" type="image/png" href="/pictures/logorgb copy.png" sizes="192x192">
-    <!-- Font Tektur cho header -->
+    <link rel="stylesheet" href="/static/css/sanpham.css">
+    <link rel="icon" type = "img/png" href="/static/pictures/logorgb copy.png" sizes="192x192">
+    <!-- Them font chu cho header -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tektur:wdth,wght@75..100,400..900&display=swap" rel="stylesheet">
-    <script src="/js/homepage.js"></script>
+    <script src="{{ url_for('static', filename='js/homepage.js') }}"></script>
+    <script src="/static/js/homepage.js"></script>
 </head>
 
 <body>
-    
-    <header>
-        <div class="slogan">
-            <p class="font">_ Thêm một chút mai, thêm trọn cảm hứng. _</p>
+    <!-- Tao thanh tim kiem -->
+<div id="search-popup" class="search-popup">
+    <div class="popup-content">
+        <span class="close" onclick="closesearch()">&times;</span>
+        <div class="search-bar">
+            <input type="text" id="search" name="userInput" placeholder="Tìm kiếm" onkeyup="searchProduct()">
+            <button type="button" onclick="searchProduct()">🔍</button>
         </div>
-        <nav class="header-nav">
-            <ul class="nav-left">
-                <li><a href="#">TRANG CHỦ</a></li>
-                <li><a href="#">HOÀN TRẢ</a></li>
-            </ul>
-            <div class="logo">
+    </div>
+    <div id="search-result" class="search-result">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng hàng hóa</th>
+                    <th>giá</th>
+                </tr>
+            </thead>
+            <tbody id="result-body">
+                <!-- Dữ liệ được cập nhạt tại đây -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- End thanh tim kiem -->
+    <header>
+            <p class="font">_ Thêm một chút mai, thêm trọn cảm hứng. _</p>
+    </header>
+<!-- Start Thanh chức năng -->
+    <main>
+        <div class="container1">
+            <div class="menu">
                 <a href="#">
-                    <img src="/pictures/logo ngang.png" alt="logo">
+                    <img src="/static/pictures/menu-svgrepo-com.svg" alt="menu" class = "menu">
                 </a>
             </div>
-            <div class="nav-right">
-                <div class="search-cart">
-                    <div class="search-bar">
-                        <input type="text" placeholder="Tìm kiếm sản phẩm...">
-                    </div>
-                    <div class="cart">
-                        <a href="#">🛒</a>
-                    </div>
-                </div>
+            <div class="logo">
+                <a href="#">
+                    <img src="/static/pictures/logo ngang.png" alt="logo">
+                </a>
             </div>
-        </nav> 
-
-
-        
-
-
-
+            <div class="features">
+                <a href="#" onclick="opensearch()">
+                    <img src="/static/pictures/search-svgrepo-com.svg" alt="cart" class = "search">
+                </a>
+                <a href="/login" onclick="openpopup()">
+                    <img src="/static/pictures/account-svgrepo-com.svg" alt="cart" class = "account">
+                </a>
+                <a href="#">
+                    <img src="/static/pictures/cart-shopping-svgrepo-com.svg" alt="account" class = "cart">
+                </a>
+            </div>
+        </div>
+<!-- End Thanh chức năng -->
         <nav class="sub-menu">
             <a href="#">Tất cả sản phẩm</a>
             <a href="#">Mận dẻo</a>
@@ -60,7 +84,7 @@
         <div class="product-container">
             <div class="product-image-section">
                 <div class="product-image">
-                    <img id="main-image" src="pictures/1.png" alt="Mận dẻo chua ngọt">
+                    <img id="main-image" src="/static/pictures/1.png" alt="Mận dẻo chua ngọt">
                 </div>
                 <div class="thumbnail-gallery">
                     <img class="thumbnail" data-src="pictures/1.png" src="pictures/1.png" alt="Thumbnail 1">
