@@ -23,4 +23,3 @@ def searchUser(searchtxt):
 
     except Exception as e:
         return jsonify({"error": str(e)})  # Debug lỗi nếu có
-
