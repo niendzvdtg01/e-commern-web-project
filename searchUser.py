@@ -1,19 +1,17 @@
 from flask import jsonify
-import pyodbc
+import psycopg2
 
 def searchUser(searchtxt):
     if not searchtxt:  # Nếu không có input, trả về danh sách rỗng
         return jsonify([])
 
     try:
-        conn = pyodbc.connect(
-            'DRIVER={SQL Server}; SERVER=LAPTOP-QTP9VMF9\\SQLEXPRESS; DATABASE=product_list; Trusted_Connection=yes;'
-        )
+        conn = psycopg2.connect("postgresql://postgres:maimoremood123@db.fxmeevciubcbiyqppdln.supabase.co:5432/postgres")
         cursor = conn.cursor()
 
         sql_command = """
-        SELECT * FROM product_list.dbo.product_name
-        WHERE pro_name LIKE ?
+        SELECT * FROM product
+        WHERE name LIKE %s
         """
         cursor.execute(sql_command, ('%' + searchtxt + '%',))
         rows = cursor.fetchall()
@@ -23,4 +21,3 @@ def searchUser(searchtxt):
 
     except Exception as e:
         return jsonify({"error": str(e)})  # Debug lỗi nếu có
-
