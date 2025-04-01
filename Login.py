@@ -8,7 +8,7 @@ def checkuser(user, pasword):
     where username = ? and userpassword = ?
     """
     cursor.execute(sql_command, (user, pasword))
-    data = cursor.fetchall()#ahihihi
+    data = cursor.fetchall()
     if len(data) > 0:
         result = True
     return result

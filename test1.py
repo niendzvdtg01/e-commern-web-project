@@ -1,8 +1,10 @@
-from main import db, User, app  # Adjust the import path to match your project structure
-from werkzeug.security import generate_password_hash
+from dotenv import load_dotenv
+load_dotenv()
+import os
+from supabase import create_client
 
-with app.app_context():  # Chạy trong Flask context
-    db.session.add(User(username="testuser", email="test@example.com", password_hash=generate_password_hash("password123")))
-    db.session.commit()
+url= os.environ.get("SUPABASE_URL")
+key = os.environ.get("SUPABASE_KEY")
+supabase = create_client(url, key)
 
-print("User added successfully!")
+data = supabase.table("product").insert({"id":"10","name":"Germany", "price":"1000"}).execute()
