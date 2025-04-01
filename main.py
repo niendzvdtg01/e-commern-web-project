@@ -22,23 +22,11 @@ url = os.environ.get("SUPABASE_URL")
 key = os.environ.get("SUPABASE_KEY")
 supabase = create_client(url, key)
 
-# Tạo bảng trong cơ sở dữ liệu nếu chưa tồn tại
-class Product(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    price = db.Column(db.Float, nullable=False)
-
-class Users(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(256), nullable=False)
-
 # # Chạy tạo bảng trong application context
 # with app.app_context():
 #     db.create_all()
 
-app.secret_key = "maimoremood@123"
+app.secret_key = "sercret_key"  # Khóa bí mật để mã hóa session
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template("main.html")  # Không lấy dữ liệu ngay tại đây
@@ -52,11 +40,11 @@ def search():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        user = request.form.get('userInput', '').strip()
+        user = request.form.get('email', '').strip()
         password = request.form.get('password', '').strip()
 
         if not user or not password:
-            return render_template("login.html", username_err="Invalid input!", password_err="Invalid input!")
+            return render_template("login.html", email_err="Invalid input!", password_err="Invalid input!")
 
         if Login.checkuser(user, password):
             session['username'] = user
@@ -74,7 +62,7 @@ def signup():
         email = request.form.get('email', '').strip()
         password = request.form.get('password', '').strip()
 
-        username_err, email_err, password_err, success_register = "", "", "", ""
+        username_err, email_err, password_err = "", "", ""
 
         if not username:
             username_err = "Invalid name!"
@@ -88,12 +76,12 @@ def signup():
 
         hashed_password = generate_password_hash(password)
         # Thêm user vào Supabase
-        response = supabase.table("users").insert({
+        supabase.table("users").insert({
                 "username": username,
                 "email": email,
                 "password_hash": hashed_password
             }).execute()
-        return render_template("signup.html")
+        return redirect(url_for('login'))
     return render_template("signup.html")
 if __name__ == '__main__':
     app.run(debug=True)
