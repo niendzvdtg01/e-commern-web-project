@@ -34,9 +34,15 @@ class Users(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
 
+<<<<<<< HEAD
 #Chạy tạo bảng trong application context
 #with app.app_context():
 #   db.create_all()
+=======
+# # Chạy tạo bảng trong application context
+# with app.app_context():
+#     db.create_all()
+>>>>>>> 4acc4ec6908f0fcb234577850f0e5615fbc338fd
 
 app.secret_key = "maimoremood@123"
 @app.route('/', methods=['GET', 'POST'])
@@ -47,6 +53,7 @@ def index():
 def search():
     query = request.args.get('q', '')
     return searchUser.searchUser(query)  # Gọi API để lấy dữ liệu
+
 #login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -86,31 +93,13 @@ def signup():
             return render_template("signup.html", username_err=username_err, email_err=email_err, password_err=password_err)
 
         hashed_password = generate_password_hash(password)
-
-        try:
-            # Kiểm tra xem email đã tồn tại trong Supabase chưa
-            existing_user = supabase.table("users").select("id").eq("email", email).execute()
-
-            if existing_user.data:
-                return render_template("signup.html", email_err="Email already exists!", username_err="", password_err="")
-
-            # Thêm user vào Supabase
-            response = supabase.table("users").insert({
+        # Thêm user vào Supabase
+        response = supabase.table("users").insert({
                 "username": username,
                 "email": email,
                 "password_hash": hashed_password
             }).execute()
-
-            if not response.data:
-                raise Exception("Error creating user in Supabase")
-
-            success_register = "Successful registration!"
-        except Exception as e:
-            return render_template("signup.html", username_err=f"Error: {str(e)}", email_err="", password_err="")
-
-        return render_template("signup.html", success_register=success_register)
-
+        return render_template("signup.html")
     return render_template("signup.html")
-
 if __name__ == '__main__':
     app.run(debug=True)
