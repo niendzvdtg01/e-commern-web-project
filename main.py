@@ -3,23 +3,32 @@ import searchUser, Login, loadtodb
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash
 import hashlib
+# Liên kết với file .env (pip install python-dotenv)
+from dotenv import load_dotenv
+load_dotenv()
 
 db = SQLAlchemy()
-
 app = Flask(__name__)
 # thay vì dùng sql đơn thuần thì dùng sqlalchemy(dùng ORM) để biến các thao tác với database thành các class và object
-# Kết nối đến cơ sở dữ liệu PostgreSQL
+# cách 1: Kết nối đến db bằng sqlalchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:maimoremood123@db.fxmeevciubcbiyqppdln.supabase.co:5432/postgres"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 db.init_app(app)
+# Init Supabase client để dùng các hàm của supabase (pip install supabase)
+# cách 2: kết nối đến db bằng api supabase
+import os
+from supabase import create_client
+url = os.environ.get("SUPABASE_URL")
+key = os.environ.get("SUPABASE_KEY")
+supabase = create_client(url, key)
+
 # Tạo bảng trong cơ sở dữ liệu nếu chưa tồn tại
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=False)
 
-class User(db.Model):
+class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -60,34 +69,48 @@ def login():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        name = request.form.get('name', '').strip()
-        user = request.form.get('userInput', '').strip()
+        username = request.form.get('name', '').strip()
+        email = request.form.get('email', '').strip()
         password = request.form.get('password', '').strip()
 
-        name_err, username_err, password_err, success_register = "", "", "", ""
+        username_err, email_err, password_err, success_register = "", "", "", ""
 
-        if not name:
-            name_err = "Invalid name!"
-        if not user:
-            username_err = "Invalid username!"
+        if not username:
+            username_err = "Invalid name!"
+        if not email:
+            email_err = "Invalid email!"
         if not password:
             password_err = "Invalid password!"
 
-        # Kiểm tra nếu tài khoản đã tồn tại
-        if Login.checkuser(user):
-            username_err = "Username already exists!"
+        if username_err or email_err or password_err:
+            return render_template("signup.html", username_err=username_err, email_err=email_err, password_err=password_err)
 
-        # Nếu có lỗi, không tiếp tục lưu
-        if name_err or username_err or password_err:
-            return render_template("signup.html", name_err=name_err, username_err=username_err, password_err=password_err)
+        hashed_password = generate_password_hash(password)
 
-        # Mã hóa mật khẩu trước khi lưu
-        hashed_password = hashlib.sha256(password.encode()).hexdigest()
-        loadtodb.saveto_db(name, user, hashed_password)
+        try:
+            # Kiểm tra xem email đã tồn tại trong Supabase chưa
+            existing_user = supabase.table("users").select("id").eq("email", email).execute()
 
-        success_register = "Successful registration!"
+            if existing_user.data:
+                return render_template("signup.html", email_err="Email already exists!", username_err="", password_err="")
+
+            # Thêm user vào Supabase
+            response = supabase.table("users").insert({
+                "username": username,
+                "email": email,
+                "password_hash": hashed_password
+            }).execute()
+
+            if not response.data:
+                raise Exception("Error creating user in Supabase")
+
+            success_register = "Successful registration!"
+        except Exception as e:
+            return render_template("signup.html", username_err=f"Error: {str(e)}", email_err="", password_err="")
+
         return render_template("signup.html", success_register=success_register)
 
     return render_template("signup.html")
+
 if __name__ == '__main__':
     app.run(debug=True)
