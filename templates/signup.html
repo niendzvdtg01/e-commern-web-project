@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign up</title>
+    <link rel="icon" type = "img/png" href="/static/pictures/logorgb copy.png" sizes="192x192">
     <link rel="stylesheet" href="/static/css/login.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,7 +45,7 @@
         </a>
     </div>
     <div class="logo">
-        <a href="#">
+        <a href="/">
             <img src="/static/pictures/logo ngang.png" alt="logo">
         </a>
     </div>
@@ -52,7 +53,7 @@
         <a href="#">
             <img src="/static/pictures/search-svgrepo-com.svg" alt="cart" class = "search">
         </a>
-        <a href="/login" onclick="openpopup()">
+        <a href="/login">
             <img src="/static/pictures/account-svgrepo-com.svg" alt="cart" class = "account">
         </a>
         <a href="#">
@@ -67,13 +68,16 @@
             <div class="login"><a href="/login"><h2>Đăng nhập</h2></a></div>
             <div class="register"><a href="/signup"><h2>Đăng ký</h2></a></div>
         </div>
-        <form method="post" action="/signup">
-            <p>HỌ TÊN*</p>
-            <input type="text" name="name" placeholder="Nhập Họ tên" required> 
+        <form method="post" action="/signup" id="signupForm">
+            <p>HỌ VÀ TÊN*</p>
+            {{username_err}}
+            <input type="text" name="name" placeholder="Nhập tên của bạn" required>
             <p>EMAIL*</p>
-            <input type="email" name="email" placeholder="Nhập Địa chỉ Email" required>
+            {{email_err}}
+            <input type="email" placeholder="Nhập Địa chỉ Email" required name="email">
             <p>MẬT KHẨU*</p>
-            <input type="password" name="password" placeholder="Nhập Mật khẩu" required>
+            {{password_err}}
+            <input type="password" placeholder="Nhập Mật khẩu" required name="password">
             <button type="submit" class="btn login-btn">ĐĂNG KÝ</button>
         </form>
         <div class="gachngang"></div>
