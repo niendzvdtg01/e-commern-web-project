@@ -34,15 +34,9 @@ class Users(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
 
-<<<<<<< HEAD
-#Chạy tạo bảng trong application context
-#with app.app_context():
-#   db.create_all()
-=======
 # # Chạy tạo bảng trong application context
 # with app.app_context():
 #     db.create_all()
->>>>>>> 4acc4ec6908f0fcb234577850f0e5615fbc338fd
 
 app.secret_key = "maimoremood@123"
 @app.route('/', methods=['GET', 'POST'])
@@ -51,7 +45,7 @@ def index():
 #search api
 @app.route('/search', methods=['GET'])
 def search():
-    query = request.args.get('q', '')
+    query = request.args.get('q', '').strip()
     return searchUser.searchUser(query)  # Gọi API để lấy dữ liệu
 
 #login page
