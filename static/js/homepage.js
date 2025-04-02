@@ -65,16 +65,22 @@ function searchProduct() {
 }
 
 function renderResults(data) {
-    let resultHTML = data.map(row => `
-        <a href="#">
-                    <img src="/static/pictures/${row.product_id}.png" alt="">
-                        <div>
-                            <p>${row.product_name ?? "N/A"}</p>
-                            <p>⭐⭐⭐⭐⭐</p>
-                            <p style="font-weight: bold; color: red;">${row.price ?? "N/A"}</p>
-                        </div>
-        </a>
-    `).join("");
+    try{
+        let resultHTML = data.map(row => `
+            <a href="/product/${row.product_id}">
+                    <div>
+                        <img src="/static/pictures/${row.product_id}.png" alt="">
+                            <div>
+                                <p>${row.product_name ?? "N/A"}</p>
+                                <p>⭐⭐⭐⭐⭐</p>
+                                <p style="font-weight: bold; color: red;">${row.price ?? "N/A"}</p>
+                            </div>
+                    </div>
+            </a>
+        `).join("");
+        document.getElementById("result-body").innerHTML = resultHTML;
 
-    document.getElementById("result-body").innerHTML = resultHTML;
+    }catch(error){
+        console.log("Lỗi", error)
+    }
 }
