@@ -40,9 +40,37 @@ def product(product_id):
 @app.route('/account',methods=['GET','POST'])
 def account():
     if 'email' in session:
-        return render_template("account.html")
+        if request.method == 'POST':
+            # Only update fields that have actual values
+            update_data = {}
+            address = request.form.get('address', '').strip()
+            phone = request.form.get('phone', '').strip()
+            
+            if address:
+                update_data['address'] = address
+            if phone:
+                update_data['phone'] = phone
+                
+            if update_data:
+                supabase.table("users").update(update_data).eq("email", session['email']).execute()
+            return redirect(url_for('account'))
+            
+        # Lấy thông tin người dùng từ Supabase
+        response = (
+            supabase.table("users")
+            .select("*")
+            .eq("email", session['email']).execute()
+        )
+        data = response.data
+        user_name = data[0].get('username')
+        address = data[0].get('address')
+        phone = data[0].get('phone')
+        email = data[0].get('email')
+        # Truyền dữ liệu vào template
+        return render_template("account.html", user_name=user_name, address=address, phone=phone,email=email)
     else:
         return redirect(url_for('login'))
+
 @app.route('/change-password', methods=['GET','POST'])
 def change_password():
     if 'email' in session:
@@ -92,7 +120,7 @@ def login():
             .execute()
         )
         data = response.data
-        print(f"✅ Dữ liệu tìm thấy: {data}")
+        # print(f"✅ Dữ liệu tìm thấy: {data}")
 
         if not data or len(data) == 0:
             email_err = "❌ Email không tồn tại!"
