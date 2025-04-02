@@ -12,5 +12,3 @@ response = (supabase.table("product")
 
 print("✅ Dữ liệu Supabase trả về:", response)
 # Kiểm tra lỗi từ Supabase
-
-

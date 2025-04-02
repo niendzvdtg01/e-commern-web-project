@@ -49,4 +49,3 @@ def searchUser(searchtxt):
     except Exception as e:
         print(f"🔥 Lỗi hệ thống: {e}")  # Debug lỗi vào terminal
         return jsonify({"error": "Lỗi máy chủ, vui lòng thử lại sau."}), 500
-
