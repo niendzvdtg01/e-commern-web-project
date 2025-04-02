@@ -23,7 +23,7 @@ def index():
     return render_template("main.html")  # Không lấy dữ liệu ngay tại đây
 
 #search api
-@app.route('/search', methods=['GET'])
+@app.route('/search', methods=['GET', 'POST'])
 def search():
     query = request.args.get('q', '').strip()
     return searchUser.searchUser(query)  # Gọi API để lấy dữ liệu
@@ -31,7 +31,7 @@ def search():
 @app.route('/product/<int:product_id>', methods=['GET','POST'])
 def product(product_id):
     # Lấy thông tin sản phẩm từ Supabase
-    product = supabase.table("product").select("*").eq("id", product_id).execute()
+    product = supabase.table("product").select("*").eq("product_id", product_id).execute()
     if product.data:
         return render_template("product.html", product=product.data[0])
     else:
