@@ -1,32 +1,23 @@
 from flask import Flask, render_template, request, url_for, redirect, session, jsonify
-import searchUser, Login, loadtodb
-from flask_sqlalchemy import SQLAlchemy
+import searchUser, Login
 from werkzeug.security import generate_password_hash
-import hashlib
 # Liên kết với file .env (pip install python-dotenv)
 from dotenv import load_dotenv
 load_dotenv()
 
-db = SQLAlchemy()
 app = Flask(__name__)
-# thay vì dùng sql đơn thuần thì dùng sqlalchemy(dùng ORM) để biến các thao tác với database thành các class và object
-# cách 1: Kết nối đến db bằng sqlalchemy
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:maimoremood123@db.fxmeevciubcbiyqppdln.supabase.co:5432/postgres"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db.init_app(app)
+
 # Init Supabase client để dùng các hàm của supabase (pip install supabase)
-# cách 2: kết nối đến db bằng api supabase
+# kết nối đến db bằng api supabase
 import os
 from supabase import create_client
 url = os.environ.get("SUPABASE_URL")
 key = os.environ.get("SUPABASE_KEY")
 supabase = create_client(url, key)
 
-# # Chạy tạo bảng trong application context
-# with app.app_context():
-#     db.create_all()
+KEY_SESSION = os.environ.get("KEY_SESSION")  # Load from environment or use a default value
+app.secret_key = KEY_SESSION  # Khóa bí mật để mã hóa session
 
-app.secret_key = "sercret_key"  # Khóa bí mật để mã hóa session
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template("main.html")  # Không lấy dữ liệu ngay tại đây
@@ -35,6 +26,19 @@ def index():
 def search():
     query = request.args.get('q', '')
     return searchUser.searchUser(query)  # Gọi API để lấy dữ liệu
+@app.route('/product/<int:product_id>', methods=['GET','POST'])
+def product(product_id):
+    # Lấy thông tin sản phẩm từ Supabase
+    product = supabase.table("product").select("*").eq("id", product_id).execute()
+    if product.data:
+        return render_template("product.html", product=product.data[0])
+    else:
+        return "Product not found", 404
+@app.route('/cart', methods=['GET'])
+def cart():
+    # Lấy thông tin giỏ hàng từ Supabase
+    cart_items = supabase.table("cart").select("*").execute()
+    return render_template("cart.html", cart_items=cart_items.data)
 
 #login page
 @app.route('/login', methods=['GET', 'POST'])
@@ -83,5 +87,11 @@ def signup():
             }).execute()
         return redirect(url_for('login'))
     return render_template("signup.html")
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('index'))
+
 if __name__ == '__main__':
     app.run(debug=True)

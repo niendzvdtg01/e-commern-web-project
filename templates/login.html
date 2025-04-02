@@ -47,8 +47,10 @@
         </div>
         <form method="post" action="/login">
             <p>EMAIL*</p>
+            {{email_err}}
             <input type="email" placeholder="Nhập Địa chỉ Email" required name="email">
             <p>MẬT KHẨU*</p>
+            {{password_err}}
             <input type="password" placeholder="Nhập Mật khẩu" required name="password">
             <a href="#!" class="forgot"><p>Quên mật khẩu?</p></a>
             <button type="submit" class="btn login-btn">ĐĂNG NHẬP</button>

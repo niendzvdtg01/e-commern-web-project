@@ -34,7 +34,7 @@
                 </tr>
             </thead>
             <tbody id="result-body">
-                <!-- Dữ liệ được cập nhạt tại đây -->
+                <!-- Dữ liệu được cập nhạt tại đây -->
             </tbody>
         </table>
     </div>
@@ -62,7 +62,7 @@
                 <a href="#" onclick="opensearch()">
                     <img src="/static/pictures/search-svgrepo-com.svg" alt="cart" class = "search">
                 </a>
-                <a href="/login" onclick="openpopup()">
+                <a href="/login">
                     <img src="/static/pictures/account-svgrepo-com.svg" alt="cart" class = "account">
                 </a>
                 <a href="#">
@@ -121,11 +121,11 @@
                 </div>
                 <div class="quantity">
                     <p><strong>Số lượng:</strong></p>
-                    <input type="number" value="1" min="1">
+                    <input type="number" value="1" min="1" name="quantity">
                 </div>
                 <div class="actions">
-                    <button class="add-to-cart">Thêm vào giỏ hàng</button>
-                    <button class="buy-now">Mua ngay</button>
+                    <form action="/cart" method="post"><button class="add-to-cart">Thêm vào giỏ hàng</button></form>
+                    <form action="/buy" method="post"><button class="buy-now">Mua ngay</button></form>
                 </div>
             </div>
             <div class="comment">
