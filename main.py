@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect, session, jsonify
 import searchUser
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 # Liên kết với file .env (pip install python-dotenv)
 from dotenv import load_dotenv
 load_dotenv()
@@ -43,31 +43,31 @@ def account():
         return render_template("account.html")
     else:
         return redirect(url_for('login'))
-@app.route('/change-password', methods=['POST'])
+@app.route('/change-password', methods=['GET','POST'])
 def change_password():
     if 'email' in session:
         if request.method == 'POST':
             old_password = request.form.get('old-password', '').strip()
             new_password = request.form.get('new-password', '').strip()
             confirm_password = request.form.get('confirm-password', '').strip()
-            old_password=password_hash(old_password)
-            new_password=password_hash(new_password)
-            confirm_password=password_hash(confirm_password)
             response = (
                 supabase.table("users")
                 .select("password_hash")
-                .eq("email", session['email'])
-                .eq("password_hash", old_password).execute()
+                .eq("email", session['email']).execute()
             )
-            data=response.data
-            if data:
+            data = response.data
+            if check_password_hash(data[0].get('password_hash'), old_password):
+                if confirm_password != new_password:
+                    return render_template("changepassword.html", error="❌ Mật khẩu xác nhận không khớp!")
+                new_password = generate_password_hash(new_password)
                 supabase.table("users").update({
-                    "password_hash": generate_password_hash(new_password)
+                    "password_hash": new_password
                 }).eq("email", session['email']).execute()
-                return jsonify({"success": True})
+                return redirect(url_for('account'))
             else:
-                return jsonify({"success": False})
-    return render_template("changepassword.html")
+                return render_template("changepassword.html", error="❌ Mật khẩu cũ không đúng!")
+        return render_template("changepassword.html")
+    return redirect(url_for('login'))
 
 @app.route('/cart', methods=['GET'])
 def cart():
@@ -87,7 +87,7 @@ def login():
 
         response = (
             supabase.table("users")
-            .select("email, password") 
+            .select("email, password_hash") 
             .eq("email", email)
             .execute()
         )
@@ -99,7 +99,7 @@ def login():
             return render_template('login.html', email_err=email_err)
         
         user = data[0]
-        db_password = user.get('password')
+        db_password = user.get('password_hash')
         if not check_password_hash(db_password, password):
             password_err = "❌ Sai mật khẩu!"
             return render_template('login.html', password_err=password_err)

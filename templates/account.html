@@ -55,7 +55,16 @@
         <div class="info">
             <p><strong>Tên:</strong> {{user_name}}</p>
             <p><strong>Email:</strong> {{email}}</p>
+            <p><strong>Số điện thoại:</strong> {{phone}}</p>
+            <form action="/account" method="post">
+                <input type="phone" name="phone" placeholder="Nhập số điện thoại mới" required>
+                <button type="submit">Cập nhật số điện thoại</button>
+            </form>
             <p><strong>Địa chỉ:</strong> {{address}}</p>
+            <form action="/account" method="post">
+                <input type="text" name="address" placeholder="Nhập địa chỉ mới" required>
+                <button type="submit">Cập nhật địa chỉ</button>
+            </form>
         </div>
         <button class="change-password" onclick="changepassword()">Thay đổi mật khẩu</button>
         <button class="logout" onclick="logout()">Đăng xuất</button>
