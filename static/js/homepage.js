@@ -25,31 +25,53 @@ function closesearch() {
     }, 300); // Đợi transition hoàn thành (0.3s)
 }
 
+let searchTimeout;
 function searchProduct() {
-    let query = document.getElementById("search").value.trim();
-    let popup = document.getElementById("search-result");
+    clearTimeout(searchTimeout); // Xóa bỏ timeout cũ nếu có
+    searchTimeout = setTimeout(() => {
+        let query = document.getElementById("search").value.trim();
+        let popup = document.getElementById("search-result");
+        let resultBody = document.getElementById("result-body");
 
-    if (query.length === 0) {
-        popup.classList.remove("active");
-        document.getElementById("result-body").innerHTML = "";
-        return;
-    } else {
-        popup.classList.add("active");
-    }
+        if (query.length === 0) {
+            popup.classList.remove("active");
+            resultBody.innerHTML = "";
+            return;
+        } else {
+            popup.classList.add("active");
+            resultBody.innerHTML = `<tr><td colspan="3">Đang tìm kiếm...</td></tr>`; // Thêm loading
+        }
 
-    fetch(`/search?q=${encodeURIComponent(query)}`)
-        .then(response => response.json())
-        .then(data => {
-            console.log("Dữ liệu nhận được:", data);
-            let resultHTML = "";
-            data.forEach(row => {
-                resultHTML += `<tr>
-                    <td>${row[0]}</td>
-                    <td>${row[1]}</td>
-                    <td>${row[2]}</td>
-                </tr>`;
+        fetch(`/search?q=${encodeURIComponent(query)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (Array.isArray(data) && data.length > 0) {
+                    renderResults(data);
+                } else {
+                    resultBody.innerHTML = `<tr><td colspan="3">Không tìm thấy sản phẩm</td></tr>`;
+                }
+            })
+            .catch(error => {
+                console.error("❌ Lỗi API:", error);
+                resultBody.innerHTML = `<tr><td colspan="3">Lỗi khi tải dữ liệu</td></tr>`;
             });
-            document.getElementById("result-body").innerHTML = resultHTML;
-        })
-        .catch(error => console.error("❌ Lỗi API:", error));
+
+    }, 300); // Debounce 300ms để tránh spam request
+}
+
+function renderResults(data) {
+    let resultHTML = data.map(row => `
+        <tr>
+            <td>${row.product_id}</td>
+            <td>${row.product_name ?? "N/A"}</td> 
+            <td>${row.price ?? "N/A"}</td>
+        </tr>
+    `).join("");
+
+    document.getElementById("result-body").innerHTML = resultHTML;
 }

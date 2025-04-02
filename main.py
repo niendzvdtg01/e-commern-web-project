@@ -24,7 +24,7 @@ def index():
 #search api
 @app.route('/search', methods=['GET'])
 def search():
-    query = request.args.get('q', '')
+    query = request.args.get('q', '').strip()
     return searchUser.searchUser(query)  # Gọi API để lấy dữ liệu
 @app.route('/product/<int:product_id>', methods=['GET','POST'])
 def product(product_id):
