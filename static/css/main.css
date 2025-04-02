@@ -462,21 +462,40 @@ p.sales{
 
 /* Hiển thị kết quả tìm kiếm */
 .search-result {
-    position: fixed;
+    display: none;
     background-color: #f5f1f1;
     top:100%;    
-    width: 100%;
+    min-width: 100%;
     z-index: 1000;
     padding: 10px;
-    opacity: 0;
+    position:initial;
     transform: translateY(-20px);
     pointer-events: none;
-    visibility: hidden;
     transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 }
 .search-result.active {
-    opacity: 1;
+    display: block;
     transform: translateY(0);
-    visibility: visible;
     pointer-events: auto;
+}
+.search-prodct{
+    width: 100%;
+    position: relative;
+    gap: 30px;
+}
+.search-prodct img{
+    width: 80px;
+    border-radius: 4px;
+}
+.search-prodct div{
+    padding: 10px 10px;
+    gap: 10px;
+    text-align: center;
+}
+.search-prodct p{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.search-prodct a{
+    text-decoration: none;
+    pointer-events: all;
 }

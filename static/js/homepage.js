@@ -66,11 +66,14 @@ function searchProduct() {
 
 function renderResults(data) {
     let resultHTML = data.map(row => `
-        <tr>
-            <td>${row.product_id}</td>
-            <td>${row.product_name ?? "N/A"}</td> 
-            <td>${row.price ?? "N/A"}</td>
-        </tr>
+        <a href="#">
+                    <img src="/static/pictures/${row.product_id}.png" alt="">
+                        <div>
+                            <p>${row.product_name ?? "N/A"}</p>
+                            <p>⭐⭐⭐⭐⭐</p>
+                            <p style="font-weight: bold; color: red;">${row.price ?? "N/A"}</p>
+                        </div>
+        </a>
     `).join("");
 
     document.getElementById("result-body").innerHTML = resultHTML;

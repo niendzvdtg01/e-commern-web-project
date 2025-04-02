@@ -155,6 +155,7 @@ header{
 
 
 .product-container {
+    min-width: 100%;
     display: flex;
     flex-wrap: wrap;
     gap: 30px;
@@ -163,11 +164,13 @@ header{
     padding: 20px;
     border-radius: 8px;
     position: relative;
+    justify-content: center;
 }
 
 .product-image-section {
     flex: 1;
-    min-width: 300px;
+    max-width: 600px;
+    height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
