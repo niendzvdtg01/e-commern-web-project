@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, url_for, redirect, session, jsonify
-import searchUser, Login
+import searchUser
 from werkzeug.security import generate_password_hash
 # Liên kết với file .env (pip install python-dotenv)
 from dotenv import load_dotenv
@@ -21,11 +21,13 @@ app.secret_key = KEY_SESSION  # Khóa bí mật để mã hóa session
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template("main.html")  # Không lấy dữ liệu ngay tại đây
+
 #search api
 @app.route('/search', methods=['GET'])
 def search():
     query = request.args.get('q', '').strip()
     return searchUser.searchUser(query)  # Gọi API để lấy dữ liệu
+
 @app.route('/product/<int:product_id>', methods=['GET','POST'])
 def product(product_id):
     # Lấy thông tin sản phẩm từ Supabase
@@ -34,6 +36,39 @@ def product(product_id):
         return render_template("product.html", product=product.data[0])
     else:
         return "Product not found", 404
+
+@app.route('/account',methods=['GET','POST'])
+def account():
+    if 'email' in session:
+        return render_template("account.html")
+    else:
+        return redirect(url_for('login'))
+@app.route('/change-password', methods=['POST'])
+def change_password():
+    if 'email' in session:
+        if request.method == 'POST':
+            old_password = request.form.get('old-password', '').strip()
+            new_password = request.form.get('new-password', '').strip()
+            confirm_password = request.form.get('confirm-password', '').strip()
+            old_password=password_hash(old_password)
+            new_password=password_hash(new_password)
+            confirm_password=password_hash(confirm_password)
+            response = (
+                supabase.table("users")
+                .select("password_hash")
+                .eq("email", session['email'])
+                .eq("password_hash", old_password).execute()
+            )
+            data=response.data
+            if data:
+                supabase.table("users").update({
+                    "password_hash": generate_password_hash(new_password)
+                }).eq("email", session['email']).execute()
+                return jsonify({"success": True})
+            else:
+                return jsonify({"success": False})
+    return render_template("changepassword.html")
+
 @app.route('/cart', methods=['GET'])
 def cart():
     # Lấy thông tin giỏ hàng từ Supabase
@@ -43,24 +78,42 @@ def cart():
 #login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if 'email' in session:
+        return redirect(url_for('account'))
+
     if request.method == 'POST':
-        user = request.form.get('email', '').strip()
+        email = request.form.get('email', '').strip()
         password = request.form.get('password', '').strip()
 
-        if not user or not password:
-            return render_template("login.html", email_err="Invalid input!", password_err="Invalid input!")
+        response = (
+            supabase.table("users")
+            .select("email, password") 
+            .eq("email", email)
+            .execute()
+        )
+        data = response.data
+        print(f"✅ Dữ liệu tìm thấy: {data}")
 
-        if Login.checkuser(user, password):
-            session['username'] = user
-            session.permanent = True  # Session sẽ tồn tại trong thời gian nhất định
-            return redirect(url_for('index'))
+        if not data or len(data) == 0:
+            email_err = "❌ Email không tồn tại!"
+            return render_template('login.html', email_err=email_err)
+        
+        user = data[0]
+        db_password = user.get('password')
+        if not check_password_hash(db_password, password):
+            password_err = "❌ Sai mật khẩu!"
+            return render_template('login.html', password_err=password_err)
 
-        return render_template("login.html", username_err="Incorrect username!", password_err="Incorrect password!")
+        session['email'] = email
+        session.permanent = True  
+        return redirect(url_for('index'))
 
     return render_template("login.html")
 #signup page
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if 'email' in session:
+        return redirect(url_for('account'))
     if request.method == 'POST':
         username = request.form.get('name', '').strip()
         email = request.form.get('email', '').strip()
@@ -77,10 +130,9 @@ def signup():
 
         if username_err or email_err or password_err:
             return render_template("signup.html", username_err=username_err, email_err=email_err, password_err=password_err)
-
         hashed_password = generate_password_hash(password)
         # Thêm user vào Supabase
-        supabase.table("users").insert({
+        response=supabase.table("users").insert({
                 "username": username,
                 "email": email,
                 "password_hash": hashed_password
@@ -90,7 +142,7 @@ def signup():
 
 @app.route('/logout', methods=['GET'])
 def logout():
-    session.pop('username', None)
+    session.pop('email', None)
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
