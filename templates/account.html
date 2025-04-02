@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài khoản của tôi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            text-align: center;
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        h2 {
+            color: #333;
+        }
+        .info {
+            text-align: left;
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 15px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .logout {
+            background-color: red;
+            color: white;
+        }
+        .change-password {
+            background-color: orange;
+            color: white;
+        }
+        .order-list {
+            text-align: left;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Thông tin tài khoản</h2>
+        <div class="info">
+            <p><strong>Tên:</strong> {{user_name}}</p>
+            <p><strong>Email:</strong> {{email}}</p>
+            <p><strong>Địa chỉ:</strong> {{address}}</p>
+        </div>
+        <button class="change-password" onclick="changepassword()">Thay đổi mật khẩu</button>
+        <button class="logout" onclick="logout()">Đăng xuất</button>
+        
+        <h2>Đơn hàng của bạn</h2>
+        <div class="order-list">
+            <p>📦 Đơn hàng #001 - Trạng thái: Đang giao</p>
+            <p>📦 Đơn hàng #002 - Trạng thái: Đã nhận</p>
+        </div>
+    </div>
+    
+    <script>
+        function logout() {
+            alert("Bạn đã đăng xuất thành công!");
+            window.location.href = "/logout";
+        }
+        function changepassword() {
+            window.location.href = "/change-password";
+        }
+    </script>
+</body>
+</html>
