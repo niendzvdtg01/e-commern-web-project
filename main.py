@@ -48,8 +48,7 @@ def search():
 @app.route('/product/<int:product_id>', methods=['GET','POST'])
 def product(product_id):
     # Lấy thông tin sản phẩm từ Supabase
-    product = supabase.table("product").select("*").eq("product_id", product_id).execute()
-    print(product.data[0])
+    product = supabase.table("product").select("*").eq("id", product_id).execute()
     if product.data:
         if product_id == 1:
             return render_template("product1.html")
