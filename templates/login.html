@@ -58,8 +58,8 @@
         <div class="gachngang"></div>
         <p style="text-align: center; font-weight: normal;">hoặc đăng nhập bằng</p>
         <div class="social-login">
-            <button class="social-btn facebook">Facebook</button>
-            <button class="social-btn google">Google</button>
+            <a href="{{ url_for('google_login') }}"><button class="social-btn facebook">Facebook</button></a>
+            <a href="{{ url_for('google_login') }}"><button class="social-btn google">Google</button></a>
         </div>
     </div>
 </main>
