@@ -422,6 +422,7 @@ p.sales{
     visibility: hidden;
     transition: opacity 0.3s ease-out, transform 0.3s ease-out;
     pointer-events: none;
+    align-items: center;
 }
 
 .search-popup.active {
@@ -474,7 +475,8 @@ p.sales{
     transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 }
 .search-result.active {
-    display: block;
+    justify-content: center;
+    display: flex;
     transform: translateY(0);
     pointer-events: auto;
 }
@@ -482,6 +484,7 @@ p.sales{
     width: 100%;
     position: relative;
     gap: 30px;
+    display: flex;
 }
 .search-prodct img{
     width: 80px;
