@@ -190,6 +190,7 @@ def login():
         if not data or len(data) == 0:
             email_err = "❌ Email không tồn tại!"
             return render_template('login.html', email_err=email_err)
+        
         user = data[0]
         db_password = user.get('password_hash')
         if not check_password_hash(db_password, password):
