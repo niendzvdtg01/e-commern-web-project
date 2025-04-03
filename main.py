@@ -1,3 +1,4 @@
+from functools import wraps
 from flask import Flask, render_template, request, url_for, redirect, session, jsonify
 import searchUser
 from werkzeug.security import generate_password_hash, check_password_hash
