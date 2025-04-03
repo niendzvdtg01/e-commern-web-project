@@ -5,11 +5,26 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 load_dotenv()
 
+# Google OAuth imports
+from google.oauth2 import id_token
+from google_auth_oauthlib.flow import Flow
+from google.auth.transport import requests
+import json
+import os
+
 app = Flask(__name__)
+
+# Google OAuth setup
+with open('client_secret.json', 'r') as f:
+    client_secrets = json.load(f)
+
+GOOGLE_CLIENT_ID = client_secrets['web']['client_id']
+GOOGLE_CLIENT_SECRET = client_secrets['web']['client_secret']
+GOOGLE_REDIRECT_URI = client_secrets['web']['redirect_uris'][0]
+os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1" # to allow Http traffic for local dev
 
 # Init Supabase client để dùng các hàm của supabase (pip install supabase)
 # kết nối đến db bằng api supabase
-import os
 from supabase import create_client
 url = os.environ.get("SUPABASE_URL")
 key = os.environ.get("SUPABASE_KEY")
@@ -163,12 +178,64 @@ def signup():
                 "password_hash": hashed_password
             }).execute()
         return redirect(url_for('login'))
-    return render_template("signup.html")
+    return render_template("signup.html", google_client_id=GOOGLE_CLIENT_ID)
+
+@app.route('/google-login')
+def google_login():
+    flow = Flow.from_client_secrets_file(
+        'client_secret.json',
+        scopes=['openid', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
+        redirect_uri=GOOGLE_REDIRECT_URI
+    )
+    authorization_url, state = flow.authorization_url(
+        access_type='offline',
+        include_granted_scopes='true'
+    )
+    session['state'] = state
+    return redirect(authorization_url)
+
+@app.route('/callback', methods=['GET'])
+def callback():
+    if 'state' not in session or session['state'] != request.args.get('state'):
+        return redirect(url_for('signup'))
+    
+    flow = Flow.from_client_secrets_file(
+        'client_secret.json',
+        scopes=['openid', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
+        redirect_uri=GOOGLE_REDIRECT_URI
+    )
+    
+    flow.fetch_token(authorization_response=request.url)
+    credentials = flow.credentials
+    id_info = id_token.verify_oauth2_token(credentials.id_token, requests.Request(), GOOGLE_CLIENT_ID)
+    
+    # Check if user exists in database
+    response = supabase.table("users").select("*").eq("email", id_info['email']).execute()
+    
+    if not response.data:
+        # Create new user if doesn't exist
+        supabase.table("users").insert({
+            "username": id_info['name'],
+            "email": id_info['email'],
+            "password_hash": generate_password_hash(id_info['sub'])  # Using Google ID as password
+        }).execute()
+    
+    session['email'] = id_info['email']
+    session.permanent = True
+    return redirect(url_for('index'))
 
 @app.route('/logout', methods=['GET'])
 def logout():
     session.pop('email', None)
     return redirect(url_for('index'))
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'email' not in session:
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 if __name__ == '__main__':
     app.run(debug=True)

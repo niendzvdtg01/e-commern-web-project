@@ -78,13 +78,15 @@
             <p>MẬT KHẨU*</p>
             {{password_err}}
             <input type="password" placeholder="Nhập Mật khẩu" required name="password">
-            <button type="submit" class="btn login-btn">ĐĂNG KÝ</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">ĐĂNG KÝ</button>
+            </div>
         </form>
         <div class="gachngang"></div>
         <p style="text-align: center; font-weight: normal;">hoặc đăng nhập bằng</p>
         <div class="social-login">
-            <button class="social-btn facebook">Facebook</button>
-            <button class="social-btn google">Google</button>
+            <a href="{{ url_for('google_login') }}"><button class="social-btn facebook">Facebook</button></a>
+            <a href="{{ url_for('google_login') }}"><button class="social-btn google">Google</button></a>
         </div>
     </div>
 </main>
