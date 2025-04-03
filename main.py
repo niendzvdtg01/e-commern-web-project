@@ -65,7 +65,6 @@ def product(product_id):
 def account():
     if 'email' in session:
         if request.method == 'POST':
-            # Only update fields that have actual values
             update_data = {}
             address = request.form.get('address', '').strip()
             phone = request.form.get('phone', '').strip()
@@ -79,7 +78,6 @@ def account():
                 supabase.table("users").update(update_data).eq("email", session['email']).execute()
             return redirect(url_for('account'))
             
-        # Lấy thông tin người dùng từ Supabase
         response = (
             supabase.table("users")
             .select("*")
@@ -90,7 +88,6 @@ def account():
         address = data[0].get('address')
         phone = data[0].get('phone')
         email = data[0].get('email')
-        # Truyền dữ liệu vào template
         return render_template("account.html", user_name=user_name, address=address, phone=phone,email=email)
     else:
         return redirect(url_for('login'))
