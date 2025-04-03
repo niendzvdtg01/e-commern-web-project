@@ -5,6 +5,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 load_dotenv()
 
+# Google OAuth imports
+from google.oauth2 import id_token
+from google_auth_oauthlib.flow import Flow
+from google.auth.transport import requests
+import json
+import os
+
 app = Flask(__name__)
 
 # Google OAuth setup
@@ -18,6 +25,7 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1" # to allow Http traffic for loca
 
 # Init Supabase client để dùng các hàm của supabase (pip install supabase)
 # kết nối đến db bằng api supabase
+import os
 from supabase import create_client
 url = os.environ.get("SUPABASE_URL")
 key = os.environ.get("SUPABASE_KEY")
@@ -39,7 +47,7 @@ def search():
 @app.route('/product/<int:product_id>', methods=['GET','POST'])
 def product(product_id):
     # Lấy thông tin sản phẩm từ Supabase
-    product = supabase.table("product").select("*").eq("id", product_id).execute()
+    product = supabase.table("product").select("*").eq("product_id", product_id).execute()
     if product.data:
         if product_id == 1:
             return render_template("product1.html")
@@ -56,6 +64,7 @@ def product(product_id):
 def account():
     if 'email' in session:
         if request.method == 'POST':
+            # Only update fields that have actual values
             update_data = {}
             address = request.form.get('address', '').strip()
             phone = request.form.get('phone', '').strip()
@@ -69,6 +78,7 @@ def account():
                 supabase.table("users").update(update_data).eq("email", session['email']).execute()
             return redirect(url_for('account'))
             
+        # Lấy thông tin người dùng từ Supabase
         response = (
             supabase.table("users")
             .select("*")
@@ -79,6 +89,7 @@ def account():
         address = data[0].get('address')
         phone = data[0].get('phone')
         email = data[0].get('email')
+        # Truyền dữ liệu vào template
         return render_template("account.html", user_name=user_name, address=address, phone=phone,email=email)
     else:
         return redirect(url_for('login'))
@@ -178,7 +189,7 @@ def login():
         if not data or len(data) == 0:
             email_err = "❌ Email không tồn tại!"
             return render_template('login.html', email_err=email_err)
-        
+        print(email)
         user = data[0]
         db_password = user.get('password_hash')
         if not check_password_hash(db_password, password):
