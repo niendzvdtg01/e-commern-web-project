@@ -5,14 +5,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 load_dotenv()
 
-# Google OAuth imports
-from google.oauth2 import id_token
-from google_auth_oauthlib.flow import Flow
-from google.auth.transport import requests
-import json
-import os
-from functools import wraps
-
 app = Flask(__name__)
 
 # Google OAuth setup
@@ -26,7 +18,6 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1" # to allow Http traffic for loca
 
 # Init Supabase client để dùng các hàm của supabase (pip install supabase)
 # kết nối đến db bằng api supabase
-import os
 from supabase import create_client
 url = os.environ.get("SUPABASE_URL")
 key = os.environ.get("SUPABASE_KEY")
