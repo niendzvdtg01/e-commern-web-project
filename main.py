@@ -1,3 +1,4 @@
+from functools import wraps
 from flask import Flask, render_template, request, url_for, redirect, session, jsonify
 import searchUser
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -25,6 +26,7 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1" # to allow Http traffic for loca
 
 # Init Supabase client để dùng các hàm của supabase (pip install supabase)
 # kết nối đến db bằng api supabase
+import os
 from supabase import create_client
 url = os.environ.get("SUPABASE_URL")
 key = os.environ.get("SUPABASE_KEY")
@@ -48,7 +50,14 @@ def product(product_id):
     # Lấy thông tin sản phẩm từ Supabase
     product = supabase.table("product").select("*").eq("product_id", product_id).execute()
     if product.data:
-        return render_template("product.html", product=product.data[0])
+        if product_id == 1:
+            return render_template("product1.html")
+        elif product_id == 2:
+            return render_template("product2.html", product=product.data[0])
+        elif product_id == 3:
+            return render_template("product3.html", product=product.data[0])
+        elif product_id == 4:
+            return render_template("product4.html", product=product.data[0])
     else:
         return "Product not found", 404
 
@@ -56,6 +65,7 @@ def product(product_id):
 def account():
     if 'email' in session:
         if request.method == 'POST':
+            # Only update fields that have actual values
             update_data = {}
             address = request.form.get('address', '').strip()
             phone = request.form.get('phone', '').strip()
@@ -69,6 +79,7 @@ def account():
                 supabase.table("users").update(update_data).eq("email", session['email']).execute()
             return redirect(url_for('account'))
             
+        # Lấy thông tin người dùng từ Supabase
         response = (
             supabase.table("users")
             .select("*")
@@ -79,6 +90,7 @@ def account():
         address = data[0].get('address')
         phone = data[0].get('phone')
         email = data[0].get('email')
+        # Truyền dữ liệu vào template
         return render_template("account.html", user_name=user_name, address=address, phone=phone,email=email)
     else:
         return redirect(url_for('login'))
@@ -109,11 +121,53 @@ def change_password():
         return render_template("changepassword.html")
     return redirect(url_for('login'))
 
-@app.route('/cart', methods=['GET'])
-def cart():
-    # Lấy thông tin giỏ hàng từ Supabase
-    cart_items = supabase.table("cart").select("*").execute()
-    return render_template("cart.html", cart_items=cart_items.data)
+@app.route('/product/<int:product_id>/cart', methods=['GET', 'POST'])
+def cart(product_id):
+    # Lấy thông tin sản phẩm từ Supabase
+    response = supabase.table("product").select("*").eq("product_id", product_id).execute()
+    
+    if not response.data:  # Kiểm tra sản phẩm có tồn tại không
+        return "Product not found", 404
+
+    product = response.data[0]  # Lấy sản phẩm đầu tiên từ danh sách
+
+    # Lấy số lượng từ form
+    quantity = int(request.form.get("quantity", 1))  # Mặc định là 1 nếu không có input
+
+    # Tạo dictionary chứa thông tin sản phẩm
+    product_dict = {
+        "id": product_id,
+        "product_name": product["product_name"],  
+        "price": product["price"],
+        "quantity": quantity
+    }
+
+    # Lấy giỏ hàng từ session
+    cart = session.get("cart", [])
+
+    # Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+    found = False
+    for item in cart:
+        if item["product_name"] == product["product_name"]:
+            item["quantity"] += quantity
+            found = True
+            break
+
+    if not found:
+        cart.append(product_dict)
+
+    session["cart"] = cart  # Cập nhật session
+    if response.data:
+        if product_id == 1:
+            return render_template("product1.html")
+        elif product_id == 2:
+            return render_template("product2.html")
+        elif product_id == 3:
+            return render_template("product3.html")
+        elif product_id == 4:
+            return render_template("product4.html")
+    else:
+        return "Product not found", 404
 
 #login page
 @app.route('/login', methods=['GET', 'POST'])
@@ -124,7 +178,6 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email', '').strip()
         password = request.form.get('password', '').strip()
-
         response = (
             supabase.table("users")
             .select("email, password_hash") 
@@ -137,7 +190,7 @@ def login():
         if not data or len(data) == 0:
             email_err = "❌ Email không tồn tại!"
             return render_template('login.html', email_err=email_err)
-        
+        print(email)
         user = data[0]
         db_password = user.get('password_hash')
         if not check_password_hash(db_password, password):
