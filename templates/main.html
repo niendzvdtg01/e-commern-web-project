@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Tektur:wdth,wght@75..100,400..900&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='js/homepage.js') }}"></script>
     <script src="/static/js/homepage.js"></script>
+    <script src="/static/js/cart.js"></script>
 </head>
 <body>
 
@@ -71,7 +72,7 @@
                 <a href="/login">
                     <img src="/static/pictures/account-svgrepo-com.svg" alt="cart" class = "account">
                 </a>
-                <a href="#">
+                <a href="/payment">
                     <img src="/static/pictures/cart-shopping-svgrepo-com.svg" alt="account" class = "cart">
                 </a>
             </div>
@@ -97,6 +98,10 @@
             <img src="/static/pictures/1.png" alt="Mận dẻo chua ngọt">
             <p>Mận dẻo chua ngọt</p>
             <p class="price">55.000đ <span class="old-price">350.000đ</span></p>
+            <a href="#" class="add-to-cart">
+                <button>+</button>
+                <p>Add to cart</p>
+            </a>
             <form action="/product/4" method="post"><button class="btn" type="submit"> Mua ngay </button></form>
         </div>
         <div class="product">
@@ -104,6 +109,10 @@
             <img src="/static/pictures/2.png" alt="Mận xí muội không hạt">
             <p>Mận xí muội không hạt</p>
             <p class="price">70.000đ <span class="old-price">350.000đ</span></p>
+            <a href="#" class="add-to-cart">
+                <button>+</button>
+                <p>Add to cart</p>
+            </a>
             <form action="/product/2" method="post"><button class="btn" type="submit"> Mua ngay </button></form>
         </div>
         <div class="product">
@@ -111,6 +120,10 @@
             <img src="/static/pictures/3.png" alt="Mận khía xào me">
             <p>Mận khía xào me</p>
             <p class="price">55.000đ <span class="old-price">350.000đ</span></p>
+            <a href="#" class="add-to-cart">
+                <button>+</button>
+                <p>Add to cart</p>
+            </a>
             <form action="/product/3" method="post"><button class="btn" type="submit"> Mua ngay </button></form>
         </div>
         <div class="product">
@@ -118,6 +131,10 @@
             <img src="/static/pictures/4.png" alt="sấu bao tử">
             <p>Sấu bao tử</p>
             <p class="price">35.000đ <span class="old-price">350.000đ</span></p>
+            <a href="#" class="add-to-cart">
+                <button>+</button>
+                <p>Add to cart</p>
+            </a>
             <form action="/product/1" method="post"><button class="btn" type="submit"> Mua ngay </button></form>
         </div>
     </div>
