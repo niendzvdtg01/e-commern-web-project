@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">			
+		<title>Giỏ hàng</title>
+		<link rel="stylesheet" href="/static/css/main.css">
+		<link rel="icon" type = "img/png" href="/static/pictures/logorgb copy.png" sizes="192x192">
+		<!-- Them font chu cho header -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Tektur:wdth,wght@75..100,400..900&display=swap" rel="stylesheet">
+		<script src="{{ url_for('static', filename='js/homepage.js') }}"></script>
+		<script src="/static/js/homepage.js"></script>
+		<style>
+            .aaaaaa {
+                display: grid;
+                grid-template-columns: 4fr 6fr;
+                gap: 20px;
+                max-width: 1200px;
+                margin: auto;
+            }
+            .product-container {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 15px;
+            }
+            .bbbbbb {
+                border: 1px solid #ddd;
+                padding: 10px;
+                text-align: center;
+                width: 100%;
+                height: 340px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+            .bbbbbb img {
+                max-width: 150px;
+                height: 150px;
+                object-fit: cover;
+            }
+            .quantity-control {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+            }
+            .quantity-control button {
+                width: 30px;
+                height: 30px;
+                font-size: 18px;
+                cursor: pointer;
+                align-items: center;
+                justify-content: center; 
+                transform: translateY(-30%);
+                padding:0;
+            }
+            .quantity-control input {
+                width: 40px;
+                height: 40px;
+                padding: 0;
+                text-align: center;
+                bottom: 0;
+            }
+            .video-container {
+                border: 1px solid #ddd;
+                padding: 10px;
+                text-align: center;
+            }
+            .total-container {
+                margin-top: 20px;
+                text-align: center;
+                font-size: 18px;
+                font-weight: bold;
+            }
+            .pay-button {
+                margin-top: 10px;
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 5px;
+			}
+        </style>
+	</head>
+	<body>
+<!-- Tao thanh tim kiem -->
+<div id="search-popup" class="search-popup">
+    <div class="popup-content">
+        <span class="close" onclick="closesearch()">&times;</span>
+        <div class="search-bar">
+            <input type="text" id="search" name="userInput" placeholder="Tìm kiếm" onkeyup="searchProduct()">
+            <button type="button" onclick="searchProduct()">🔍</button>
+        </div>
+    </div>
+    <div id="search-result" class="search-result">
+        <!-- <table style="border: 1px solid #ccc;">
+            <thead>
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng hàng hóa</th>
+                    <th>giá</th>
+                </tr>
+            </thead>
+            <tbody id="result-body">
+                Dữ liệ được cập nhạt tại đây 
+            </tbody>
+        </table> -->
+        <div>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: larger;">Các sản phẩm</p>
+            </div>
+            <div class="search-prodct" id="result-body">
+                    <!-- Thông tin được tìm kiếm sẽ hiện tại đây -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End thanh tim kiem -->
+    <header>
+            <p class="font">_ Thêm một chút mai, thêm trọn cảm hứng. _</p>
+    </header>
+<!-- Start Thanh chức năng -->
+    <main>
+        <div class="container1">
+            <div class="menu">
+                <a href="#">
+                    <img src="/static/pictures/menu-svgrepo-com.svg" alt="menu" class = "menu">
+                </a>
+            </div>
+            <div class="logo">
+                <a href="#">
+                    <img src="/static/pictures/logo ngang.png" alt="logo">
+                </a>
+            </div>
+            <div class="features">
+                <a href="#" onclick="opensearch()">
+                    <img src="/static/pictures/search-svgrepo-com.svg" alt="cart" class = "search">
+                </a>
+                <a href="/login">
+                    <img src="/static/pictures/account-svgrepo-com.svg" alt="cart" class = "account">
+                </a>
+                <a href="#">
+                    <img src="/static/pictures/cart-shopping-svgrepo-com.svg" alt="account" class = "cart">
+                </a>
+            </div>
+        </div>
+<!-- End Thanh chức năng -->
+<section class="main-cart-page main-container col1-layout">
+	<div class="main container cartpcstyle">
+		<div class="wrap_background_aside margin-bottom-40">
+			<div class="header-cart">
+				<div class="title-block-page">
+					<h1 class="title_cart">
+						<span>Giỏ hàng của bạn</span>
+					</h1>
+				</div>
+			</div>
+			
+			<div class="cart-page d-xl-block d-none">
+				<div class="drawer__inner">
+					<div class="CartPageContainer">
+						<div class="aaaaaa">
+							<div class="product-container">
+								<div class="bbbbbb" data-price="200000">
+									<img src="/static/pictures/1.png" alt="Mận khía xào cay 200g">
+									<h5>Mận khía <br> xào cay</h5>
+									<p>Giá: 35.000đ</p>
+									<div class="quantity-control">
+										<button>-</button>
+										<input type="text" value="0" readonly>
+										<button>+</button>
+									</div>
+								</div>
+								<div class="bbbbbb" data-price="500000">
+									<img src="/static/pictures/2.png" alt="Sấu bào tử 200g">
+									<h5>Sấu <br> bào tử</h5>
+									<p>Giá: 42.000đ</p>
+									<div class="quantity-control">
+										<button>-</button>
+										<input type="text" value="0" readonly>
+										<button>+</button>
+									</div>
+								</div>
+								<div class="bbbbbb" data-price="300000">
+									<img src="/static/pictures/3.png" alt="Mận dẻo chua ngọt 200g">
+									<h5>Mận dẻo chua ngọt</h5>
+									<p>Giá: 60.000đ</p>
+									<div class="quantity-control">
+										<button>-</button>
+										<input type="text" value="0" readonly>
+										<button>+</button>
+									</div>
+								</div>
+								<div class="bbbbbb" data-price="400000">
+									<img src="/static/pictures/4.png" alt="Mận xí muội không hạt 200g">
+									<h5>Mận xí muội không hạt</h5>
+									<p>Giá: 70.000đ</p>
+									<div class="quantity-control">
+										<button>-</button>
+										<input type="text" value="0" readonly>
+										<button>+</button>
+									</div>
+								</div>
+							</div>
+							<div class="video-container">
+								<h4>Video Giới Thiệu</h4>
+								<video controls width="100%">
+									<source src="video.mp4" type="video/mp4">
+									Trình duyệt của bạn không hỗ trợ video.
+								</video>
+							</div>
+						</div>
+						<div class="total-container">
+							Tổng cộng: <span id="total-price">0đ</span>
+							<br>
+							<button class="pay-button">Thanh toán</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+   <!-- Start footer -->
+   <footer class="footer">
+	<div class="footer-container">
+		<div class="footer-logo">
+			<h2>MAI MORE MOOD</h2>
+			<p>LIÊN HỆ:</p>
+			<p><strong>Nguyễn Thành Đạt</strong></p>
+			<p>Địa chỉ: Số 128, Nguyễn Đức Cảnh, quận Hoàng Mai, Tp. Hà Nội, Việt Nam</p>
+			<p>Email: maimoremood@gmail.com</p>
+			<p>Điện thoại: 0338242425</p>
+		</div>
+
+		<div class="footer-subscribe">
+			<h3>ĐĂNG KÝ</h3>
+			<div class="subscribe-box">
+				<input type="email" placeholder="Nhập địa chỉ email">
+				<button>➤</button>
+			</div>
+			<p>Theo dõi Mai More Mood từ các nền tảng khác nhau nhé!</p>
+			<div class="social-icons">
+				<a href="https://www.facebook.com/profile.php?id=61571870681009"><img src="/static/pictures/facebook.svg" alt="Facebook"></a>
+				<a href="#"><img src="/static/pictures/instagram.svg" alt="Instagram"></a>
+				<a href="#"><img src="/static/pictures/tiktok.svg" alt="Tiktok"></a>
+			</div>
+		</div>
+
+		<div class="footer-links">
+			<h3>ABOUT US</h3>
+			<ul>
+				<li><a href="#">Trang chủ</a></li>
+				<li><a href="#">Tất cả sản phẩm</a></li>
+				<li><a href="#">Kiểm tra đơn hàng</a></li>
+				<li><a href="#">Hệ Thống Cửa Hàng</a></li>
+			</ul>
+		</div>
+
+		<div class="footer-policy">
+			<h3>CHÍNH SÁCH</h3>
+			<ul>
+				<li><a href="#">Chính sách mua hàng</a></li>
+				<li><a href="#">Chính sách bảo mật</a></li>
+				<li><a href="#">Phương thức thanh toán</a></li>
+				<li><a href="#">Chính sách giao nhận, vận chuyển, kiểm hàng</a></li>
+				<li><a href="#">Chính sách đổi trả</a></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<!-- end footer -->
+	</body>
+</html>

@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # Liên kết với file .env (pip install python-dotenv)
 from dotenv import load_dotenv
 load_dotenv()
-
+# pip install google-auth-oauthlib==1.0.0 google-auth==2.17.3
 # Google OAuth imports
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
