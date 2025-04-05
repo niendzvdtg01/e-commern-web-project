@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mai more mood</title>
-    <link rel="stylesheet" href="/static/css/sanpham.css">
+    <link rel="stylesheet" href="/static/css/main.css">
     <link rel="icon" type = "img/png" href="/static/pictures/logorgb copy.png" sizes="192x192">
     <!-- Them font chu cho header -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,10 +12,71 @@
     <link href="https://fonts.googleapis.com/css2?family=Tektur:wdth,wght@75..100,400..900&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='js/homepage.js') }}"></script>
     <script src="/static/js/homepage.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+        .cart-container {
+            width: 80%;
+            margin: 20px auto;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .cart-header, .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .cart-item img {
+            width: 80px;
+            height: auto;
+            border-radius: 5px;
+        }
+        .cart-item span {
+            flex: 1;
+            text-align: center;
+        }
+        .cart-total {
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 20px;
+        }
+        .cart-actions {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #ff5722;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .quantity-controls button {
+            padding: 5px 10px;
+            border: none;
+            background-color: #ddd;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+    </style>
 </head>
-
 <body>
-    <!-- Tao thanh tim kiem -->
+
+<!-- Tao thanh tim kiem -->
 <div id="search-popup" class="search-popup">
     <div class="popup-content">
         <span class="close" onclick="closesearch()">&times;</span>
@@ -25,7 +86,7 @@
         </div>
     </div>
     <div id="search-result" class="search-result">
-        <table>
+        <!-- <table style="border: 1px solid #ccc;">
             <thead>
                 <tr>
                     <th>Tên sản phẩm</th>
@@ -34,13 +95,19 @@
                 </tr>
             </thead>
             <tbody id="result-body">
-                <!-- Dữ liệu được cập nhạt tại đây -->
+                Dữ liệ được cập nhạt tại đây 
             </tbody>
-        </table>
+        </table> -->
+        <div>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: larger;">Các sản phẩm</p>
+            </div>
+            <div class="search-prodct" id="result-body">
+                    <!-- Thông tin được tìm kiếm sẽ hiện tại đây -->
+            </div>
+        </div>
     </div>
 </div>
-
-
 <!-- End thanh tim kiem -->
     <header>
             <p class="font">_ Thêm một chút mai, thêm trọn cảm hứng. _</p>
@@ -70,71 +137,39 @@
                 </a>
             </div>
         </div>
-<!-- End Thanh chức năng -->
-        <nav class="sub-menu">
-            <a href="#">Tất cả sản phẩm</a>
-            <a href="#">Mận dẻo</a>
-            <a href="#">Mận xí muội</a>
-            <a href="#">Mận khía</a>
-            <a href="#">Sấu bao tử</a>
-        </nav>
+        <div class="cart-container">
+            <div class="cart-header">
+                <span>Sản Phẩm</span>
+                <span>Đơn Giá</span>
+                <span>Số Lượng</span>
+                <span>Số Tiền</span>
+                <span>Thao Tác</span>
+            </div>
     
-
-    <main>
-        <div class="product-container">
-            <div class="product-image-section">
-                <div class="product-image">
-                    <img id="main-image" src="/static/pictures/1.png" alt="Mận dẻo chua ngọt">
-                </div>
-                <div class="thumbnail-gallery">
-                    <a href="/product/1"><img class="thumbnail" data-src="/static/pictures/1.png" src="/static/pictures/1.png" alt="Thumbnail 1"></a>
-                    <a href="/product/2"><img class="thumbnail" data-src="/static/pictures/2.png" src="/static/pictures/2.png" alt="Thumbnail 2"></a>
-                    <a href="/product/3"><img class="thumbnail" data-src="/static/pictures/3.png" src="/static/pictures/3.png" alt="Thumbnail 3"></a>
-                    <a href="/product/4"><img class="thumbnail" data-src="/static/pictures/4.png" src="/static/pictures/4.png" alt="Thumbnail 4"></a>
-                </div>
+            <div class="cart-item">
+                <img src="/static/pictures/1.png"alt="Sản phẩm">
+                <span>Combo 3 Cuốn Tam Quốc Diễn Nghĩa</span>
+                <span><del>₫414.000</del> ₫299.000</span>
+                <span class="quantity-controls">
+                    <button>-</button>
+                    <span>1</span>
+                    <button>+</button>
+                </span>
+                <span>₫299.000</span>
+                <span><button class="btn">Xóa</button></span>
             </div>
-            <div class="product-details">
-                <h1>Mận dẻo chua ngọt</h1>
-                <div class="rating">
-                    <span>★★★★★</span>
-                    <a href="#" class="reviews">Viết đánh giá của bạn</a>
-                </div>
-                <div class="price">
-                    <span class="current-price">55.000đ</span>
-                    <span class="original-price">100.000đ</span>
-                    <span class="discount">-44%</span>
-                </div>
-                <div class="options">
-                    <span class="option-label">Đổi trả dễ dàng</span>
-                    <span class="option-label">Chính hãng 100%</span>
-                    <span class="option-label">Giao toàn quốc</span>
-                </div>
-                <div class="best-seller">
-                    <span>🏆 Top bán chạy</span>
-                </div>
-                <div class="info">
-                    <p><strong>Thông tin sản phẩm:</strong></p>
-                    <p>- Chất liệu: Mận tươi tự nhiên</p>
-                    <p>- Hương vị: Chua ngọt</p>
-                    <p>- Đóng gói: Hộp 500g</p>
-                    <p>- Bảo quản: Nơi khô ráo, thoáng mát</p>
-                </div>
-                <div class="quantity">
-                    <p><strong>Số lượng:</strong></p>
-                    <form action="1/cart"><input type="number" value="1" min="1" name="quantity"></form>
-                </div>
-                <div class="actions">
-                    <form action="1/cart" method="post"><button class="add-to-cart" type="submit">Thêm vào giỏ hàng</button></form>
-                    <form action="/buy" method="post"><button class="buy-now">Mua ngay</button></form>
-                </div>
+    
+            <div class="cart-total">
+                Tổng cộng: ₫299.000
             </div>
-            <div class="comment">
-                <button class="describe">Mô tả sản phẩm</button>
-                <button class="Evaluate">Đánh giá sản phẩm</button>
+    
+            <div class="cart-actions">
+                <button class="btn">Chọn Tất Cả</button>
+                <button class="btn">Mua Hàng</button>
             </div>
         </div>
     </main>
-
+<!-- End Thanh chức năng -->
     <!-- Start footer -->
     <footer class="footer">
         <div class="footer-container">
@@ -155,9 +190,9 @@
                 </div>
                 <p>Theo dõi Mai More Mood từ các nền tảng khác nhau nhé!</p>
                 <div class="social-icons">
-                    <a href="https://www.facebook.com/profile.php?id=61571870681009"><img src="/pictures/facebook.svg" alt="Facebook"></a>
-                    <a href="#"><img src="/pictures/instagram.svg" alt="Instagram"></a>
-                    <a href="#"><img src="/pictures/tiktok.svg" alt="Tiktok"></a>
+                    <a href="https://www.facebook.com/profile.php?id=61571870681009"><img src="/static/pictures/facebook.svg" alt="Facebook"></a>
+                    <a href="#"><img src="/static/pictures/instagram.svg" alt="Instagram"></a>
+                    <a href="#"><img src="/static/pictures/tiktok.svg" alt="Tiktok"></a>
                 </div>
             </div>
     
@@ -184,22 +219,5 @@
         </div>
     </footer>
     <!-- end footer -->
-
-    <!-- Thêm JavaScript để xử lý sự kiện thay đổi ảnh -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const mainImage = document.getElementById('main-image');
-            const thumbnails = document.querySelectorAll('.thumbnail');
-
-            thumbnails.forEach(thumbnail => {
-                thumbnail.addEventListener('click', function () {
-                    // Lấy đường dẫn ảnh lớn từ thuộc tính data-src
-                    const newSrc = this.getAttribute('data-src');
-                    // Thay đổi src của ảnh chính
-                    mainImage.setAttribute('src', newSrc);
-                });
-            });
-        });
-    </script>
 </body>
 </html>

@@ -168,7 +168,13 @@ def cart(product_id):
             return render_template("product4.html")
     else:
         return "Product not found", 404
-
+@app.route('/viewcart', methods = ['GET', 'POST'])
+def viewcart():
+    current_cart = []
+    if "cart" in session:
+        current_cart = session.get("cart", [])
+    
+    return render_template("viewcart.html")
 #login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
