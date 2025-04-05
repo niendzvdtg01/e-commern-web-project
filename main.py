@@ -1,11 +1,10 @@
-from functools import wraps
 from flask import Flask, render_template, request, url_for, redirect, session, jsonify
 import searchUser
 from werkzeug.security import generate_password_hash, check_password_hash
 # Liên kết với file .env (pip install python-dotenv)
 from dotenv import load_dotenv
 load_dotenv()
-
+# pip install google-auth-oauthlib==1.0.0 google-auth==2.17.3
 # Google OAuth imports
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
@@ -26,7 +25,6 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1" # to allow Http traffic for loca
 
 # Init Supabase client để dùng các hàm của supabase (pip install supabase)
 # kết nối đến db bằng api supabase
-import os
 from supabase import create_client
 url = os.environ.get("SUPABASE_URL")
 key = os.environ.get("SUPABASE_KEY")
@@ -50,22 +48,18 @@ def product(product_id):
     # Lấy thông tin sản phẩm từ Supabase
     product = supabase.table("product").select("*").eq("product_id", product_id).execute()
     if product.data:
-        if product_id == 1:
-            return render_template("product1.html")
-        elif product_id == 2:
-            return render_template("product2.html", product=product.data[0])
-        elif product_id == 3:
-            return render_template("product3.html", product=product.data[0])
-        elif product_id == 4:
-            return render_template("product4.html", product=product.data[0])
+        return render_template("product.html", product=product.data[0])
     else:
         return "Product not found", 404
+
+@app.route('/payment', methods=['GET'])
+def payment():
+    return render_template("payment.html")
 
 @app.route('/account',methods=['GET','POST'])
 def account():
     if 'email' in session:
         if request.method == 'POST':
-            # Only update fields that have actual values
             update_data = {}
             address = request.form.get('address', '').strip()
             phone = request.form.get('phone', '').strip()
@@ -79,7 +73,6 @@ def account():
                 supabase.table("users").update(update_data).eq("email", session['email']).execute()
             return redirect(url_for('account'))
             
-        # Lấy thông tin người dùng từ Supabase
         response = (
             supabase.table("users")
             .select("*")
@@ -90,7 +83,6 @@ def account():
         address = data[0].get('address')
         phone = data[0].get('phone')
         email = data[0].get('email')
-        # Truyền dữ liệu vào template
         return render_template("account.html", user_name=user_name, address=address, phone=phone,email=email)
     else:
         return redirect(url_for('login'))
@@ -168,13 +160,7 @@ def cart(product_id):
             return render_template("product4.html")
     else:
         return "Product not found", 404
-@app.route('/viewcart', methods = ['GET', 'POST'])
-def viewcart():
-    current_cart = []
-    if "cart" in session:
-        current_cart = session.get("cart", [])
-    
-    return render_template("viewcart.html")
+
 #login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -184,6 +170,7 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email', '').strip()
         password = request.form.get('password', '').strip()
+
         response = (
             supabase.table("users")
             .select("email, password_hash") 
@@ -196,7 +183,7 @@ def login():
         if not data or len(data) == 0:
             email_err = "❌ Email không tồn tại!"
             return render_template('login.html', email_err=email_err)
-        print(email)
+        
         user = data[0]
         db_password = user.get('password_hash')
         if not check_password_hash(db_password, password):
@@ -287,14 +274,6 @@ def callback():
 def logout():
     session.pop('email', None)
     return redirect(url_for('index'))
-
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'email' not in session:
-            return redirect(url_for('login'))
-        return f(*args, **kwargs)
-    return decorated_function
 
 if __name__ == '__main__':
     app.run(debug=True)

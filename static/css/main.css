@@ -157,10 +157,11 @@ h2 {
     justify-content: space-between;
     flex-wrap: wrap;
     border-bottom: 1px solid #ccc;
+    height: 70vh;
 }
 .product {
     width: 25%;
-    height: 400px;
+    height: 70vh;
     background: #f9f9f9;
     padding: 15px;
     text-align: center;
