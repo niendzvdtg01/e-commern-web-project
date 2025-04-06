@@ -49,14 +49,24 @@
     </div>
 </div>
 <!-- End thanh tim kiem -->
+ <!-- Thanh danh muc -->
+<div id="sidebar" class="sidebar">
+    <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
+    <ul class="sidebar-menu">
+        <li><a href="/">Trang chủ</a></li>
+        <li><a href="/product/1">Sản phẩm</a></li>
+        <li><a href="#">Giới thiệu</a></li>
+    </ul>
+</div>
+ <!-- End thanh danh muc -->
     <header>
             <p class="font">_ Thêm một chút mai, thêm trọn cảm hứng. _</p>
     </header>
 <!-- Start Thanh chức năng -->
     <main>
         <div class="container1">
-            <div class="menu">
-                <a href="#">
+            <div class="menu" onclick="toggleSidebar()">
+                <a href="/">
                     <img src="/static/pictures/menu-svgrepo-com.svg" alt="menu" class = "menu">
                 </a>
             </div>
@@ -162,11 +172,12 @@
                 </div>
                 <p>Theo dõi Mai More Mood từ các nền tảng khác nhau nhé!</p>
                 <div class="social-icons">
-                    <a href="https://www.facebook.com/profile.php?id=61571870681009"><img src="/pictures/facebook.svg" alt="Facebook"></a>
-                    <a href="#"><img src="/pictures/instagram.svg" alt="Instagram"></a>
-                    <a href="#"><img src="/pictures/tiktok.svg" alt="Tiktok"></a>
+                    <a href="https://www.facebook.com/profile.php?id=61571870681009"><img src="/static/pictures/facebook.svg" alt="Facebook"></a>
+                    <a href="#"><img src="/static/pictures/instagram.svg" alt="Instagram"></a>
+                    <a href="#"><img src="/static/pictures/tiktok.svg" alt="Tiktok"></a>
                 </div>
             </div>
+    
     
             <div class="footer-links">
                 <h3>ABOUT US</h3>
