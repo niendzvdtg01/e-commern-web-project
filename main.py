@@ -48,7 +48,7 @@ def product(product_id):
     # Lấy thông tin sản phẩm từ Supabase
     product = supabase.table("product").select("*").eq("product_id", product_id).execute()
     if product.data:
-        return render_template("product.html", product=product.data[0])
+        return render_template(f"product{product_id}.html", product=product.data[0])
     else:
         return "Product not found", 404
 
@@ -113,53 +113,53 @@ def change_password():
         return render_template("changepassword.html")
     return redirect(url_for('login'))
 
-@app.route('/product/<int:product_id>/cart', methods=['GET', 'POST'])
-def cart(product_id):
-    # Lấy thông tin sản phẩm từ Supabase
-    response = supabase.table("product").select("*").eq("product_id", product_id).execute()
+# @app.route('/product/<int:product_id>/cart', methods=['GET', 'POST'])
+# def cart(product_id):
+#     # Lấy thông tin sản phẩm từ Supabase
+#     response = supabase.table("product").select("*").eq("product_id", product_id).execute()
     
-    if not response.data:  # Kiểm tra sản phẩm có tồn tại không
-        return "Product not found", 404
+#     if not response.data:  # Kiểm tra sản phẩm có tồn tại không
+#         return "Product not found", 404
 
-    product = response.data[0]  # Lấy sản phẩm đầu tiên từ danh sách
+#     product = response.data[0]  # Lấy sản phẩm đầu tiên từ danh sách
 
-    # Lấy số lượng từ form
-    quantity = int(request.form.get("quantity", 1))  # Mặc định là 1 nếu không có input
+#     # Lấy số lượng từ form
+#     quantity = int(request.form.get("quantity", 1))  # Mặc định là 1 nếu không có input
 
-    # Tạo dictionary chứa thông tin sản phẩm
-    product_dict = {
-        "id": product_id,
-        "product_name": product["product_name"],  
-        "price": product["price"],
-        "quantity": quantity
-    }
+#     # Tạo dictionary chứa thông tin sản phẩm
+#     product_dict = {
+#         "id": product_id,
+#         "product_name": product["product_name"],  
+#         "price": product["price"],
+#         "quantity": quantity
+#     }
 
-    # Lấy giỏ hàng từ session
-    cart = session.get("cart", [])
+#     # Lấy giỏ hàng từ session
+#     cart = session.get("cart", [])
 
-    # Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-    found = False
-    for item in cart:
-        if item["product_name"] == product["product_name"]:
-            item["quantity"] += quantity
-            found = True
-            break
+#     # Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+#     found = False
+#     for item in cart:
+#         if item["product_name"] == product["product_name"]:
+#             item["quantity"] += quantity
+#             found = True
+#             break
 
-    if not found:
-        cart.append(product_dict)
+#     if not found:
+#         cart.append(product_dict)
 
-    session["cart"] = cart  # Cập nhật session
-    if response.data:
-        if product_id == 1:
-            return render_template("product1.html")
-        elif product_id == 2:
-            return render_template("product2.html")
-        elif product_id == 3:
-            return render_template("product3.html")
-        elif product_id == 4:
-            return render_template("product4.html")
-    else:
-        return "Product not found", 404
+#     session["cart"] = cart  # Cập nhật session
+#     if response.data:
+#         if product_id == 1:
+#             return render_template("product1.html")
+#         elif product_id == 2:
+#             return render_template("product2.html")
+#         elif product_id == 3:
+#             return render_template("product3.html")
+#         elif product_id == 4:
+#             return render_template("product4.html")
+#     else:
+#         return "Product not found", 404
 
 #login page
 @app.route('/login', methods=['GET', 'POST'])

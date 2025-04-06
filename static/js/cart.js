@@ -47,7 +47,7 @@ function addToCart(product) {
     
     if (existingProductIndex !== -1) {
         // If product exists, increase quantity
-        cart[existingProductIndex].quantity += 1;
+        cart[existingProductIndex].quantity += product.quantity;
     } else {
         // If product doesn't exist, add it to cart
         cart.push(product);
@@ -135,4 +135,52 @@ function updateTotalPrice() {
 function clearCart() {
     localStorage.setItem('cart', JSON.stringify([]));
     displayCartItems();
+    // Reset the total price to 0
+    document.getElementById('total-price').textContent = '0đ';
 } 
+
+// Get product details from page
+function getProductDetailsFromPage() {
+    const productName = document.querySelector('.product-details h1')?.textContent.trim();
+    const currentPriceText = document.querySelector('.current-price')?.textContent.trim();
+    const originalPriceText = document.querySelector('.original-price')?.textContent.trim();
+    const discountText = document.querySelector('.discount')?.textContent.trim();
+    const quantityInput = document.querySelector('input[name="quantity"]');
+
+    // Get the correct quantity based on user input
+    let quantity = 1;
+    if (quantityInput) {
+        const val = quantityInput.value.trim();
+        if (val !== '' && !isNaN(val)) {
+            quantity = parseInt(val);
+        }
+    }
+
+    const productImage = document.getElementById('main-image')?.src;
+    const productId = productImage ? productImage.split('/').pop().split('.')[0] : 'unknown';
+
+    return {
+        id: productId,
+        name: productName,
+        price: currentPriceText,
+        originalPrice: originalPriceText,
+        discount: discountText,
+        image: productImage,
+        quantity: quantity
+    };
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const addToCartBtn = document.querySelector('.add-to-cart');
+
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const product = getProductDetailsFromPage();
+            console.log('Thông tin sản phẩm:', product); // Debug nếu cần
+            addToCart(product);
+            alert("Sản phẩm đã được thêm vào giỏ hàng!");
+        });
+    }
+});

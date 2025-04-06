@@ -12,10 +12,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Tektur:wdth,wght@75..100,400..900&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='js/homepage.js') }}"></script>
     <script src="/static/js/homepage.js"></script>
+    <script src="/static/js/cart.js"></script>
 </head>
 
 <body>
-    <!-- Tao thanh tim kiem -->
+ <!-- Tao thanh tim kiem -->
 <div id="search-popup" class="search-popup">
     <div class="popup-content">
         <span class="close" onclick="closesearch()">&times;</span>
@@ -25,7 +26,7 @@
         </div>
     </div>
     <div id="search-result" class="search-result">
-        <table border="1">
+        <!-- <table style="border: 1px solid #ccc;">
             <thead>
                 <tr>
                     <th>Tên sản phẩm</th>
@@ -34,13 +35,19 @@
                 </tr>
             </thead>
             <tbody id="result-body">
-                <!-- Dữ liệu được cập nhạt tại đây -->
+                Dữ liệ được cập nhạt tại đây 
             </tbody>
-        </table>
+        </table> -->
+        <div>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: larger;">Các sản phẩm</p>
+            </div>
+            <div class="search-prodct" id="result-body">
+                    <!-- Thông tin được tìm kiếm sẽ hiện tại đây -->
+            </div>
+        </div>
     </div>
 </div>
-
-
 <!-- End thanh tim kiem -->
     <header>
             <p class="font">_ Thêm một chút mai, thêm trọn cảm hứng. _</p>
@@ -65,19 +72,19 @@
                 <a href="/login">
                     <img src="/static/pictures/account-svgrepo-com.svg" alt="cart" class = "account">
                 </a>
-                <a href="#">
+                <a href="/payment">
                     <img src="/static/pictures/cart-shopping-svgrepo-com.svg" alt="account" class = "cart">
                 </a>
             </div>
         </div>
 <!-- End Thanh chức năng -->
-        <nav class="sub-menu">
-            <a href="#">Tất cả sản phẩm</a>
-            <a href="#">Mận dẻo</a>
-            <a href="#">Mận xí muội</a>
-            <a href="#">Mận khía</a>
-            <a href="#">Sấu bao tử</a>
-        </nav>
+<nav class="sub-menu">
+    <a href="#">Tất cả sản phẩm</a>
+    <a href="/product/1">Mận dẻo</a>
+    <a href="/product/2">Mận xí muội</a>
+    <a href="/product/3">Mận khía</a>
+    <a href="/product/4">Sấu bao tử</a>
+</nav>
     
 
     <main>
@@ -87,10 +94,10 @@
                     <img id="main-image" src="/static/pictures/4.png" alt="Mận dẻo chua ngọt">
                 </div>
                 <div class="thumbnail-gallery">
-                    <a href="/product/4"><img class="thumbnail" data-src="/static/pictures/1.png" src="/static/pictures/1.png" alt="Thumbnail 1"></a>
+                    <a href="/product/1"><img class="thumbnail" data-src="/static/pictures/1.png" src="/static/pictures/1.png" alt="Thumbnail 1"></a>
                     <a href="/product/2"><img class="thumbnail" data-src="/static/pictures/2.png" src="/static/pictures/2.png" alt="Thumbnail 2"></a>
                     <a href="/product/3"><img class="thumbnail" data-src="/static/pictures/3.png" src="/static/pictures/3.png" alt="Thumbnail 3"></a>
-                    <a href="/product/1"><img class="thumbnail" data-src="/static/pictures/4.png" src="/static/pictures/4.png" alt="Thumbnail 4"></a>
+                    <a href="/product/4"><img class="thumbnail" data-src="/static/pictures/4.png" src="/static/pictures/4.png" alt="Thumbnail 4"></a>
                 </div>
             </div>
             <div class="product-details">

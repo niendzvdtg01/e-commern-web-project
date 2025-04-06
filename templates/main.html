@@ -49,13 +49,23 @@
     </div>
 </div>
 <!-- End thanh tim kiem -->
+<!-- Thanh danh muc -->
+<div id="sidebar" class="sidebar">
+    <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
+    <ul class="sidebar-menu">
+        <li><a href="/">Trang chủ</a></li>
+        <li><a href="/product/1">Sản phẩm</a></li>
+        <li><a href="#">Giới thiệu</a></li>
+    </ul>
+</div>
+ <!-- End thanh danh muc -->
     <header>
             <p class="font">_ Thêm một chút mai, thêm trọn cảm hứng. _</p>
     </header>
 <!-- Start Thanh chức năng -->
     <main>
         <div class="container1">
-            <div class="menu">
+            <div class="menu" onclick="toggleSidebar()">
                 <a href="#">
                     <img src="/static/pictures/menu-svgrepo-com.svg" alt="menu" class = "menu">
                 </a>
@@ -97,10 +107,11 @@
             <span class="discount">-44%</span>
             <img src="/static/pictures/1.png" alt="Mận dẻo chua ngọt">
             <p>Mận dẻo chua ngọt</p>
-            <p class="price">55.000đ <span class="old-price">350.000đ</span></p>
+            <p class="price">55.000đ</p>
+            <span class="old-price">350.000đ</span>
+            <br>
             <a href="#" class="add-to-cart">
-                <button>+</button>
-                <p>Add to cart</p>
+                <button>Thêm giỏ hàng</button>
             </a>
             <form action="/product/4" method="post"><button class="btn" type="submit"> Mua ngay </button></form>
         </div>
@@ -108,10 +119,11 @@
             <span class="discount">-44%</span>
             <img src="/static/pictures/2.png" alt="Mận xí muội không hạt">
             <p>Mận xí muội không hạt</p>
-            <p class="price">70.000đ <span class="old-price">350.000đ</span></p>
+            <p class="price">70.000đ</p>
+            <span class="old-price">350.000đ</span>
+            <br>
             <a href="#" class="add-to-cart">
-                <button>+</button>
-                <p>Add to cart</p>
+                <button>Thêm giỏ hàng</button>
             </a>
             <form action="/product/2" method="post"><button class="btn" type="submit"> Mua ngay </button></form>
         </div>
@@ -119,10 +131,11 @@
             <span class="discount">-44%</span>
             <img src="/static/pictures/3.png" alt="Mận khía xào me">
             <p>Mận khía xào me</p>
-            <p class="price">55.000đ <span class="old-price">350.000đ</span></p>
+            <p class="price">55.000đ</p>
+            <span class="old-price">350.000đ</span>
+            <br>
             <a href="#" class="add-to-cart">
-                <button>+</button>
-                <p>Add to cart</p>
+                <button>Thêm giỏ hàng</button>
             </a>
             <form action="/product/3" method="post"><button class="btn" type="submit"> Mua ngay </button></form>
         </div>
@@ -130,10 +143,11 @@
             <span class="discount">-40%</span>
             <img src="/static/pictures/4.png" alt="sấu bao tử">
             <p>Sấu bao tử</p>
-            <p class="price">35.000đ <span class="old-price">350.000đ</span></p>
+            <p class="price">35.000đ</p>
+            <span class="old-price">350.000đ</span>
+            <br>
             <a href="#" class="add-to-cart">
-                <button>+</button>
-                <p>Add to cart</p>
+                <button>Thêm giỏ hàng</button>
             </a>
             <form action="/product/1" method="post"><button class="btn" type="submit"> Mua ngay </button></form>
         </div>
