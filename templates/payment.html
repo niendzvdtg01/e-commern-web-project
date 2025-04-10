@@ -10,9 +10,9 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Tektur:wdth,wght@75..100,400..900&display=swap" rel="stylesheet">
-		<script src="{{ url_for('static', filename='js/homepage.js') }}"></script>
 		<script src="/static/js/homepage.js"></script>
 		<script src="/static/js/cart.js"></script>
+		<script src="/static/js/debug.js"></script>
 		<style>
             .aaaaaa {
                 position: relative;
@@ -118,18 +118,6 @@
         </div>
     </div>
     <div id="search-result" class="search-result">
-        <!-- <table style="border: 1px solid #ccc;">
-            <thead>
-                <tr>
-                    <th>Tên sản phẩm</th>
-                    <th>Số lượng hàng hóa</th>
-                    <th>giá</th>
-                </tr>
-            </thead>
-            <tbody id="result-body">
-                Dữ liệ được cập nhạt tại đây 
-            </tbody>
-        </table> -->
         <div>
             <div style="text-align: center; margin-bottom: 20px;">
                 <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: larger;">Các sản phẩm</p>
@@ -198,18 +186,10 @@
 							<div class="product-container">
 								<!-- Products will be dynamically added here by JavaScript -->
 							</div>
-							<!-- <div class="video-container">
-								<h4>Video Giới Thiệu</h4>
-								<video controls width="100%">
-									<source src="video.mp4" type="video/mp4">
-									Trình duyệt của bạn không hỗ trợ video.
-								</video>
-							</div>
-						</div> -->
 						<div class="total-container">
 							Tổng cộng: <span id="total-price">0đ</span>
 							<br>
-							<button class="pay-button">Thanh toán</button>
+							<button class="pay-button" onclick="processPayment()">Thanh toán</button>
 							<br>
 							<button class="clear-cart-button" onclick="clearCart()">Xóa giỏ hàng</button>
 						</div>

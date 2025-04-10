@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tektur:wdth,wght@75..100,400..900&display=swap" rel="stylesheet">
-    <script src="{{ url_for('static', filename='js/homepage.js') }}"></script>
+    <!-- Fix duplicate script loading -->
     <script src="/static/js/homepage.js"></script>
     <script src="/static/js/cart.js"></script>
 </head>
@@ -103,54 +103,24 @@
         <h2>PRODUCTS</h2>
     </div>
     <div class="product-list">
+        {% for product in products %}
         <div class="product">
-            <span class="discount">-44%</span>
-            <img src="/static/pictures/1.png" alt="Mận dẻo chua ngọt">
-            <p>Mận dẻo chua ngọt</p>
-            <p class="price">55.000đ</p>
-            <span class="old-price">350.000đ</span>
+            <img src="{{ product.img_url }}" alt="{{ product.name }}">
+            <p>{{ product.name }}</p>
+            <p class="price">{{ product.price }}đ</p>
             <br>
+            {% if product.quantity < 5 %}
+            <p class="stock-warning" style="color: red;">Low stock</p>
+            {% endif %}
+            <p class="quantity">Số lượng: {{ product.quantity }}</p>
             <a href="#" class="add-to-cart">
                 <button>Thêm giỏ hàng</button>
             </a>
-            <form action="/product/4" method="post"><button class="btn" type="submit"> Mua ngay </button></form>
+            <form action="/product/{{ product.product_id }}" method="post">
+                <button class="btn" type="submit"> Mua ngay </button>
+            </form>
         </div>
-        <div class="product">
-            <span class="discount">-44%</span>
-            <img src="/static/pictures/2.png" alt="Mận xí muội không hạt">
-            <p>Mận xí muội không hạt</p>
-            <p class="price">70.000đ</p>
-            <span class="old-price">350.000đ</span>
-            <br>
-            <a href="#" class="add-to-cart">
-                <button>Thêm giỏ hàng</button>
-            </a>
-            <form action="/product/2" method="post"><button class="btn" type="submit"> Mua ngay </button></form>
-        </div>
-        <div class="product">
-            <span class="discount">-44%</span>
-            <img src="/static/pictures/3.png" alt="Mận khía xào me">
-            <p>Mận khía xào me</p>
-            <p class="price">55.000đ</p>
-            <span class="old-price">350.000đ</span>
-            <br>
-            <a href="#" class="add-to-cart">
-                <button>Thêm giỏ hàng</button>
-            </a>
-            <form action="/product/3" method="post"><button class="btn" type="submit"> Mua ngay </button></form>
-        </div>
-        <div class="product">
-            <span class="discount">-40%</span>
-            <img src="/static/pictures/4.png" alt="sấu bao tử">
-            <p>Sấu bao tử</p>
-            <p class="price">35.000đ</p>
-            <span class="old-price">350.000đ</span>
-            <br>
-            <a href="#" class="add-to-cart">
-                <button>Thêm giỏ hàng</button>
-            </a>
-            <form action="/product/1" method="post"><button class="btn" type="submit"> Mua ngay </button></form>
-        </div>
+        {% endfor %}
     </div>
 </div>
 <!-- End Sản phẩm -->

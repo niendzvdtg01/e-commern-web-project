@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">			
+		<title>Thanh toán thất bại</title>
+		<link rel="stylesheet" href="/static/css/main.css">
+		<link rel="icon" type = "img/png" href="/static/pictures/logorgb copy.png" sizes="192x192">
+		<!-- Them font chu cho header -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Tektur:wdth,wght@75..100,400..900&display=swap" rel="stylesheet">
+		<script src="{{ url_for('static', filename='js/homepage.js') }}"></script>
+		<style>
+			.payment-error-container {
+				max-width: 800px;
+				margin: 50px auto;
+				padding: 30px;
+				text-align: center;
+				background-color: #f9f9f9;
+				border-radius: 10px;
+				box-shadow: 0 0 10px rgba(0,0,0,0.1);
+			}
+			.error-icon {
+				color: #dc3545;
+				font-size: 80px;
+				margin-bottom: 20px;
+			}
+			.error-message {
+				margin: 30px 0;
+				padding: 20px;
+				background-color: #fff;
+				border-radius: 5px;
+				text-align: left;
+				color: #dc3545;
+			}
+			.retry-payment {
+				display: inline-block;
+				padding: 12px 30px;
+				background-color: #dc3545;
+				color: white;
+				text-decoration: none;
+				border-radius: 5px;
+				font-weight: bold;
+				margin-top: 20px;
+				transition: background-color 0.3s;
+			}
+			.retry-payment:hover {
+				background-color: #c82333;
+			}
+			.back-to-cart {
+				display: inline-block;
+				padding: 12px 30px;
+				background-color: #6c757d;
+				color: white;
+				text-decoration: none;
+				border-radius: 5px;
+				font-weight: bold;
+				margin-top: 20px;
+				margin-left: 10px;
+				transition: background-color 0.3s;
+			}
+			.back-to-cart:hover {
+				background-color: #5a6268;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<p class="font">_ Thêm một chút mai, thêm trọn cảm hứng. _</p>
+		</header>
+		
+		<div class="payment-error-container">
+			<div class="error-icon">✕</div>
+			<h1>Thanh toán thất bại</h1>
+			<p>Rất tiếc, có lỗi xảy ra trong quá trình thanh toán.</p>
+			
+			<div class="error-message">
+				<p><strong>Lỗi:</strong> {{ error }}</p>
+			</div>
+			
+			<p>Vui lòng thử lại hoặc liên hệ với chúng tôi nếu vấn đề vẫn tiếp tục.</p>
+			
+			<a href="/payment" class="retry-payment">Thử lại</a>
+			<a href="/payment" class="back-to-cart">Quay lại giỏ hàng</a>
+		</div>
+		
+		<!-- Start footer -->
+		<footer class="footer">
+			<div class="footer-container">
+				<div class="footer-logo">
+					<h2>MAI MORE MOOD</h2>
+					<p>LIÊN HỆ:</p>
+					<p><strong>Nguyễn Thành Đạt</strong></p>
+					<p>Địa chỉ: Số 128, Nguyễn Đức Cảnh, quận Hoàng Mai, Tp. Hà Nội, Việt Nam</p>
+					<p>Email: maimoremood@gmail.com</p>
+					<p>Điện thoại: 0338242425</p>
+				</div>
+
+				<div class="footer-subscribe">
+					<h3>ĐĂNG KÝ</h3>
+					<div class="subscribe-box">
+						<input type="email" placeholder="Nhập địa chỉ email">
+						<button>➤</button>
+					</div>
+					<p>Theo dõi Mai More Mood từ các nền tảng khác nhau nhé!</p>
+					<div class="social-icons">
+						<a href="https://www.facebook.com/profile.php?id=61571870681009"><img src="/static/pictures/facebook.svg" alt="Facebook"></a>
+						<a href="#"><img src="/static/pictures/instagram.svg" alt="Instagram"></a>
+						<a href="#"><img src="/static/pictures/tiktok.svg" alt="Tiktok"></a>
+					</div>
+				</div>
+
+				<div class="footer-links">
+					<h3>ABOUT US</h3>
+					<ul>
+						<li><a href="#">Trang chủ</a></li>
+						<li><a href="#">Tất cả sản phẩm</a></li>
+						<li><a href="#">Kiểm tra đơn hàng</a></li>
+						<li><a href="#">Hệ Thống Cửa Hàng</a></li>
+					</ul>
+				</div>
+
+				<div class="footer-policy">
+					<h3>CHÍNH SÁCH</h3>
+					<ul>
+						<li><a href="#">Chính sách mua hàng</a></li>
+						<li><a href="#">Chính sách bảo mật</a></li>
+						<li><a href="#">Phương thức thanh toán</a></li>
+						<li><a href="#">Chính sách giao nhận, vận chuyển, kiểm hàng</a></li>
+						<li><a href="#">Chính sách đổi trả</a></li>
+					</ul>
+				</div>
+			</div>
+		</footer>
+		<!-- end footer -->
+	</body>
+</html> 
