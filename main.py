@@ -216,7 +216,7 @@ def signup():
 
         if username_err or email_err or password_err:
             return render_template("signup.html", username_err=username_err, email_err=email_err, password_err=password_err)
-        hashed_password = generate_password_hash(password)
+        hashed_password = generate_password_hash(password=password)
         # Thêm user vào Supabase
         response=supabase.table("users").insert({
                 "username": username,
