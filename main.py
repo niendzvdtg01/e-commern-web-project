@@ -56,9 +56,9 @@ def product(product_id):
         abort(404)
     
 
-    product_reviews = supabase.table("product_reviews").select("*").eq("product_id", product_id).execute()
-    user= supabase.table("users").select("*").eq("email", product_reviews.data[0]['user_id']).execute()
-    
+    product_reviews = supabase.table("product_reviews").select("*").eq("product_id", product_id).execute()   
+    user = supabase.table("users").select("*").eq("user_id", product_reviews.data[0]['user_id']).execute()
+
     product_data = {
         'product_id': product_id,
         'product_name': product.data[0]['product_name'],
@@ -74,13 +74,6 @@ def product(product_id):
     
     return render_template('product.html', product=product_data)
 
-@app.route('/payment', methods=['GET'])
-def payment():
-    if 'email' not in session:
-        return redirect(url_for('login'))
-    cart = session.get('cart', [])
-    total = sum(item['price'] * item['quantity'] for item in cart)
-    return render_template("payment.html", cart=cart, total=total)
 
 @app.route('/account',methods=['GET','POST'])
 def account():
@@ -139,36 +132,6 @@ def change_password():
         return render_template("changepassword.html")
     return redirect(url_for('login'))
 
-@app.route('/cart/add/<int:product_id>', methods=['POST'])
-def add_to_cart(product_id):
-    if 'email' not in session:
-        return redirect(url_for('login'))
-        
-    product = supabase.table("products").select("*").eq("product_id", product_id).execute()
-    if not product.data:
-        return "Product not found", 404
-
-    quantity = int(request.form.get("quantity", 1))
-    product = product.data[0]
-    
-    cart = session.get("cart", [])
-    
-    # Check if product already in cart
-    for item in cart:
-        if item["id"] == product_id:
-            item["quantity"] += quantity
-            break
-    else:
-        cart.append({
-            "id": product_id,
-            "name": product["name"],
-            "price": product["price"],
-            "quantity": quantity
-        })
-        
-    session["cart"] = cart
-    return redirect(url_for('cart'))
-
 @app.route('/cart', methods=['GET'])
 def view_cart():
     if 'email' not in session:
@@ -176,16 +139,6 @@ def view_cart():
     cart = session.get("cart", [])
     total = sum(item["price"] * item["quantity"] for item in cart)
     return render_template("cart.html", cart=cart, total=total)
-
-@app.route('/cart/remove/<int:product_id>', methods=['POST'])
-def remove_from_cart(product_id):
-    if 'email' not in session:
-        return redirect(url_for('login'))
-    
-    cart = session.get("cart", [])
-    cart = [item for item in cart if item["id"] != product_id]
-    session["cart"] = cart
-    return redirect(url_for('cart'))
 
 #login page
 @app.route('/login', methods=['GET', 'POST'])
@@ -516,6 +469,109 @@ def payment_status(app_trans_id):
                                 
     except Exception as e:
         return render_template('payment_error.html', error=str(e))
+
+@app.route('/add-to-cart', methods=['POST'])
+def add_to_cart():
+    if 'email' not in session:
+        return jsonify({'success': False, 'message': 'Vui lòng đăng nhập trước'}), 401
+        
+    product_id = request.form.get('product_id')
+    quantity = int(request.form.get('quantity', 1))
+    
+    # Get product details from database
+    response = supabase.table("products").select("*").eq("product_id", product_id).execute()
+    if not response.data:
+        return jsonify({'success': False, 'message': 'Sản phẩm không tồn tại'}), 404
+        
+    product = response.data[0]
+    
+    # Initialize cart if it doesn't exist
+    if 'cart' not in session:
+        session['cart'] = []
+        
+    # Check if product already in cart
+    cart = session['cart']
+    for item in cart:
+        if item['product_id'] == product_id:
+            item['quantity'] += quantity
+            session['cart'] = cart
+            return jsonify({
+                'success': True, 
+                'message': 'Đã thêm sản phẩm vào giỏ hàng',
+                'cart_count': len(cart)
+            })
+            
+    # Add new item to cart
+    cart.append({
+        'product_id': product_id,
+        'name': product['product_name'],
+        'price': product['price'],
+        'quantity': quantity,
+        'image_url': product['img_url']
+    })
+    session['cart'] = cart
+    
+    return jsonify({
+        'success': True, 
+        'message': 'Đã thêm sản phẩm vào giỏ hàng',
+        'cart_count': len(cart)
+    })
+
+@app.route('/update-cart', methods=['POST'])
+def update_cart():
+    if 'email' not in session:
+        return jsonify({'success': False, 'message': 'Please login first'}), 401
+        
+    product_id = request.form.get('product_id')
+    quantity = int(request.form.get('quantity', 1))
+    price = int(request.form.get('price', 0))
+    
+    cart = session.get('cart', [])
+    for item in cart:
+        if item['product_id'] == product_id:
+            item['quantity'] = quantity
+            item['price'] = price  # Update price in session
+            break
+            
+    session['cart'] = cart
+    total = sum(item["price"] * item["quantity"] for item in cart)
+    
+    return jsonify({
+        'success': True, 
+        'total': total,
+        'cart_count': len(cart)
+    })
+
+@app.route('/remove-from-cart', methods=['POST'])
+def remove_from_cart():
+    if 'email' not in session:
+        return jsonify({'success': False, 'message': 'Please login first'}), 401
+        
+    data = request.get_json()
+    product_id = data.get('product_id')
+    
+    cart = session.get('cart', [])
+    cart = [item for item in cart if item['product_id'] != product_id]
+    session['cart'] = cart
+    
+    total = sum(item["price"] * item["quantity"] for item in cart)
+    return jsonify({
+        'success': True, 
+        'total': total,
+        'cart_count': len(cart)
+    })
+
+@app.route('/clear-cart', methods=['POST'])
+def clear_cart():
+    if 'email' not in session:
+        return jsonify({'success': False, 'message': 'Please login first'}), 401
+        
+    session['cart'] = []
+    return jsonify({
+        'success': True, 
+        'total': 0,
+        'cart_count': 0
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)

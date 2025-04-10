@@ -82,7 +82,7 @@
                 <a href="/login">
                     <img src="/static/pictures/account-svgrepo-com.svg" alt="cart" class = "account">
                 </a>
-                <a href="/payment">
+                <a href="/cart">
                     <img src="/static/pictures/cart-shopping-svgrepo-com.svg" alt="account" class = "cart">
                 </a>
             </div>
@@ -113,9 +113,12 @@
             <p class="stock-warning" style="color: red;">Low stock</p>
             {% endif %}
             <p class="quantity">Số lượng: {{ product.quantity }}</p>
-            <a href="#" class="add-to-cart">
-                <button>Thêm giỏ hàng</button>
-            </a>
+            <form id="add-to-cart-form-{{ product.product_id }}" class="add-to-cart-form">
+                <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="add-to-cart">Thêm giỏ hàng</button>
+            </form>
+            <div id="cart-message-{{ product.product_id }}" class="cart-message" style="display: none;"></div>
             <form action="/product/{{ product.product_id }}" method="post">
                 <button class="btn" type="submit"> Mua ngay </button>
             </form>
@@ -209,5 +212,70 @@
         </div>
     </footer>
     <!-- end footer -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle all add to cart forms
+    document.querySelectorAll('.add-to-cart-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const productId = formData.get('product_id');
+            const messageDiv = document.getElementById(`cart-message-${productId}`);
+            
+            fetch('/add-to-cart', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    messageDiv.textContent = data.message;
+                    messageDiv.style.display = 'block';
+                    messageDiv.style.color = 'green';
+                    
+                    // Update cart count in header if it exists
+                    const cartCount = document.getElementById('cart-count');
+                    if (cartCount) {
+                        cartCount.textContent = data.cart_count;
+                    }
+                    
+                    // Hide message after 3 seconds
+                    setTimeout(() => {
+                        messageDiv.style.display = 'none';
+                    }, 3000);
+                } else {
+                    messageDiv.textContent = data.message;
+                    messageDiv.style.display = 'block';
+                    messageDiv.style.color = 'red';
+                    
+                    // Hide message after 3 seconds
+                    setTimeout(() => {
+                        messageDiv.style.display = 'none';
+                    }, 3000);
+                }
+            })
+            .catch(error => {
+                messageDiv.textContent = 'Có lỗi xảy ra, vui lòng thử lại';
+                messageDiv.style.display = 'block';
+                messageDiv.style.color = 'red';
+                
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 3000);
+            });
+        });
+    });
+});
+</script>
+
+<style>
+.cart-message {
+    margin-top: 5px;
+    font-size: 14px;
+    text-align: center;
+}
+</style>
 </body>
 </html>

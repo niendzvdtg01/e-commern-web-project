@@ -184,10 +184,28 @@
 					<div class="CartPageContainer">
 						<div class="aaaaaa">
 							<div class="product-container">
-								<!-- Products will be dynamically added here by JavaScript -->
+								{% if cart %}
+									{% for item in cart %}
+									<div class="bbbbbb" data-product-id="{{ item.product_id }}">
+										<img src="{{ item.image_url }}" alt="{{ item.name }}">
+										<h3>{{ item.name }}</h3>
+										<p>Giá: {{ item.price }}đ</p>
+										<div class="quantity-control">
+											<button onclick="updateQuantity({{ item.product_id }}, -1)">-</button>
+											<input type="number" value="{{ item.quantity }}" min="0" id="quantity-{{ item.product_id }}" readonly>
+											<button onclick="updateQuantity({{ item.product_id }}, 1)">+</button>
+										</div>
+										<button onclick="removeFromCart({{ item.product_id }})" class="remove-button">Xóa</button>
+									</div>
+									{% endfor %}
+								{% else %}
+									<div class="empty-cart-message">
+										<p>Giỏ hàng của bạn đang trống</p>
+									</div>
+								{% endif %}
 							</div>
 						<div class="total-container">
-							Tổng cộng: <span id="total-price">0đ</span>
+							Tổng cộng: <span id="total-price">{{ total }}đ</span>
 							<br>
 							<button class="pay-button" onclick="processPayment()">Thanh toán</button>
 							<br>
