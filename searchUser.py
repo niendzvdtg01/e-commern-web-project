@@ -27,7 +27,7 @@ def searchUser(searchtxt):
 
         # Truy vấn Supabase
         response = (
-            supabase.table("product")
+            supabase.table("products")
             .select("*")
             .ilike("product_name", f"%{searchtxt}%")  # Tìm kiếm không phân biệt hoa thường
             .execute()

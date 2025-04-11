@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect, session, jsonify
+from flask import Flask, render_template, request, url_for, redirect, session, jsonify, abort
 import searchUser
 from time import time
 from datetime import datetime
@@ -49,15 +49,70 @@ def search():
     return searchUser.searchUser(query)  # Gọi API để lấy dữ liệu
 
 @app.route('/product/<int:product_id>', methods=['GET','POST'])
-def product(product_id):
-    # Get product from database
+def product(product_id):  
+    if request.method == 'POST':
+        rating = request.form.get('rating', '').strip()
+        comment = request.form.get('comment', '').strip()
+        action = request.form.get('action', 'insert')
+        user_id = supabase.table("users").select("user_id").eq("email", session['email']).execute().data[0]['user_id']
+        
+        if action == 'insert':
+            # Insert a new review
+            result = supabase.table('product_reviews').insert({
+                'product_id': product_id,
+                'user_id': user_id,
+                'rating': rating,
+                'comment': comment
+            }).execute()
+            message = 'Đã thêm đánh giá thành công!'
+        else:  # update
+            # Update existing review
+            result = supabase.table('product_reviews').update({
+                'rating': rating,
+                'comment': comment
+            }).eq('product_id', product_id).eq('user_id', user_id).execute()
+            message = 'Đã cập nhật đánh giá thành công!'
+        
+        return redirect(url_for('product', product_id=product_id, message=message))
+    
+    # GET request handling
     product = supabase.table("products").select("*").eq("product_id", product_id).execute()
     if not product.data:
         abort(404)
     
+    # Get all reviews for the product
+    product_reviews = supabase.table("product_reviews").select("*").eq("product_id", product_id).execute()
+    
+    # Get current user's review if exists
+    current_user_id = None
+    if 'email' in session:
+        current_user = supabase.table("users").select("user_id").eq("email", session['email']).execute()
+        if current_user.data:
+            current_user_id = current_user.data[0]['user_id']
+    
+    # Get user details for each review
+    reviews = []
+    user_has_reviewed = False
+    user_review = None
+    
+    for review in product_reviews.data:
+        user = supabase.table("users").select("*").eq("user_id", review['user_id']).execute()
+        review_data = {
+            'user_id': review['user_id'],
+            'user_name': user.data[0]['user_name'],
+            'rating': review['rating'],
+            'comment': review['comment'],
+            'created_at': review['created_at']
+        }
+        reviews.append(review_data)
+        
+        # Check if current user has reviewed
+        if current_user_id and review['user_id'] == current_user_id:
+            user_has_reviewed = True
+            user_review = review_data
 
-    product_reviews = supabase.table("product_reviews").select("*").eq("product_id", product_id).execute()   
-    user = supabase.table("users").select("*").eq("user_id", product_reviews.data[0]['user_id']).execute()
+    # Calculate average rating
+    avg_rating = sum(review['rating'] for review in reviews) / len(reviews) if reviews else 0
 
     product_data = {
         'product_id': product_id,
@@ -65,15 +120,31 @@ def product(product_id):
         'quantity': product.data[0]['quantity'],
         'image_url': product.data[0]['img_url'],
         'price': product.data[0]['price'],
-        'rating': product_reviews.data[0]['rating'],
-        'user_name': user.data[0]['user_name'],
-        'comment': product_reviews.data[0]['comment'],
-        'created_at': product_reviews.data[0]['created_at'],
-        'user_id': product_reviews.data[0]['user_id'],
+        'rating': avg_rating,
+        'reviews': reviews,
+        'user_has_reviewed': user_has_reviewed,
+        'current_user_id': current_user_id
     }
+    
+    if user_review:
+        product_data.update({
+            'user_rating': user_review['rating'],
+            'user_comment': user_review['comment']
+        })
     
     return render_template('product.html', product=product_data)
 
+@app.route('/product/<int:product_id>/review/delete', methods=['POST'])
+def delete_review(product_id):
+    if 'email' not in session:
+        return redirect(url_for('login'))
+    
+    user_id = supabase.table("users").select("user_id").eq("email", session['email']).execute().data[0]['user_id']
+    
+    # Delete the review
+    result = supabase.table('product_reviews').delete().eq('product_id', product_id).eq('user_id', user_id).execute()
+    
+    return redirect(url_for('product', product_id=product_id, message='Đã xóa đánh giá thành công!'))
 
 @app.route('/account',methods=['GET','POST'])
 def account():
