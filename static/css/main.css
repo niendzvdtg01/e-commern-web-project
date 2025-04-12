@@ -183,7 +183,7 @@ h2 {
 }
 .price {
     margin: 5px 0px;
-    color: red;
+    color: rgb(8, 7, 7);
     font-weight: bold;
     font-size: 16px;
 }

@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mai more mood</title>
+    <title>Mai more mood - {{ product.name }}</title>
     <link rel="stylesheet" href="/static/css/sanpham.css">
-    <link rel="icon" type = "img/png" href="/static/pictures/logorgb copy.png" sizes="192x192">
+    <link rel="icon" type="img/png" href="/static/pictures/logorgb copy.png" sizes="192x192">
     <!-- Them font chu cho header -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tektur:wdth,wght@75..100,400..900&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='js/homepage.js') }}"></script>
     <script src="/static/js/homepage.js"></script>
+    <script src="/static/js/cart.js"></script>
 </head>
 
 <body>
-    <!-- Tao thanh tim kiem -->
+<!-- Tao thanh tim kiem -->
 <div id="search-popup" class="search-popup">
     <div class="popup-content">
         <span class="close" onclick="closesearch()">&times;</span>
@@ -25,107 +26,117 @@
         </div>
     </div>
     <div id="search-result" class="search-result">
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Tên sản phẩm</th>
-                    <th>Số lượng hàng hóa</th>
-                    <th>giá</th>
-                </tr>
-            </thead>
-            <tbody id="result-body">
-                <!-- Dữ liệu được cập nhạt tại đây -->
-            </tbody>
-        </table>
-    </div>
-</div>
-
-
-<!-- End thanh tim kiem -->
-    <header>
-            <p class="font">_ Thêm một chút mai, thêm trọn cảm hứng. _</p>
-    </header>
-<!-- Start Thanh chức năng -->
-    <main>
-        <div class="container1">
-            <div class="menu">
-                <a href="#">
-                    <img src="/static/pictures/menu-svgrepo-com.svg" alt="menu" class = "menu">
-                </a>
+        <div>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: larger;">Các sản phẩm</p>
             </div>
-            <div class="logo">
-                <a href="#">
-                    <img src="/static/pictures/logo ngang.png" alt="logo">
-                </a>
-            </div>
-            <div class="features">
-                <a href="#" onclick="opensearch()">
-                    <img src="/static/pictures/search-svgrepo-com.svg" alt="cart" class = "search">
-                </a>
-                <a href="/login">
-                    <img src="/static/pictures/account-svgrepo-com.svg" alt="cart" class = "account">
-                </a>
-                <a href="#">
-                    <img src="/static/pictures/cart-shopping-svgrepo-com.svg" alt="account" class = "cart">
-                </a>
+            <div class="search-prodct" id="result-body">
+                <!-- Thông tin được tìm kiếm sẽ hiện tại đây -->
             </div>
         </div>
-<!-- End Thanh chức năng -->
-        <nav class="sub-menu">
-            <a href="#">Tất cả sản phẩm</a>
-            <a href="#">Mận dẻo</a>
-            <a href="#">Mận xí muội</a>
-            <a href="#">Mận khía</a>
-            <a href="#">Sấu bao tử</a>
-        </nav>
-    
+    </div>
+</div>
+<!-- End thanh tim kiem -->
+<!-- Thanh danh muc -->
+<div id="sidebar" class="sidebar">
+    <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
+    <ul class="sidebar-menu">
+        <li><a href="/">Trang chủ</a></li>
+        <li><a href="/product/1">Sản phẩm</a></li>
+        <li><a href="#">Giới thiệu</a></li>
+    </ul>
+</div>
+<!-- End thanh danh muc -->
+<header>
+    <p class="font">_ Thêm một chút mai, thêm trọn cảm hứng. _</p>
+</header>
+<!-- Start Thanh chức năng -->
+<main>
+    <div class="container1">
+        <div class="menu" onclick="toggleSidebar()">
+            <a href="#">
+                <img src="/static/pictures/menu-svgrepo-com.svg" alt="menu" class="menu">
+            </a>
+        </div>
+        <div class="logo">
+            <a href="/">
+                <img src="/static/pictures/logo ngang.png" alt="logo">
+            </a>
+        </div>
+        <div class="features">
+            <a href="#" onclick="opensearch()">
+                <img src="/static/pictures/search-svgrepo-com.svg" alt="cart" class="search">
+            </a>
+            <a href="/login">
+                <img src="/static/pictures/account-svgrepo-com.svg" alt="cart" class="account">
+            </a>
+            <a href="/payment">
+                <img src="/static/pictures/cart-shopping-svgrepo-com.svg" alt="account" class="cart">
+            </a>
+        </div>
+    </div>
+    <!-- End Thanh chức năng -->
+    <nav class="sub-menu">
+        <a href="#">Tất cả sản phẩm</a>
+        <a href="/product/1">Mận dẻo</a>
+        <a href="/product/2">Mận xí muội</a>
+        <a href="/product/3">Mận khía</a>
+        <a href="/product/4">Sấu bao tử</a>
+    </nav>
 
     <main>
         <div class="product-container">
             <div class="product-image-section">
                 <div class="product-image">
-                    <img id="main-image" src="/static/pictures/1.png" alt="Mận dẻo chua ngọt">
+                    <img id="main-image" src="{{ product.image_url }}" alt="{{ product.name }}">
                 </div>
                 <div class="thumbnail-gallery">
-                    <img class="thumbnail" data-src="/static/pictures/1.png" src="/static/pictures/1.png" alt="Thumbnail 1">
-                    <img class="thumbnail" data-src="/static/pictures/2.png" src="/static/pictures/2.png" alt="Thumbnail 2">
-                    <img class="thumbnail" data-src="/static/pictures/3.png" src="/static/pictures/3.png" alt="Thumbnail 3">
-                    <img class="thumbnail" data-src="/static/pictures/4.png" src="/static/pictures/4.png" alt="Thumbnail 4">
+                    {% for thumb in product.thumbnails %}
+                    <a href="/product/{{ thumb.id }}">
+                        <img class="thumbnail" data-src="{{ thumb.image_url }}" src="{{ thumb.image_url }}" alt="Thumbnail {{ thumb.id }}">
+                    </a>
+                    {% endfor %}
                 </div>
             </div>
             <div class="product-details">
-                <h1>Mận dẻo chua ngọt</h1>
+                <h1>{{ product.name }}</h1>
                 <div class="rating">
-                    <span>★★★★★</span>
+                    <span>{{ product.rating }}</span>
                     <a href="#" class="reviews">Viết đánh giá của bạn</a>
                 </div>
                 <div class="price">
-                    <span class="current-price">55.000đ</span>
-                    <span class="original-price">100.000đ</span>
-                    <span class="discount">-44%</span>
+                    <span class="current-price">{{ product.current_price }}đ</span>
+                    <span class="original-price">{{ product.original_price }}đ</span>
+                    <span class="discount">{{ product.discount }}</span>
                 </div>
                 <div class="options">
                     <span class="option-label">Đổi trả dễ dàng</span>
                     <span class="option-label">Chính hãng 100%</span>
                     <span class="option-label">Giao toàn quốc</span>
                 </div>
+                {% if product.is_best_seller %}
                 <div class="best-seller">
                     <span>🏆 Top bán chạy</span>
                 </div>
+                {% endif %}
                 <div class="info">
                     <p><strong>Thông tin sản phẩm:</strong></p>
-                    <p>- Chất liệu: Mận tươi tự nhiên</p>
-                    <p>- Hương vị: Chua ngọt</p>
-                    <p>- Đóng gói: Hộp 500g</p>
-                    <p>- Bảo quản: Nơi khô ráo, thoáng mát</p>
+                    <p>- Chất liệu: {{ product.material }}</p>
+                    <p>- Hương vị: {{ product.flavor }}</p>
+                    <p>- Đóng gói: {{ product.packaging }}</p>
+                    <p>- Bảo quản: {{ product.storage }}</p>
                 </div>
                 <div class="quantity">
                     <p><strong>Số lượng:</strong></p>
                     <input type="number" value="1" min="1" name="quantity">
                 </div>
                 <div class="actions">
-                    <form action="/cart" method="post"><button class="add-to-cart">Thêm vào giỏ hàng</button></form>
-                    <form action="/buy" method="post"><button class="buy-now">Mua ngay</button></form>
+                    <form action="/product/{{ product.id }}/cart" method="post">
+                        <button class="add-to-cart" type="submit">Thêm vào giỏ hàng</button>
+                    </form>
+                    <form action="/buy" method="post">
+                        <button class="buy-now">Mua ngay</button>
+                    </form>
                 </div>
             </div>
             <div class="comment">
@@ -146,7 +157,7 @@
                 <p>Email: maimoremood@gmail.com</p>
                 <p>Điện thoại: 0338242425</p>
             </div>
-    
+
             <div class="footer-subscribe">
                 <h3>ĐĂNG KÝ</h3>
                 <div class="subscribe-box">
@@ -155,12 +166,12 @@
                 </div>
                 <p>Theo dõi Mai More Mood từ các nền tảng khác nhau nhé!</p>
                 <div class="social-icons">
-                    <a href="https://www.facebook.com/profile.php?id=61571870681009"><img src="/pictures/facebook.svg" alt="Facebook"></a>
-                    <a href="#"><img src="/pictures/instagram.svg" alt="Instagram"></a>
-                    <a href="#"><img src="/pictures/tiktok.svg" alt="Tiktok"></a>
+                    <a href="https://www.facebook.com/profile.php?id=61571870681009"><img src="/static/pictures/facebook.svg" alt="Facebook"></a>
+                    <a href="#"><img src="/static/pictures/instagram.svg" alt="Instagram"></a>
+                    <a href="#"><img src="/static/pictures/tiktok.svg" alt="Tiktok"></a>
                 </div>
             </div>
-    
+
             <div class="footer-links">
                 <h3>ABOUT US</h3>
                 <ul>
@@ -170,7 +181,7 @@
                     <li><a href="#">Hệ Thống Cửa Hàng</a></li>
                 </ul>
             </div>
-    
+
             <div class="footer-policy">
                 <h3>CHÍNH SÁCH</h3>
                 <ul>
@@ -193,13 +204,11 @@
 
             thumbnails.forEach(thumbnail => {
                 thumbnail.addEventListener('click', function () {
-                    // Lấy đường dẫn ảnh lớn từ thuộc tính data-src
                     const newSrc = this.getAttribute('data-src');
-                    // Thay đổi src của ảnh chính
                     mainImage.setAttribute('src', newSrc);
                 });
             });
         });
     </script>
 </body>
-</html>
+</html> 
