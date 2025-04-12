@@ -76,7 +76,6 @@
     </div>
     <!-- End Thanh chức năng -->
     <nav class="sub-menu">
-        <a href="#">Tất cả sản phẩm</a>
         <a href="/product/1">Mận dẻo</a>
         <a href="/product/2">Mận xí muội</a>
         <a href="/product/3">Mận khía</a>
@@ -295,7 +294,7 @@
             const showMessage = urlParams.get('show_message') === 'True';
             
             // Only show message if both message and show_message are present and this is not the first visit
-            if (message && showMessage && document.referrer) {
+            if (message && showMessage && document.referrer && document.referrer !== window.location.href) {
                 alert(message);
                 // Remove message parameters from URL without reloading the page
                 const newUrl = window.location.pathname;
@@ -309,7 +308,7 @@
                 alert('Vui lòng chọn số sao đánh giá!');
                 return false;
             }
-            return confirm('Bạn có chắc chắn muốn gửi đánh giá này?');
+            return true;
         }
 
         function confirmUpdate() {
@@ -318,7 +317,7 @@
                 alert('Vui lòng chọn số sao đánh giá!');
                 return false;
             }
-            return confirm('Bạn có chắc chắn muốn cập nhật đánh giá này?');
+            return true;
         }
 
         function deleteReview(productId) {
