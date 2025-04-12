@@ -152,7 +152,7 @@
                 <div class="add-review">
                     {% if product.user_has_reviewed %}
                         <h3>Cập nhật đánh giá của bạn</h3>
-                        <form action="/product/{{ product.id }}/review" method="post" class="review-form" onsubmit="return confirmUpdate()">
+                        <form action="/product/{{ product.product_id }}" method="post" class="review-form" onsubmit="return confirmUpdate()">
                             <input type="hidden" name="action" value="update">
                             <div class="rating-input">
                                 <label>Đánh giá của bạn:</label>
@@ -166,12 +166,12 @@
                             <textarea name="comment" placeholder="Chia sẻ cảm nhận của bạn về sản phẩm..." required>{{ product.user_comment }}</textarea>
                             <div class="review-actions">
                                 <button type="submit" class="update-review">Cập nhật đánh giá</button>
-                                <button type="button" class="delete-review" onclick="deleteReview({{ product.id }})">Xóa đánh giá</button>
+                                <button type="button" class="delete-review" onclick="deleteReview({{ product.product_id }})">Xóa đánh giá</button>
                             </div>
                         </form>
                     {% else %}
                         <h3>Viết đánh giá của bạn</h3>
-                        <form action="/product/{{ product.id }}/review" method="post" class="review-form" onsubmit="return confirmSubmit()">
+                        <form action="/product/{{ product.product_id }}" method="post" class="review-form" onsubmit="return confirmSubmit()">
                             <input type="hidden" name="action" value="insert">
                             <div class="rating-input">
                                 <label>Đánh giá của bạn:</label>
@@ -210,7 +210,7 @@
                                     <div class="review-footer">
                                         <span class="review-date">{{ review.created_at }}</span>
                                         {% if review.user_id == product.current_user_id %}
-                                            <button class="delete-review" onclick="deleteReview({{ product.id }})">Xóa</button>
+                                            <button class="delete-review" onclick="deleteReview({{ product.product_id }})">Xóa</button>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -288,11 +288,36 @@
             });
         });
 
+        // Show success message if present in URL
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const message = urlParams.get('message');
+            const showMessage = urlParams.get('show_message') === 'True';
+            
+            // Only show message if both message and show_message are present and this is not the first visit
+            if (message && showMessage && document.referrer) {
+                alert(message);
+                // Remove message parameters from URL without reloading the page
+                const newUrl = window.location.pathname;
+                window.history.replaceState({}, document.title, newUrl);
+            }
+        });
+
         function confirmSubmit() {
+            const rating = document.querySelector('input[name="rating"]:checked');
+            if (!rating) {
+                alert('Vui lòng chọn số sao đánh giá!');
+                return false;
+            }
             return confirm('Bạn có chắc chắn muốn gửi đánh giá này?');
         }
 
         function confirmUpdate() {
+            const rating = document.querySelector('input[name="rating"]:checked');
+            if (!rating) {
+                alert('Vui lòng chọn số sao đánh giá!');
+                return false;
+            }
             return confirm('Bạn có chắc chắn muốn cập nhật đánh giá này?');
         }
 
@@ -306,7 +331,6 @@
                 })
                 .then(response => {
                     if (response.ok) {
-                        alert('Đã xóa đánh giá thành công!');
                         window.location.reload();
                     } else {
                         alert('Có lỗi xảy ra khi xóa đánh giá');
@@ -318,15 +342,6 @@
                 });
             }
         }
-
-        // Show success message if present in URL
-        window.addEventListener('load', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const message = urlParams.get('message');
-            if (message) {
-                alert(message);
-            }
-        });
     </script>
 </body>
 </html> 
