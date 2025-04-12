@@ -213,62 +213,7 @@
     </footer>
     <!-- end footer -->
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Handle all add to cart forms
-    document.querySelectorAll('.add-to-cart-form').forEach(form => {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const productId = formData.get('product_id');
-            const messageDiv = document.getElementById(`cart-message-${productId}`);
-            
-            fetch('/add-to-cart', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    messageDiv.textContent = data.message;
-                    messageDiv.style.display = 'block';
-                    messageDiv.style.color = 'green';
-                    
-                    // Update cart count in header if it exists
-                    const cartCount = document.getElementById('cart-count');
-                    if (cartCount) {
-                        cartCount.textContent = data.cart_count;
-                    }
-                    
-                    // Hide message after 3 seconds
-                    setTimeout(() => {
-                        messageDiv.style.display = 'none';
-                    }, 3000);
-                } else {
-                    messageDiv.textContent = data.message;
-                    messageDiv.style.display = 'block';
-                    messageDiv.style.color = 'red';
-                    
-                    // Hide message after 3 seconds
-                    setTimeout(() => {
-                        messageDiv.style.display = 'none';
-                    }, 3000);
-                }
-            })
-            .catch(error => {
-                messageDiv.textContent = 'Có lỗi xảy ra, vui lòng thử lại';
-                messageDiv.style.display = 'block';
-                messageDiv.style.color = 'red';
-                
-                setTimeout(() => {
-                    messageDiv.style.display = 'none';
-                }, 3000);
-            });
-        });
-    });
-});
-</script>
+
 
 <style>
 .cart-message {

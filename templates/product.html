@@ -115,7 +115,7 @@
                     <input type="number" value="1" min="1" name="quantity">
                 </div>
                 <div class="actions">
-                    <form id="add-to-cart-form-{{ product.product_id }}" class="add-to-cart-form" onsubmit="event.preventDefault(); addToCart({{ product.product_id }});">
+                    <form id="add-to-cart-form-{{ product.product_id }}" class="add-to-cart-form" onsubmit="event.preventDefault(); addToCart('{{ product.product_id }}');">
                         <input type="hidden" name="product_id" value="{{ product.product_id }}">
                         <input type="hidden" name="quantity" value="1">
                         <button type="submit" class="add-to-cart">Thêm giỏ hàng</button>
@@ -168,7 +168,7 @@
                             <textarea name="comment" placeholder="Chia sẻ cảm nhận của bạn về sản phẩm..." required>{{ product.user_comment }}</textarea>
                             <div class="review-actions">
                                 <button type="submit" class="update-review">Cập nhật đánh giá</button>
-                                <button type="button" class="delete-review" onclick="deleteReview({{ product.product_id }})">Xóa đánh giá</button>
+                                <button type="button" class="delete-review" onclick="deleteReview('{{ product.product_id }}')">Xóa đánh giá</button>
                             </div>
                         </form>
                     {% else %}
@@ -212,7 +212,7 @@
                                     <div class="review-footer">
                                         <span class="review-date">{{ review.created_at }}</span>
                                         {% if review.user_id == product.current_user_id %}
-                                            <button class="delete-review" onclick="deleteReview({{ product.product_id }})">Xóa</button>
+                                            <button class="delete-review" onclick="deleteReview('{{ product.product_id }}')">Xóa</button>
                                         {% endif %}
                                     </div>
                                 </div>

@@ -1,3 +1,57 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle all add to cart forms
+    document.querySelectorAll('.add-to-cart-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const productId = formData.get('product_id');
+            const messageDiv = document.getElementById(`cart-message-${productId}`);
+            
+            fetch('/add-to-cart', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    messageDiv.textContent = data.message;
+                    messageDiv.style.display = 'block';
+                    messageDiv.style.color = 'green';
+                    
+                    // Update cart count in header if it exists
+                    const cartCount = document.getElementById('cart-count');
+                    if (cartCount) {
+                        cartCount.textContent = data.cart_count;
+                    }
+                    
+                    // Hide message after 3 seconds
+                    setTimeout(() => {
+                        messageDiv.style.display = 'none';
+                    }, 3000);
+                } else {
+                    messageDiv.textContent = data.message;
+                    messageDiv.style.display = 'block';
+                    messageDiv.style.color = 'red';
+                    
+                    // Hide message after 3 seconds
+                    setTimeout(() => {
+                        messageDiv.style.display = 'none';
+                    }, 3000);
+                }
+            })
+            .catch(error => {
+                messageDiv.textContent = 'Có lỗi xảy ra, vui lòng thử lại';
+                messageDiv.style.display = 'block';
+                messageDiv.style.color = 'red';
+                
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 3000);
+            });
+        });
+    });
+});
 function updateQuantity(productId, change) {
     const quantityInput = document.getElementById(`quantity-${productId}`);
     const currentQuantity = parseInt(quantityInput.value);
@@ -60,23 +114,10 @@ function updateQuantity(productId, change) {
 }
 
 function removeFromCart(productId) {
-    if (!productId) {
-        console.error('Product ID is required');
-        return;
-    }
-
-    // Get the product element
-    const productElement = document.querySelector(`[data-product-id="${productId}"]`);
-    if (!productElement) {
-        console.error('Product element not found');
-        return;
-    }
-
     // Create form data
     const formData = new FormData();
     formData.append('product_id', productId);
-
-    // Send request to remove item
+    
     fetch('/remove-from-cart', {
         method: 'POST',
         body: formData
@@ -90,6 +131,7 @@ function removeFromCart(productId) {
     .then(data => {
         if (data.success) {
             // Remove the product element from the DOM
+            const productElement = document.querySelector(`[data-product-id="${productId}"]`);
             if (productElement) {
                 productElement.remove();
             }
@@ -97,31 +139,22 @@ function removeFromCart(productId) {
             // Update total price
             const totalElement = document.getElementById('total-price');
             if (totalElement) {
-                totalElement.textContent = data.total.toLocaleString('vi-VN') + 'đ';
+                totalElement.textContent = data.total + 'đ';
             }
             
             // If cart is empty, show empty cart message
-            const productContainer = document.querySelector('.product-container');
-            if (productContainer) {
-                const remainingProducts = productContainer.querySelectorAll('.bbbbbb');
-                if (remainingProducts.length === 0) {
+            if (data.cart_count === 0) {
+                const productContainer = document.querySelector('.product-container');
+                if (productContainer) {
                     productContainer.innerHTML = '<div class="empty-cart-message"><p>Giỏ hàng của bạn đang trống</p></div>';
                 }
             }
-            
-            // Update cart count in header if it exists
-            const cartCount = document.getElementById('cart-count');
-            if (cartCount) {
-                cartCount.textContent = data.cart_count;
-            }
         } else {
             console.error('Failed to remove item:', data.message);
-            alert(data.message || 'Failed to remove item from cart');
         }
     })
     .catch(error => {
         console.error('Error removing item:', error);
-        alert('An error occurred while removing the item');
     });
 }
 
@@ -154,53 +187,50 @@ function clearCart() {
     });
 }
 
-// Function to handle adding items to cart from product list
-function addToCart(productId) {
-    const form = document.getElementById(`add-to-cart-form-${productId}`);
-    const formData = new FormData(form);
-    
-    fetch('/add-to-cart', {
+function createPayment() {
+    // Get cart items
+    const cartItems = Array.from(document.querySelectorAll('.bbbbbb')).map(item => ({
+        product_id: item.dataset.productId,
+        name: item.querySelector('h3').textContent,
+        price: parseInt(item.querySelector('p').textContent.replace('Giá: ', '').replace('đ', '')),
+        quantity: parseInt(item.querySelector('input[type="number"]').value)
+    }));
+
+    // Get total amount
+    const total = parseInt(document.getElementById('total-price').textContent.replace('đ', ''));
+
+    // Send payment request
+    fetch('/create-payment', {
         method: 'POST',
-        body: formData
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            item: cartItems,
+            total: total
+        })
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            return response.json().then(data => {
+                throw new Error(data.message || 'Payment creation failed');
+            });
         }
         return response.json();
     })
     .then(data => {
-        const messageDiv = document.getElementById(`cart-message-${productId}`);
         if (data.success) {
-            messageDiv.textContent = data.message;
-            messageDiv.style.display = 'block';
-            messageDiv.style.color = 'green';
-            
-            // Update cart count in header if it exists
-            const cartCount = document.getElementById('cart-count');
-            if (cartCount) {
-                cartCount.textContent = data.cart_count;
-            }
+            // Store app_trans_id in sessionStorage
+            sessionStorage.setItem('app_trans_id', data.app_trans_id);
+            // Redirect to payment URL
+            window.location.href = data.payment_url;
         } else {
-            messageDiv.textContent = data.message;
-            messageDiv.style.display = 'block';
-            messageDiv.style.color = 'red';
+            alert(data.message || 'Payment creation failed');
         }
-        
-        // Hide message after 3 seconds
-        setTimeout(() => {
-            messageDiv.style.display = 'none';
-        }, 3000);
     })
     .catch(error => {
-        console.error('Error adding to cart:', error);
-        const messageDiv = document.getElementById(`cart-message-${productId}`);
-        messageDiv.textContent = 'Có lỗi xảy ra, vui lòng thử lại';
-        messageDiv.style.display = 'block';
-        messageDiv.style.color = 'red';
-        
-        setTimeout(() => {
-            messageDiv.style.display = 'none';
-        }, 3000);
+        console.error('Error creating payment:', error);
+        alert(error.message || 'Có lỗi xảy ra khi tạo thanh toán. Vui lòng thử lại.');
     });
 } 
