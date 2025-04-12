@@ -72,7 +72,6 @@ function renderResults(data) {
                         <img src="/static/pictures/${row.product_id}.png" alt="">
                             <div>
                                 <p>${row.product_name ?? "N/A"}</p>
-                                <p>⭐⭐⭐⭐⭐</p>
                                 <p style="font-weight: bold; color: red;">${row.price ?? "N/A"}</p>
                             </div>
                     </div>

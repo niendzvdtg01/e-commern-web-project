@@ -11,7 +11,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tektur:wdth,wght@75..100,400..900&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='js/homepage.js') }}"></script>
-    <script src="/static/js/homepage.js"></script>
     <script src="/static/js/cart.js"></script>
 </head>
 
@@ -88,50 +87,36 @@
         <div class="product-container">
             <div class="product-image-section">
                 <div class="product-image">
-                    <img id="main-image" src="{{ product.image_url }}" alt="{{ product.name }}">
-                </div>
-                <div class="thumbnail-gallery">
-                    {% for thumb in product.thumbnails %}
-                    <a href="/product/{{ thumb.id }}">
-                        <img class="thumbnail" data-src="{{ thumb.image_url }}" src="{{ thumb.image_url }}" alt="Thumbnail {{ thumb.id }}">
-                    </a>
-                    {% endfor %}
+                    <img id="main-image" src="{{ product.image_url }}" alt="{{ product.product_name }}">
                 </div>
             </div>
             <div class="product-details">
-                <h1>{{ product.name }}</h1>
+                <h1>{{ product.product_name }}</h1>
                 <div class="rating">
                     <span>{{ product.rating }}</span>
                     <a href="#" class="reviews">Viết đánh giá của bạn</a>
                 </div>
                 <div class="price">
-                    <span class="current-price">{{ product.current_price }}đ</span>
-                    <span class="original-price">{{ product.original_price }}đ</span>
-                    <span class="discount">{{ product.discount }}</span>
+                    <span class="current-price">{{ product.price }}đ</span>
                 </div>
                 <div class="options">
                     <span class="option-label">Đổi trả dễ dàng</span>
                     <span class="option-label">Chính hãng 100%</span>
                     <span class="option-label">Giao toàn quốc</span>
                 </div>
-                {% if product.is_best_seller %}
-                <div class="best-seller">
-                    <span>🏆 Top bán chạy</span>
-                </div>
-                {% endif %}
                 <div class="info">
                     <p><strong>Thông tin sản phẩm:</strong></p>
-                    <p>- Chất liệu: {{ product.material }}</p>
-                    <p>- Hương vị: {{ product.flavor }}</p>
-                    <p>- Đóng gói: {{ product.packaging }}</p>
-                    <p>- Bảo quản: {{ product.storage }}</p>
+                    <p>- Chất liệu:</p>
+                    <p>- Hương vị:</p>
+                    <p>- Đóng gói:</p>
+                    <p>- Bảo quản:</p>
                 </div>
                 <div class="quantity">
-                    <p><strong>Số lượng:</strong></p>
+                    <p><strong>Số lượng:</strong>{{ product.quantity }}</p>
                     <input type="number" value="1" min="1" name="quantity">
                 </div>
                 <div class="actions">
-                    <form action="/product/{{ product.id }}/cart" method="post">
+                    <form action="/product/{{ product.id }}/cart/add" method="post">
                         <button class="add-to-cart" type="submit">Thêm vào giỏ hàng</button>
                     </form>
                     <form action="/buy" method="post">
@@ -142,6 +127,99 @@
             <div class="comment">
                 <button class="describe">Mô tả sản phẩm</button>
                 <button class="Evaluate">Đánh giá sản phẩm</button>
+            </div>
+
+            <!-- Comment and Rating Section -->
+            <div class="comment-section">
+                <div class="rating-summary">
+                    <h2>Đánh giá sản phẩm</h2>
+                    <div class="overall-rating">
+                        <div class="rating-score">
+                            <span class="rating-number">{{ product.rating }}</span>
+                            <div class="stars">
+                                {% for i in range(5) %}
+                                    {% if i < product.rating %}
+                                        <span class="star filled">★</span>
+                                    {% else %}
+                                        <span class="star">☆</span>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="add-review">
+                    {% if product.user_has_reviewed %}
+                        <h3>Cập nhật đánh giá của bạn</h3>
+                        <form action="/product/{{ product.product_id }}" method="post" class="review-form" onsubmit="return confirmUpdate()">
+                            <input type="hidden" name="action" value="update">
+                            <div class="rating-input">
+                                <label>Đánh giá của bạn:</label>
+                                <div class="star-rating">
+                                    {% for i in range(5, 0, -1) %}
+                                        <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}" {% if i == product.user_rating %}checked{% endif %}>
+                                        <label for="star{{ i }}">★</label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <textarea name="comment" placeholder="Chia sẻ cảm nhận của bạn về sản phẩm..." required>{{ product.user_comment }}</textarea>
+                            <div class="review-actions">
+                                <button type="submit" class="update-review">Cập nhật đánh giá</button>
+                                <button type="button" class="delete-review" onclick="deleteReview({{ product.product_id }})">Xóa đánh giá</button>
+                            </div>
+                        </form>
+                    {% else %}
+                        <h3>Viết đánh giá của bạn</h3>
+                        <form action="/product/{{ product.product_id }}" method="post" class="review-form" onsubmit="return confirmSubmit()">
+                            <input type="hidden" name="action" value="insert">
+                            <div class="rating-input">
+                                <label>Đánh giá của bạn:</label>
+                                <div class="star-rating">
+                                    {% for i in range(5, 0, -1) %}
+                                        <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}">
+                                        <label for="star{{ i }}">★</label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <textarea name="comment" placeholder="Chia sẻ cảm nhận của bạn về sản phẩm..." required></textarea>
+                            <button type="submit" class="submit-review">Gửi đánh giá</button>
+                        </form>
+                    {% endif %}
+                </div>
+
+                <div class="reviews-container">
+                    <h3>Đánh giá từ khách hàng</h3>
+                    <div class="reviews-list">
+                        {% if product.reviews %}
+                            {% for review in product.reviews %}
+                                <div class="review-item">
+                                    <div class="review-header">
+                                        <span class="user-name">{{ review.user_name }}</span>
+                                        <div class="review-rating">
+                                            {% for i in range(5) %}
+                                                {% if i < review.rating %}
+                                                    <span class="star filled">★</span>
+                                                {% else %}
+                                                    <span class="star">☆</span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <p class="review-comment">{{ review.comment }}</p>
+                                    <div class="review-footer">
+                                        <span class="review-date">{{ review.created_at }}</span>
+                                        {% if review.user_id == product.current_user_id %}
+                                            <button class="delete-review" onclick="deleteReview({{ product.product_id }})">Xóa</button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>Chưa có đánh giá nào cho sản phẩm này.</p>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -209,6 +287,61 @@
                 });
             });
         });
+
+        // Show success message if present in URL
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const message = urlParams.get('message');
+            const showMessage = urlParams.get('show_message') === 'True';
+            
+            // Only show message if both message and show_message are present and this is not the first visit
+            if (message && showMessage && document.referrer) {
+                alert(message);
+                // Remove message parameters from URL without reloading the page
+                const newUrl = window.location.pathname;
+                window.history.replaceState({}, document.title, newUrl);
+            }
+        });
+
+        function confirmSubmit() {
+            const rating = document.querySelector('input[name="rating"]:checked');
+            if (!rating) {
+                alert('Vui lòng chọn số sao đánh giá!');
+                return false;
+            }
+            return confirm('Bạn có chắc chắn muốn gửi đánh giá này?');
+        }
+
+        function confirmUpdate() {
+            const rating = document.querySelector('input[name="rating"]:checked');
+            if (!rating) {
+                alert('Vui lòng chọn số sao đánh giá!');
+                return false;
+            }
+            return confirm('Bạn có chắc chắn muốn cập nhật đánh giá này?');
+        }
+
+        function deleteReview(productId) {
+            if (confirm('Bạn có chắc chắn muốn xóa đánh giá này?')) {
+                fetch(`/product/${productId}/review/delete`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        alert('Có lỗi xảy ra khi xóa đánh giá');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi xóa đánh giá');
+                });
+            }
+        }
     </script>
 </body>
 </html> 
