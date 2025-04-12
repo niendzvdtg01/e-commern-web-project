@@ -115,9 +115,12 @@
                     <input type="number" value="1" min="1" name="quantity">
                 </div>
                 <div class="actions">
-                    <form action="/product/{{ product.id }}/cart/add" method="post">
-                        <button class="add-to-cart" type="submit">Thêm vào giỏ hàng</button>
+                    <form id="add-to-cart-form-{{ product.product_id }}" class="add-to-cart-form" onsubmit="event.preventDefault(); addToCart({{ product.product_id }});">
+                        <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="add-to-cart">Thêm giỏ hàng</button>
                     </form>
+                    <div id="cart-message-{{ product.product_id }}" class="cart-message" style="display: none;"></div>
                     <form action="/buy" method="post">
                         <button class="buy-now">Mua ngay</button>
                     </form>
