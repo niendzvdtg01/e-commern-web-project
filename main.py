@@ -687,8 +687,9 @@ def callback():
             'return_code': 0,
             'return_message': str(e)
         }), 500
+
 @app.route('/redirect-from-zalopay', methods=['GET'])
-def redirect():
+def zalopay_redirect():
     data = request.args
     checksumData = "{}|{}|{}|{}|{}|{}|{}".format(data.get('appid'), data.get('apptransid'), data.get('pmcid'), data.get('bankcode'), data.get('amount'), data.get('discountamount'), data.get('status'))
     checksum = hmac.new(config['key2'].encode(), checksumData, hashlib.sha256).hexdigest()
@@ -763,6 +764,5 @@ def payment_status(app_trans_id):
     except Exception as e:
         print(f"Error in payment status check: {str(e)}")
         return render_template('payment_error.html', error=str(e))
-
 if __name__ == '__main__':
     app.run(debug=True)
