@@ -104,6 +104,11 @@
                 border: none;
                 border-radius: 5px;
             }
+            .note{
+                text-align: left;
+                width: 20vw;
+                margin: auto;
+            }
         </style>
 	</head>
 	<body>
@@ -204,12 +209,21 @@
 								{% endif %}
 							</div>
 						<div class="total-container">
-							Tổng cộng: <span id="total-price">{{ total }}đ</span>
+
+                            Tổng cộng: <span id="total-price">{{ total }}đ</span>
 							<br>
                             <button class="pay-button" onclick="createPayment()">Thanh toán</button>
 							<br>
 							<button class="clear-cart-button" onclick="clearCart()">Xóa giỏ hàng</button>
-						</div>
+                            <div class="note"><p>note: Đây là môi trường thử nghiệm, vui lòng sử dụng tài khoản sandbox: <a href="https://beta-docs.zalopay.vn/docs/developer-tools/test-instructions/test-wallets/">SANDBOX</a></p>
+                                <p>Hoặc thanh toán nhanh bằng thẻ ATM nội địa: </p>
+                                
+                                    <p>Số thẻ: 9704540000000062</p>
+                                    <p>Chủ tk:  NGUYEN VAN A</p>
+                                    <p>Ngày phát hành: 1018</p>
+                                    <p>Mã xác thực: 111111</p>
+                                </div>
+                        </div>
 					</div>
 				</div>
 			</div>
