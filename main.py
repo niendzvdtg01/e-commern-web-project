@@ -528,7 +528,6 @@ config = {
     "key1": os.environ.get("KEY1"),
     "key2": os.environ.get("KEY2"),
     "endpoint": "https://sb-openapi.zalopay.vn/v2/create",
-    # "query_endpoint": "https://sb-openapi.zalopay.vn/v2/query"
 }
 
 @app.route('/create-payment', methods=['POST'])
@@ -567,6 +566,7 @@ def create_payment():
             "callback_url": "http://127.0.0.1:5000/callback",  # Updated callback URL
             "embed_data": json.dumps({
                 "email": session['email'],
+                "redirecturl": "http://127.0.1:5000/callback",
                 "cart": cart,
                 "preferred_payment_method": []
             }),
@@ -614,10 +614,16 @@ def create_payment():
             supabase.table("orders").insert({
                 "app_trans_id": order["app_trans_id"],
                 "email": session['email'],
-                "amount": total_amount,
                 "status": "pending",
             }).execute()
-            
+            for item in cart:
+                supabase.table("order_items").insert({
+                    "app_trans_id": order["app_trans_id"],
+                    "product_id": item['product_id'],
+                    "quantity": item['quantity'] ,
+                    "price": item['price'],
+                }).execute()
+
             return jsonify({
                 'success': True,
                 'payment_url': result['order_url'],
@@ -640,6 +646,11 @@ def create_payment():
 def callback():
     try:
         data = request.json
+        if not data:
+            return jsonify({
+                'return_code': -1,
+                'return_message': 'No data provided'
+            }), 400
         
         # Verify callback authenticity
         mac = hmac.new(
@@ -659,13 +670,12 @@ def callback():
         
         # Update order status in database
         supabase.table("orders").update({
-            "status": "completed" if payment_data['status'] == 1 else "failed",
-            "payment_time": datetime.now().isoformat()
+            "status": "completed",
+            "created_at": datetime.now().isoformat()
         }).eq("app_trans_id", payment_data['app_trans_id']).execute()
 
         # Clear cart if payment successful
-        if payment_data['status'] == 1:
-            session['cart'] = []
+        session['cart'] = []
 
         return jsonify({
             'return_code': 1,
@@ -679,15 +689,15 @@ def callback():
         }), 500
 @app.route('/redirect-from-zalopay', methods=['GET'])
 def redirect():
-  data = request.args
-  checksumData = "{}|{}|{}|{}|{}|{}|{}".format(data.get('appid'), data.get('apptransid'), data.get('pmcid'), data.get('bankcode'), data.get('amount'), data.get('discountamount'), data.get('status'))
-  checksum = hmac.new(config['key2'].encode(), checksumData, hashlib.sha256).hexdigest()
+    data = request.args
+    checksumData = "{}|{}|{}|{}|{}|{}|{}".format(data.get('appid'), data.get('apptransid'), data.get('pmcid'), data.get('bankcode'), data.get('amount'), data.get('discountamount'), data.get('status'))
+    checksum = hmac.new(config['key2'].encode(), checksumData, hashlib.sha256).hexdigest()
 
-  if checksum != data.get('checksum'):
-    return "Bad Request", 400
-  else:
-    # kiểm tra xem đã nhận được callback hay chưa, nếu chưa thì tiến hành gọi API truy vấn trạng thái thanh toán của đơn hàng để lấy kết quả cuối cùng
-    return "Ok", 200
+    if checksum != data.get('checksum'):
+        return "Bad Request", 400
+    else:
+        # kiểm tra xem đã nhận được callback hay chưa, nếu chưa thì tiến hành gọi API truy vấn trạng thái thanh toán của đơn hàng để lấy kết quả cuối cùng
+        return "Ok", 200
   
 @app.route('/payment-status/<app_trans_id>', methods=['GET'])
 def payment_status(app_trans_id):
@@ -733,10 +743,10 @@ def payment_status(app_trans_id):
             
             if result['return_code'] == 1:
                 # Update order status
-                new_status = "completed" if result['status'] == 1 else "failed"
+                new_status = "completed"
                 supabase.table("orders").update({
                     "status": new_status,
-                    "payment_time": datetime.now().isoformat()
+                    "created_at": datetime.now().isoformat()
                 }).eq("app_trans_id", app_trans_id).execute()
                 
                 order['status'] = new_status
