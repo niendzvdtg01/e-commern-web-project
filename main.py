@@ -566,7 +566,7 @@ def create_payment():
             "callback_url": "http://127.0.0.1:5000/callback",  # Updated callback URL
             "embed_data": json.dumps({
                 "email": session['email'],
-                "redirecturl": "http://127.0.1:5000/callback",
+                "redirecturl": "http://127.0.0.1:5000/cart",  # Updated redirect URL
                 "cart": cart,
                 "preferred_payment_method": []
             }),
@@ -645,44 +645,55 @@ def create_payment():
 @app.route('/callback', methods=['POST'])
 def callback():
     try:
-        data = request.json
+        # Handle both POST and GET requests
+        if request.method == 'POST':
+            data = request.json
+        else:  # GET request
+            data = request.args.to_dict()
+            
         if not data:
             return jsonify({
                 'return_code': -1,
                 'return_message': 'No data provided'
             }), 400
-        
-        # Verify callback authenticity
-        mac = hmac.new(
-            config['key2'].encode(),
-            data['data'].encode(),
-            hashlib.sha256
-        ).hexdigest()
 
-        if mac != data['mac']:
-            return jsonify({
-                'return_code': -1,
-                'return_message': 'Invalid MAC'
-            }), 400
+        # For POST requests, verify MAC
+        if request.method == 'POST':
+            mac = hmac.new(
+                config['key2'].encode(),
+                data['data'].encode(),
+                hashlib.sha256
+            ).hexdigest()
 
-        # Parse callback data
-        payment_data = json.loads(data['data'])
-        
+            if mac != data['mac']:
+                return jsonify({
+                    'return_code': -1,
+                    'return_message': 'Invalid MAC'
+                }), 400
+
+            # Parse callback data
+            payment_data = json.loads(data['data'])
+        else:  # GET request
+            payment_data = data
+
         # Update order status in database
         supabase.table("orders").update({
-            "status": "completed",
-            "created_at": datetime.now().isoformat()
-        }).eq("app_trans_id", payment_data['app_trans_id']).execute()
+            "status": "completed" if payment_data.get('status') == 1 else "failed",
+            "payment_time": datetime.now().isoformat()
+        }).eq("app_trans_id", payment_data.get('apptransid')).execute()
 
         # Clear cart if payment successful
-        session['cart'] = []
+        if payment_data.get('status') == 1:
+            session['cart'] = []
 
+        # Return success response
         return jsonify({
             'return_code': 1,
             'return_message': 'success'
         })
 
     except Exception as e:
+        print(f"Error in callback: {str(e)}")
         return jsonify({
             'return_code': 0,
             'return_message': str(e)
@@ -690,15 +701,33 @@ def callback():
 
 @app.route('/redirect-from-zalopay', methods=['GET'])
 def zalopay_redirect():
-    data = request.args
-    checksumData = "{}|{}|{}|{}|{}|{}|{}".format(data.get('appid'), data.get('apptransid'), data.get('pmcid'), data.get('bankcode'), data.get('amount'), data.get('discountamount'), data.get('status'))
-    checksum = hmac.new(config['key2'].encode(), checksumData, hashlib.sha256).hexdigest()
+    try:
+        data = request.args
+        checksumData = "{}|{}|{}|{}|{}|{}|{}".format(
+            data.get('appid'), 
+            data.get('apptransid'), 
+            data.get('pmcid'), 
+            data.get('bankcode'), 
+            data.get('amount'), 
+            data.get('discountamount'), 
+            data.get('status')
+        )
+        checksum = hmac.new(config['key2'].encode(), checksumData.encode(), hashlib.sha256).hexdigest()
 
-    if checksum != data.get('checksum'):
-        return "Bad Request", 400
-    else:
-        # kiểm tra xem đã nhận được callback hay chưa, nếu chưa thì tiến hành gọi API truy vấn trạng thái thanh toán của đơn hàng để lấy kết quả cuối cùng
-        return "Ok", 200
+        if checksum != data.get('checksum'):
+            return render_template('payment_error.html', error="Invalid checksum"), 400
+        
+        # Get the app_trans_id from the data
+        app_trans_id = data.get('apptransid')
+        if not app_trans_id:
+            return render_template('payment_error.html', error="Missing transaction ID"), 400
+            
+        # Redirect to payment status page
+        return redirect(url_for('payment_status', app_trans_id=app_trans_id))
+        
+    except Exception as e:
+        print(f"Error in zalopay_redirect: {str(e)}")
+        return render_template('payment_error.html', error=str(e)), 500
   
 @app.route('/payment-status/<app_trans_id>', methods=['GET'])
 def payment_status(app_trans_id):
@@ -744,10 +773,10 @@ def payment_status(app_trans_id):
             
             if result['return_code'] == 1:
                 # Update order status
-                new_status = "completed"
+                new_status = "completed" if result.get('status') == 1 else "failed"
                 supabase.table("orders").update({
                     "status": new_status,
-                    "created_at": datetime.now().isoformat()
+                    "payment_time": datetime.now().isoformat()
                 }).eq("app_trans_id", app_trans_id).execute()
                 
                 order['status'] = new_status
