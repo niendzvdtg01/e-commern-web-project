@@ -190,11 +190,11 @@
 										<h3>{{ item.name }}</h3>
 										<p>Giá: {{ item.price }}đ</p>
 										<div class="quantity-control">
-											<button onclick="updateQuantity({{ item.product_id }}, -1)">-</button>
+                                            <button onclick="updateQuantity('{{ item.product_id }}', -1)">-</button>
 											<input type="number" value="{{ item.quantity }}" min="0" id="quantity-{{ item.product_id }}" readonly>
-											<button onclick="updateQuantity({{ item.product_id }}, 1)">+</button>
+											<button onclick="updateQuantity('{{ item.product_id }}', 1)">+</button>
 										</div>
-										<button onclick="removeFromCart({{ item.product_id }})" class="remove-button">Xóa</button>
+                                        <button onclick="removeFromCart('{{ item.product_id }}')" class="remove-button">Xóa</button>
 									</div>
 									{% endfor %}
 								{% else %}
@@ -206,7 +206,7 @@
 						<div class="total-container">
 							Tổng cộng: <span id="total-price">{{ total }}đ</span>
 							<br>
-							<button class="pay-button" onclick="processPayment()">Thanh toán</button>
+                            <button class="pay-button" onclick="createPayment()">Thanh toán</button>
 							<br>
 							<button class="clear-cart-button" onclick="clearCart()">Xóa giỏ hàng</button>
 						</div>

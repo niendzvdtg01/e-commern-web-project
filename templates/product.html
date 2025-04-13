@@ -76,7 +76,6 @@
     </div>
     <!-- End Thanh chức năng -->
     <nav class="sub-menu">
-        <a href="#">Tất cả sản phẩm</a>
         <a href="/product/1">Mận dẻo</a>
         <a href="/product/2">Mận xí muội</a>
         <a href="/product/3">Mận khía</a>
@@ -116,9 +115,12 @@
                     <input type="number" value="1" min="1" name="quantity">
                 </div>
                 <div class="actions">
-                    <form action="/product/{{ product.id }}/cart/add" method="post">
-                        <button class="add-to-cart" type="submit">Thêm vào giỏ hàng</button>
+                    <form id="add-to-cart-form-{{ product.product_id }}" class="add-to-cart-form" onsubmit="event.preventDefault(); addToCart('{{ product.product_id }}');">
+                        <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="add-to-cart">Thêm giỏ hàng</button>
                     </form>
+                    <div id="cart-message-{{ product.product_id }}" class="cart-message" style="display: none;"></div>
                     <form action="/buy" method="post">
                         <button class="buy-now">Mua ngay</button>
                     </form>
@@ -166,7 +168,7 @@
                             <textarea name="comment" placeholder="Chia sẻ cảm nhận của bạn về sản phẩm..." required>{{ product.user_comment }}</textarea>
                             <div class="review-actions">
                                 <button type="submit" class="update-review">Cập nhật đánh giá</button>
-                                <button type="button" class="delete-review" onclick="deleteReview({{ product.product_id }})">Xóa đánh giá</button>
+                                <button type="button" class="delete-review" onclick="deleteReview('{{ product.product_id }}')">Xóa đánh giá</button>
                             </div>
                         </form>
                     {% else %}
@@ -210,7 +212,7 @@
                                     <div class="review-footer">
                                         <span class="review-date">{{ review.created_at }}</span>
                                         {% if review.user_id == product.current_user_id %}
-                                            <button class="delete-review" onclick="deleteReview({{ product.product_id }})">Xóa</button>
+                                            <button class="delete-review" onclick="deleteReview('{{ product.product_id }}')">Xóa</button>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -295,7 +297,7 @@
             const showMessage = urlParams.get('show_message') === 'True';
             
             // Only show message if both message and show_message are present and this is not the first visit
-            if (message && showMessage && document.referrer) {
+            if (message && showMessage && document.referrer && document.referrer !== window.location.href) {
                 alert(message);
                 // Remove message parameters from URL without reloading the page
                 const newUrl = window.location.pathname;
@@ -309,7 +311,7 @@
                 alert('Vui lòng chọn số sao đánh giá!');
                 return false;
             }
-            return confirm('Bạn có chắc chắn muốn gửi đánh giá này?');
+            return true;
         }
 
         function confirmUpdate() {
@@ -318,7 +320,7 @@
                 alert('Vui lòng chọn số sao đánh giá!');
                 return false;
             }
-            return confirm('Bạn có chắc chắn muốn cập nhật đánh giá này?');
+            return true;
         }
 
         function deleteReview(productId) {
