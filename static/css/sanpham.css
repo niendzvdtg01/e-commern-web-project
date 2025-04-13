@@ -612,6 +612,7 @@ header{
 
 /* Comment and Rating Section Styles */
 .comment-section {
+    width: 100%;
     margin-top: 40px;
     padding: 20px;
     background-color: #fff;
