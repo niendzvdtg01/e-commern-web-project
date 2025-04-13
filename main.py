@@ -553,8 +553,9 @@ def callback():
             'return_code': 0,
             'return_message': str(e)
         }), 500
+
 @app.route('/redirect-from-zalopay', methods=['GET'])
-def redirect():
+def zalopay_redirect():
     data = request.args
     checksumData = "{}|{}|{}|{}|{}|{}|{}".format(data.get('appid'), data.get('apptransid'), data.get('pmcid'), data.get('bankcode'), data.get('amount'), data.get('discountamount'), data.get('status'))
     checksum = hmac.new(config['key2'].encode(), checksumData, hashlib.sha256).hexdigest()
@@ -625,109 +626,5 @@ def payment_status(app_trans_id):
                                 
     except Exception as e:
         return render_template('payment_error.html', error=str(e))
-
-@app.route('/add-to-cart', methods=['POST'])
-def add_to_cart():
-    if 'email' not in session:
-        return jsonify({'success': False, 'message': 'Vui lòng đăng nhập trước'}), 401
-        
-    product_id = request.form.get('product_id')
-    quantity = int(request.form.get('quantity', 1))
-    
-    # Get product details from database
-    response = supabase.table("products").select("*").eq("product_id", product_id).execute()
-    if not response.data:
-        return jsonify({'success': False, 'message': 'Sản phẩm không tồn tại'}), 404
-        
-    product = response.data[0]
-    
-    # Initialize cart if it doesn't exist
-    if 'cart' not in session:
-        session['cart'] = []
-        
-    # Check if product already in cart
-    cart = session['cart']
-    for item in cart:
-        if item['product_id'] == product_id:
-            item['quantity'] += quantity
-            session['cart'] = cart
-            return jsonify({
-                'success': True, 
-                'message': 'Đã thêm sản phẩm vào giỏ hàng',
-                'cart_count': len(cart)
-            })
-            
-    # Add new item to cart
-    cart.append({
-        'product_id': product_id,
-        'name': product['product_name'],
-        'price': product['price'],
-        'quantity': quantity,
-        'image_url': product['img_url']
-    })
-    session['cart'] = cart
-    
-    return jsonify({
-        'success': True, 
-        'message': 'Đã thêm sản phẩm vào giỏ hàng',
-        'cart_count': len(cart)
-    })
-
-@app.route('/update-cart', methods=['POST'])
-def update_cart():
-    if 'email' not in session:
-        return jsonify({'success': False, 'message': 'Please login first'}), 401
-        
-    product_id = request.form.get('product_id')
-    quantity = int(request.form.get('quantity', 1))
-    price = int(request.form.get('price', 0))
-    
-    cart = session.get('cart', [])
-    for item in cart:
-        if item['product_id'] == product_id:
-            item['quantity'] = quantity
-            item['price'] = price  # Update price in session
-            break
-            
-    session['cart'] = cart
-    total = sum(item["price"] * item["quantity"] for item in cart)
-    
-    return jsonify({
-        'success': True, 
-        'total': total,
-        'cart_count': len(cart)
-    })
-
-@app.route('/remove-from-cart', methods=['POST'])
-def remove_from_cart():
-    if 'email' not in session:
-        return jsonify({'success': False, 'message': 'Please login first'}), 401
-        
-    data = request.get_json()
-    product_id = data.get('product_id')
-    
-    cart = session.get('cart', [])
-    cart = [item for item in cart if item['product_id'] != product_id]
-    session['cart'] = cart
-    
-    total = sum(item["price"] * item["quantity"] for item in cart)
-    return jsonify({
-        'success': True, 
-        'total': total,
-        'cart_count': len(cart)
-    })
-
-@app.route('/clear-cart', methods=['POST'])
-def clear_cart():
-    if 'email' not in session:
-        return jsonify({'success': False, 'message': 'Please login first'}), 401
-        
-    session['cart'] = []
-    return jsonify({
-        'success': True, 
-        'total': 0,
-        'cart_count': 0
-    })
-
 if __name__ == '__main__':
     app.run(debug=True)
