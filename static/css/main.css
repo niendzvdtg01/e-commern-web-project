@@ -85,10 +85,10 @@ header{
     opacity: 0;  /* Ban đầu ẩn */
     animation: fade 6s infinite;
 }
-.slide1 { background-image: url('/static/pictures/mandeochuangot\ copy.jpg'); animation-delay: 2s; }
-.slide2 { background-image: url('/static/pictures/mankhia\ copy.jpg'); animation-delay: 4s; }
-.slide3 { background-image: url('/static/pictures/manximuoi\ copy.jpg'); animation-delay: 8s; }
-.slide4 { background-image: url('/static/pictures/saubaotu\ copy.jpg'); animation-delay: 12s; }
+.slide1 { background-image: url('/static/pictures/mandeochuangot_copy.jpg'); animation-delay: 2s; }
+.slide2 { background-image: url('/static/pictures/mankhia_copy.jpg'); animation-delay: 4s; }
+.slide3 { background-image: url('/static/pictures/manximuoi_copy.jpg'); animation-delay: 8s; }
+.slide4 { background-image: url('/static/pictures/saubaotu_copy.jpg'); animation-delay: 12s; }
 @keyframes fade {
     0%, 100% { opacity: 0; }
     10%, 25% { opacity: 1; } /* Hiển thị ảnh */
