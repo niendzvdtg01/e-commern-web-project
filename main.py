@@ -15,7 +15,7 @@ from google.auth.transport import requests
 import json
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 
 # Google OAuth setup
 with open('client_secret.json', 'r') as f:
