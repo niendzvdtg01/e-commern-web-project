@@ -558,10 +558,10 @@ def create_payment():
             "app_trans_id": "{:%y%m%d}_{}".format(datetime.today(), trans_id),
             "app_user": session['email'],
             "app_time": int(round(time() * 1000)),
-            "callback_url": "http://127.0.0.1:5000/callback",  
+            "callback_url": "https://maimoremood-ten.vercel.app/callback",  
             "embed_data": json.dumps({
                 "email": session['email'],
-                "redirecturl": "http://127.0.0.1:5000/cart",  
+                "redirecturl": "https://maimoremood-ten.vercel.app/redirect-from-zalopay",  
                 "cart": cart,
                 "preferred_payment_method": []
             }),
