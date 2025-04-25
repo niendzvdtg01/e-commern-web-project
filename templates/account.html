@@ -47,6 +47,56 @@
             text-align: left;
             margin-top: 20px;
         }
+        .orders-section {
+            margin-top: 20px;
+        }
+        .order-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+        .order-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .order-items {
+            margin: 15px 0;
+        }
+        .order-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .product-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 15px;
+            border-radius: 4px;
+        }
+        .product-info {
+            flex: 1;
+        }
+        .order-total {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        .status-completed {
+            color: green;
+        }
+        .status-pending {
+            color: orange;
+        }
+        .status-failed {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -69,10 +119,52 @@
         <button class="change-password" onclick="changepassword()">Thay đổi mật khẩu</button>
         <button class="logout" onclick="logout()">Đăng xuất</button>
         
-        <h2>Đơn hàng của bạn</h2>
-        <div class="order-list">
-            <p>📦 Đơn hàng #001 - Trạng thái: Đang giao</p>
-            <p>📦 Đơn hàng #002 - Trạng thái: Đã nhận</p>
+        <div class="orders-section">
+            <h2>Lịch sử đơn hàng</h2>
+            {% if orders %}
+                {% for order in orders %}
+                    <div class="order-card">
+                        <div class="order-header">
+                            <p><strong>Mã đơn hàng:</strong> {{order.app_trans_id}}</p>
+                            <p><strong>Ngày đặt:</strong> {{order.created_at}}</p>
+                            <p><strong>Trạng thái:</strong> 
+                                {% if order.status == 'completed' %}
+                                    <span class="status-completed">Đã hoàn thành</span>
+                                {% elif order.status == 'pending' %}
+                                    <span class="status-pending">Đang xử lý</span>
+                                {% else %}
+                                    <span class="status-failed">Thất bại</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                        
+                        <div class="order-items">
+                            <h3>Sản phẩm đã mua:</h3>
+                            {% if order_items[order.app_trans_id] %}
+                                {% for item in order_items[order.app_trans_id] %}
+                                    {% if products[item.product_id] %}
+                                        <div class="order-item">
+                                            <img src="{{products[item.product_id].img_url}}" alt="{{products[item.product_id].product_name}}" class="product-image">
+                                            <div class="product-info">
+                                                <p><strong>Tên sản phẩm:</strong> {{products[item.product_id].product_name}}</p>
+                                                <p><strong>Số lượng:</strong> {{item.quantity}}</p>
+                                                <p><strong>Giá:</strong> {{item.price}} VNĐ</p>
+                                                <p><strong>Thành tiền:</strong> {{ item.price * item.quantity }} VNĐ</p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        
+                        <div class="order-total">
+                            <p><strong>Tổng tiền:</strong> {{order.amount}} VNĐ</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Bạn chưa có đơn hàng nào.</p>
+            {% endif %}
         </div>
     </div>
     

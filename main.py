@@ -164,22 +164,22 @@ def delete_review(product_id):
             return redirect(url_for('login'))
         
         user_id = supabase.table("users").select("user_id").eq("email", session['email']).execute().data[0]['user_id']
-        print(f"Delete review - Product ID: {product_id}, User ID: {user_id}")  # Debug log
+        print(f"Delete review - Product ID: {product_id}, User ID: {user_id}")  
         
         # Check if review exists before deleting
         existing_review = supabase.table('product_reviews').select("*").eq('product_id', product_id).eq('user_id', user_id).execute()
-        print(f"Existing review for deletion: {existing_review}")  # Debug log
+        print(f"Existing review for deletion: {existing_review}") 
         
         if not existing_review.data:
             return redirect(url_for('product', product_id=product_id, message='Không tìm thấy đánh giá để xóa!', show_message=True))
         
         # Delete the review
         result = supabase.table('product_reviews').delete().eq('product_id', product_id).eq('user_id', user_id).execute()
-        print(f"Delete result: {result}")  # Debug log
+        print(f"Delete result: {result}")  
         
         return redirect(url_for('product', product_id=product_id, message='Đã xóa đánh giá thành công!', show_message=True))
     except Exception as e:
-        print(f"Error deleting review: {str(e)}")  # Debug log
+        print(f"Error deleting review: {str(e)}")  
         return redirect(url_for('product', product_id=product_id, message='Có lỗi xảy ra khi xóa đánh giá!', show_message=True))
 
 @app.route('/account',methods=['GET','POST'])
@@ -197,29 +197,59 @@ def account():
                 
             if update_data:
                 supabase.table("users").update(update_data).eq("email", session['email']).execute()
-            return redirect(url_for('account'))
-            
+            return redirect(url_for('account'))      
+
         response = (
             supabase.table("users")
             .select("*")
             .eq("email", session['email']).execute()
         )
-        order_response = (
+        
+        orders = (
             supabase.table("orders")
             .select("*")
-            .eq("email", session['email']).execute()
+            .eq("email", session['email'])
+            .order("created_at", desc=True)
+            .execute()
         )
-        order_items = (
-            supabase.table("order_items")
-            .select("*")
-            .eq("app_trans_id",order_response.data[0].get('app_trans_id')).execute()
-        )
+        
+        order_items = {}
+        for order in orders.data:
+            items = (
+                supabase.table("order_items")
+                .select("*")
+                .eq("app_trans_id", order['app_trans_id'])
+                .execute()
+            )
+            order_items[order['app_trans_id']] = items.data
+            
+        products = {}
+        for items in order_items.values():
+            for item in items:
+                if item['product_id'] not in products:
+                    product = (
+                        supabase.table("products")
+                        .select("*")
+                        .eq("product_id", item['product_id'])
+                        .execute()
+                    )
+                    if product.data:
+                        products[item['product_id']] = product.data[0]
+        
         data = response.data
         user_name = data[0].get('username')
         address = data[0].get('address')
         phone = data[0].get('phone')
         email = data[0].get('email')
-        return render_template("account.html", user_name=user_name, address=address, phone=phone,email=email,order_response=order_response.data,order_items=order_items.data)
+        
+        return render_template("account.html", 
+                             user_name=user_name, 
+                             address=address, 
+                             phone=phone,
+                             email=email,
+                             orders=orders.data,
+                             order_items=order_items,
+                             products=products)
     else:
         return redirect(url_for('login'))
 
@@ -307,26 +337,17 @@ def add_to_cart():
 @app.route('/update-cart', methods=['POST'])
 def update_cart():
     if 'email' not in session:
-        return jsonify({'success': False, 'message': 'Please login first'}), 401
+        return redirect(url_for('login'))
         
     product_id = request.form.get('product_id')
     quantity = int(request.form.get('quantity', 1))
     price = int(request.form.get('price', 0))
     
-    # Check product quantity in database
-    response = supabase.table("products").select("quantity").eq("product_id", product_id).execute()
-    if not response.data:
-        return jsonify({'success': False, 'message': 'Product not found'}), 404
-    
-    available_quantity = response.data[0]['quantity']
-    if quantity > available_quantity:
-        return jsonify({'success': False, 'message': f'Only {available_quantity} items available'}), 400
-    
     cart = session.get('cart', [])
     for item in cart:
         if item['product_id'] == product_id:
             item['quantity'] = quantity
-            item['price'] = price  # Update price in session
+            item['price'] = price  
             break
             
     session['cart'] = cart
@@ -344,28 +365,20 @@ def remove_from_cart():
         return jsonify({'success': False, 'message': 'Please login first'}), 401
         
     try:
-        # Get form data
         product_id = request.form.get('product_id')
         if not product_id:
             return jsonify({'success': False, 'message': 'Product ID is required'}), 400
         
-        # Get cart from session
         cart = session.get('cart', [])
         if not cart:
             return jsonify({'success': False, 'message': 'Cart is empty'}), 404
-        
-        # Find and remove the product
         new_cart = [item for item in cart if item['product_id'] != product_id]
-        
-        # If cart length didn't change, product wasn't found
         if len(new_cart) == len(cart):
             return jsonify({'success': False, 'message': 'Product not found in cart'}), 404
-        
-        # Update session
+
         session['cart'] = new_cart
         session.modified = True
-        
-        # Calculate new total
+
         total = sum(item['price'] * item['quantity'] for item in new_cart)
         
         return jsonify({
@@ -447,13 +460,13 @@ def signup():
             return render_template("signup.html", username_err=username_err, email_err=email_err, password_err=password_err)
         hashed_password = generate_password_hash(password)
         # Thêm user vào Supabase
-        response=supabase.table("users").insert({
+        supabase.table("users").insert({
                 "username": username,
                 "email": email,
                 "password_hash": hashed_password
             }).execute()
         return redirect(url_for('login'))
-    return render_template("signup.html", google_client_id=GOOGLE_CLIENT_ID)
+    return render_template("signup.html")
 
 @app.route('/google-login')
 def google_login():
@@ -462,6 +475,7 @@ def google_login():
         scopes=['openid', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
         redirect_uri=GOOGLE_REDIRECT_URI
     )
+    # gửi reqquest đến Google để lấy authorization_url
     authorization_url, state = flow.authorization_url(
         access_type='offline',
         include_granted_scopes='true'
@@ -504,6 +518,7 @@ def logout():
     session.pop('email', None)
     return redirect(url_for('index'))
 
+
 # ZaloPay Configuration
 config = {
     "app_id": os.environ.get("APP_ID"),
@@ -515,10 +530,9 @@ config = {
 @app.route('/create-payment', methods=['POST'])
 def create_payment():
     if 'email' not in session:
-        return jsonify({'success': False, 'message': 'Please login first'}), 401
-        
+        return redirect(url_for('login'))
     try:
-        # Get cart data from the request instead of session
+        #lấy thông tin từ json đc gửi từ javascript chứ không phải session
         data = request.get_json()
         if not data:
             return jsonify({'success': False, 'message': 'No data provided'}), 400
@@ -531,7 +545,6 @@ def create_payment():
         if total_amount <= 0:
             return jsonify({'success': False, 'message': 'Invalid total amount'}), 400
         
-        # Check if ZaloPay config is properly set up
         if not config.get("app_id") or not config.get("key1") or not config.get("key2"):
             print("ZaloPay configuration is missing. Check your environment variables.")
             return jsonify({'success': False, 'message': 'Payment service configuration error'}), 500
@@ -545,10 +558,10 @@ def create_payment():
             "app_trans_id": "{:%y%m%d}_{}".format(datetime.today(), trans_id),
             "app_user": session['email'],
             "app_time": int(round(time() * 1000)),
-            "callback_url": "http://127.0.0.1:5000/callback",  # Updated callback URL
+            "callback_url": "http://127.0.0.1:5000/callback",  
             "embed_data": json.dumps({
                 "email": session['email'],
-                "redirecturl": "http://127.0.0.1:5000/cart",  # Updated redirect URL
+                "redirecturl": "http://127.0.0.1:5000/cart",  
                 "cart": cart,
                 "preferred_payment_method": []
             }),
@@ -573,11 +586,10 @@ def create_payment():
             order["item"]
         )
         
-        # Make sure key1 is not None before encoding
         key1 = config.get('key1')
         if not key1:
             return jsonify({'success': False, 'message': 'Payment service key is missing'}), 500
-            
+        # mã hóa thông tin
         order["mac"] = hmac.new(
             key1.encode(),
             data.encode(),
@@ -627,10 +639,9 @@ def create_payment():
 @app.route('/callback', methods=['POST'])
 def callback():
     try:
-        # Handle both POST and GET requests
         if request.method == 'POST':
             data = request.json
-        else:  # GET request
+        else:
             data = request.args.to_dict()
             
         if not data:
@@ -639,7 +650,6 @@ def callback():
                 'return_message': 'No data provided'
             }), 400
 
-        # For POST requests, verify MAC
         if request.method == 'POST':
             mac = hmac.new(
                 config['key2'].encode(),
@@ -653,9 +663,8 @@ def callback():
                     'return_message': 'Invalid MAC'
                 }), 400
 
-            # Parse callback data
             payment_data = json.loads(data['data'])
-        else:  # GET request
+        else:  
             payment_data = data
 
         # Update order status in database
