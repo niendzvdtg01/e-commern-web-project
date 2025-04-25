@@ -189,7 +189,7 @@ function clearCart() {
 
 function createPayment() {
     // Get cart items
-    const cartItems = Array.from(document.querySelectorAll('.bbbbbb')).map(item => ({
+    const cartItems = Array.from(document.querySelectorAll('.data-container')).map(item => ({
         product_id: item.dataset.productId,
         name: item.querySelector('h3').textContent,
         price: parseInt(item.querySelector('p').textContent.replace('Giá: ', '').replace('đ', '')),

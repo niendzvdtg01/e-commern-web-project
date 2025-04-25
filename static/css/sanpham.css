@@ -187,30 +187,6 @@ header{
     border-radius: 8px;
 }
 
-.thumbnail-gallery {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.thumbnail-gallery img {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.thumbnail-gallery img:hover {
-    border-color: #e74c3c;
-}
-
-.thumbnail-gallery img.active {
-    border: 2px solid #e74c3c; /* Hiệu ứng khi ảnh nhỏ được chọn */
-}
-
 .product-details {
     flex: 1;
     min-width: 300px;

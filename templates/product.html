@@ -30,7 +30,6 @@
                 <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: larger;">Các sản phẩm</p>
             </div>
             <div class="search-prodct" id="result-body">
-                <!-- Thông tin được tìm kiếm sẽ hiện tại đây -->
             </div>
         </div>
     </div>
@@ -45,36 +44,36 @@
         <li><a href="#">Giới thiệu</a></li>
     </ul>
 </div>
-<!-- End thanh danh muc -->
-<header>
-    <p class="font">_ Thêm một chút mai, thêm trọn cảm hứng. _</p>
-</header>
+ <!-- End thanh danh muc -->
+    <header>
+            <p class="font">_ Thêm một chút mai, thêm trọn cảm hứng. _</p>
+    </header>
 <!-- Start Thanh chức năng -->
-<main>
-    <div class="container1">
-        <div class="menu" onclick="toggleSidebar()">
-            <a href="#">
-                <img src="/static/pictures/menu-svgrepo-com.svg" alt="menu" class="menu">
-            </a>
+    <main>
+        <div class="container1">
+            <div class="menu" onclick="toggleSidebar()">
+                <a href="#">
+                    <img src="/static/pictures/menu-svgrepo-com.svg" alt="menu" class = "menu">
+                </a>
+            </div>
+            <div class="logo">
+                <a href="/">
+                    <img src="/static/pictures/logo_ngang.png" alt="logo">
+                </a>
+            </div>
+            <div class="features">
+                <a href="#" onclick="opensearch()">
+                    <img src="/static/pictures/search-svgrepo-com.svg" alt="cart" class = "search">
+                </a>
+                <a href="/login">
+                    <img src="/static/pictures/account-svgrepo-com.svg" alt="cart" class = "account">
+                </a>
+                <a href="/cart">
+                    <img src="/static/pictures/cart-shopping-svgrepo-com.svg" alt="account" class = "cart">
+                </a>
+            </div>
         </div>
-        <div class="logo">
-            <a href="/">
-                <img src="/static/pictures/logo ngang.png" alt="logo">
-            </a>
-        </div>
-        <div class="features">
-            <a href="#" onclick="opensearch()">
-                <img src="/static/pictures/search-svgrepo-com.svg" alt="cart" class="search">
-            </a>
-            <a href="/login">
-                <img src="/static/pictures/account-svgrepo-com.svg" alt="cart" class="account">
-            </a>
-            <a href="/payment">
-                <img src="/static/pictures/cart-shopping-svgrepo-com.svg" alt="account" class="cart">
-            </a>
-        </div>
-    </div>
-    <!-- End Thanh chức năng -->
+<!-- End Thanh chức năng -->
     <nav class="sub-menu">
         <a href="/product/1">Mận dẻo</a>
         <a href="/product/2">Mận xí muội</a>
@@ -194,7 +193,7 @@
                             {% for review in product.reviews %}
                                 <div class="review-item">
                                     <div class="review-header">
-                                        <span class="user-name">{{ review.user_name }}</span>
+                                        <span class="user-name">{{ review.username }}</span>
                                         <div class="review-rating">
                                             {% for i in range(5) %}
                                                 {% if i < review.rating %}
@@ -273,34 +272,7 @@
     </footer>
     <!-- end footer -->
 
-    <!-- Thêm JavaScript để xử lý sự kiện thay đổi ảnh -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const mainImage = document.getElementById('main-image');
-            const thumbnails = document.querySelectorAll('.thumbnail');
-
-            thumbnails.forEach(thumbnail => {
-                thumbnail.addEventListener('click', function () {
-                    const newSrc = this.getAttribute('data-src');
-                    mainImage.setAttribute('src', newSrc);
-                });
-            });
-        });
-
-        // Show success message if present in URL
-        document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const message = urlParams.get('message');
-            const showMessage = urlParams.get('show_message') === 'True';
-            
-            // Only show message if both message and show_message are present and this is not the first visit
-            if (message && showMessage && document.referrer && document.referrer !== window.location.href) {
-                alert(message);
-                // Remove message parameters from URL without reloading the page
-                const newUrl = window.location.pathname;
-                window.history.replaceState({}, document.title, newUrl);
-            }
-        });
 
         function confirmSubmit() {
             const rating = document.querySelector('input[name="rating"]:checked');

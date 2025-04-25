@@ -52,73 +52,56 @@ def search():
 def product(product_id):  
     if request.method == 'POST':
         try:
-            # Get and validate rating
-            rating_str = request.form.get('rating', '').strip()
-            if not rating_str:
-                return redirect(url_for('product', product_id=product_id, message='Vui lòng chọn số sao đánh giá!', show_message=True))
-            
-            rating = int(rating_str)
-            if rating < 1 or rating > 5:
-                return redirect(url_for('product', product_id=product_id, message='Đánh giá phải từ 1 đến 5 sao!', show_message=True))
-            
-            # Get and validate comment
+            rating = request.form.get('rating', '').strip()
             comment = request.form.get('comment', '').strip()
-            if not comment:
-                return redirect(url_for('product', product_id=product_id, message='Vui lòng nhập nội dung đánh giá!', show_message=True))
-            
-            # Get user ID
             if 'email' not in session:
                 return redirect(url_for('login'))
-                
             user_id = supabase.table("users").select("user_id").eq("email", session['email']).execute().data[0]['user_id']
-            
-            # Get action type
             action = request.form.get('action', 'insert')
-            print(f"Action: {action}, Product ID: {product_id}, User ID: {user_id}")  # Debug log
+            print(f"Action: {action}, Product ID: {product_id}, User ID: {user_id}")  
             
             if action == 'insert':
-                # Insert a new review
+
                 result = supabase.table('product_reviews').insert({
                     'product_id': product_id,
                     'user_id': user_id,
                     'rating': rating,
                     'comment': comment
                 }).execute()
-                print(f"Insert result: {result}")  # Debug log
+                print(f"Insert result: {result}") 
                 message = 'Đã thêm đánh giá thành công!'
-            else:  # update
-                # Check if review exists before updating
+            else: 
+
                 existing_review = supabase.table('product_reviews').select("*").eq('product_id', product_id).eq('user_id', user_id).execute()
-                print(f"Existing review: {existing_review}")  # Debug log
+                print(f"Existing review: {existing_review}")
                 
                 if not existing_review.data:
                     return redirect(url_for('product', product_id=product_id, message='Không tìm thấy đánh giá để cập nhật!', show_message=True))
                 
-                # Update existing review
                 result = supabase.table('product_reviews').update({
                     'rating': rating,
                     'comment': comment
                 }).eq('product_id', product_id).eq('user_id', user_id).execute()
-                print(f"Update result: {result}")  # Debug log
+                print(f"Update result: {result}")
                 message = 'Đã cập nhật đánh giá thành công!'
             
             return redirect(url_for('product', product_id=product_id, message=message, show_message=True))
             
         except ValueError:
-            print("ValueError occurred")  # Debug log
+            print("ValueError occurred")  
             return redirect(url_for('product', product_id=product_id, message='Đánh giá không hợp lệ!', show_message=True))
         except Exception as e:
-            print(f"Error: {str(e)}")  # Debug log
-            return redirect(url_for('product', product_id=product_id, message='Có lỗi xảy ra khi xử lý đánh giá!', show_message=True))
+            print(f"Error: {str(e)}")  
+            return redirect(url_for('product', product_id=product_id, show_message=True))
     
-    # GET request handling
+
     product = supabase.table("products").select("*").eq("product_id", product_id).execute()
     if not product.data:
         abort(404)
     
     # Get all reviews for the product
     product_reviews = supabase.table("product_reviews").select("*").eq("product_id", product_id).execute()
-    print(f"Product reviews: {product_reviews}")  # Debug log
+    print(f"Product reviews: {product_reviews}")  
     
     # Get current user's review if exists
     current_user_id = None
@@ -126,7 +109,7 @@ def product(product_id):
         current_user = supabase.table("users").select("user_id").eq("email", session['email']).execute()
         if current_user.data:
             current_user_id = current_user.data[0]['user_id']
-            print(f"Current user ID: {current_user_id}")  # Debug log
+            print(f"Current user ID: {current_user_id}")  
     
     # Get user details for each review
     reviews = []
@@ -139,7 +122,7 @@ def product(product_id):
             if user.data:  # Check if user exists
                 review_data = {
                     'user_id': review['user_id'],
-                    'user_name': user.data[0]['user_name'],
+                    'username': user.data[0]['username'],
                     'rating': review['rating'],
                     'comment': review['comment'],
                     'created_at': review['created_at']
@@ -147,10 +130,10 @@ def product(product_id):
                 reviews.append(review_data)
                 
                 # Check if current user has reviewed
-                if current_user_id and review['user_id'] == current_user_id:
+                if review['user_id'] == current_user_id:
                     user_has_reviewed = True
                     user_review = review_data
-                    print(f"User has reviewed: {user_review}")  # Debug log
+                    print(f"User has reviewed: {user_review}")
 
     # Calculate average rating
     avg_rating = sum(review['rating'] for review in reviews) / len(reviews) if reviews else 0
@@ -172,18 +155,7 @@ def product(product_id):
             'user_rating': user_review['rating'],
             'user_comment': user_review['comment']
         })
-    
-    # Get message and show_message from request args
-    message = request.args.get('message')
-    show_message = request.args.get('show_message') == 'True'
-    
-    # Only pass message parameters if they are actually set and this is not the initial page load
-    template_args = {'product': product_data}
-    if message and show_message and request.referrer and request.referrer != request.url:  # Only show message if there's a referrer and it's different from current URL
-        template_args['message'] = message
-        template_args['show_message'] = show_message
-    
-    return render_template('product.html', **template_args)
+    return render_template('product.html', product=product_data)
 
 @app.route('/product/<int:product_id>/review/delete', methods=['POST'])
 def delete_review(product_id):
@@ -232,12 +204,22 @@ def account():
             .select("*")
             .eq("email", session['email']).execute()
         )
+        order_response = (
+            supabase.table("orders")
+            .select("*")
+            .eq("email", session['email']).execute()
+        )
+        order_items = (
+            supabase.table("order_items")
+            .select("*")
+            .eq("app_trans_id",order_response.data[0].get('app_trans_id')).execute()
+        )
         data = response.data
         user_name = data[0].get('username')
         address = data[0].get('address')
         phone = data[0].get('phone')
         email = data[0].get('email')
-        return render_template("account.html", user_name=user_name, address=address, phone=phone,email=email)
+        return render_template("account.html", user_name=user_name, address=address, phone=phone,email=email,order_response=order_response.data,order_items=order_items.data)
     else:
         return redirect(url_for('login'))
 
