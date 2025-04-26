@@ -767,7 +767,7 @@ def payment_status(app_trans_id):
                 new_status = "completed" if result.get('status') == 1 else "failed"
                 supabase.table("orders").update({
                     "status": new_status,
-                    "payment_time": datetime.now().isoformat()
+                    "created_at": datetime.now().isoformat()
                 }).eq("app_trans_id", app_trans_id).execute()
                 
                 order['status'] = new_status
