@@ -1,105 +1,81 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tài khoản của tôi</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f8f8;
-            text-align: center;
-        }
-        .container {
-            width: 50%;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            margin-top: 50px;
-        }
-        h2 {
-            color: #333;
-        }
-        .info {
-            text-align: left;
-            margin: 20px 0;
-        }
-        button {
-            padding: 10px 15px;
-            margin: 10px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .logout {
-            background-color: red;
-            color: white;
-        }
-        .change-password {
-            background-color: orange;
-            color: white;
-        }
-        .order-list {
-            text-align: left;
-            margin-top: 20px;
-        }
-        .orders-section {
-            margin-top: 20px;
-        }
-        .order-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            background-color: #fff;
-        }
-        .order-header {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-        .order-items {
-            margin: 15px 0;
-        }
-        .order-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        .product-image {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            margin-right: 15px;
-            border-radius: 4px;
-        }
-        .product-info {
-            flex: 1;
-        }
-        .order-total {
-            text-align: right;
-            font-weight: bold;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #eee;
-        }
-        .status-completed {
-            color: green;
-        }
-        .status-pending {
-            color: orange;
-        }
-        .status-failed {
-            color: red;
-        }
-    </style>
+    <title>Mai more mood</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="icon" type = "img/png" href="/static/pictures/logorgb_copy.png" sizes="192x192">
+    <!-- Them font chu cho header -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tektur:wdth,wght@75..100,400..900&display=swap" rel="stylesheet">
+    <!-- Fix duplicate script loading -->
+    <script src="/static/js/homepage.js"></script>
+    <script src="/static/js/cart.js"></script>
 </head>
 <body>
+
+<!-- Tao thanh tim kiem -->
+<div id="search-popup" class="search-popup">
+    <div class="popup-content">
+        <span class="close" onclick="closesearch()">&times;</span>
+        <div class="search-bar">
+            <input type="text" id="search" name="userInput" placeholder="Tìm kiếm" onkeyup="searchProduct()">
+            <button type="button" onclick="searchProduct()">🔍</button>
+        </div>
+    </div>
+    <div id="search-result" class="search-result">
+        <div>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: larger;">Các sản phẩm</p>
+            </div>
+            <div class="search-prodct" id="result-body">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End thanh tim kiem -->
+<!-- Thanh danh muc -->
+<div id="sidebar" class="sidebar">
+    <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
+    <ul class="sidebar-menu">
+        <li><a href="/">Trang chủ</a></li>
+        <li><a href="/product/1">Sản phẩm</a></li>
+        <li><a href="#">Giới thiệu</a></li>
+    </ul>
+</div>
+ <!-- End thanh danh muc -->
+    <header>
+            <p class="font">_ Thêm một chút mai, thêm trọn cảm hứng. _</p>
+    </header>
+<!-- Start Thanh chức năng -->
+    <main>
+        <div class="container1">
+            <div class="menu" onclick="toggleSidebar()">
+                <a href="#">
+                    <img src="/static/pictures/menu-svgrepo-com.svg" alt="menu" class = "menu">
+                </a>
+            </div>
+            <div class="logo">
+                <a href="/">
+                    <img src="/static/pictures/logo_ngang.png" alt="logo">
+                </a>
+            </div>
+            <div class="features">
+                <a href="#" onclick="opensearch()">
+                    <img src="/static/pictures/search-svgrepo-com.svg" alt="cart" class = "search">
+                </a>
+                <a href="/login">
+                    <img src="/static/pictures/account-svgrepo-com.svg" alt="cart" class = "account">
+                </a>
+                <a href="/cart">
+                    <img src="/static/pictures/cart-shopping-svgrepo-com.svg" alt="account" class = "cart">
+                </a>
+            </div>
+        </div>
+<!-- End Thanh chức năng -->
+ <div class="account">
     <div class="container">
         <h2>Thông tin tài khoản</h2>
         <div class="info">
@@ -167,7 +143,56 @@
             {% endif %}
         </div>
     </div>
-    
+</div>
+<!-- Start footer -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-logo">
+            <h2>MAI MORE MOOD</h2>
+            <p>LIÊN HỆ:</p>
+            <p><strong>Nguyễn Thành Đạt</strong></p>
+            <p>Địa chỉ: Số 128, Nguyễn Đức Cảnh, quận Hoàng Mai, Tp. Hà Nội, Việt Nam</p>
+            <p>Email: maimoremood@gmail.com</p>
+            <p>Điện thoại: 0338242425</p>
+        </div>
+
+        <div class="footer-subscribe">
+            <h3>ĐĂNG KÝ</h3>
+            <div class="subscribe-box">
+                <input type="email" placeholder="Nhập địa chỉ email">
+                <button>➤</button>
+            </div>
+            <p>Theo dõi Mai More Mood từ các nền tảng khác nhau nhé!</p>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/profile.php?id=61571870681009"><img src="/static/pictures/facebook.svg" alt="Facebook"></a>
+                <a href="#"><img src="/static/pictures/instagram.svg" alt="Instagram"></a>
+                <a href="#"><img src="/static/pictures/tiktok.svg" alt="Tiktok"></a>
+            </div>
+        </div>
+
+        <div class="footer-links">
+            <h3>ABOUT US</h3>
+            <ul>
+                <li><a href="#">Trang chủ</a></li>
+                <li><a href="#">Tất cả sản phẩm</a></li>
+                <li><a href="#">Kiểm tra đơn hàng</a></li>
+                <li><a href="#">Hệ Thống Cửa Hàng</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-policy">
+            <h3>CHÍNH SÁCH</h3>
+            <ul>
+                <li><a href="#">Chính sách mua hàng</a></li>
+                <li><a href="#">Chính sách bảo mật</a></li>
+                <li><a href="#">Phương thức thanh toán</a></li>
+                <li><a href="#">Chính sách giao nhận, vận chuyển, kiểm hàng</a></li>
+                <li><a href="#">Chính sách đổi trả</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+<!-- end footer -->
     <script>
         function logout() {
             alert("Bạn đã đăng xuất thành công!");

@@ -334,6 +334,98 @@ p.sales{
     transform: scale(1.03); 
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
 }
+    .account body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            text-align: center;
+        }
+.account .container {
+            width: 50%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        .account h2 {
+            color: #333;
+        }
+        .account .info {
+            text-align: left;
+            margin: 20px 0;
+        }
+        .account button {
+            padding: 10px 15px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .account .logout {
+            background-color: red;
+            color: white;
+        }
+        .account .change-password {
+            background-color: orange;
+            color: white;
+        }
+        .account .order-list {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .account .orders-section {
+            margin-top: 20px;
+        }
+        .account .order-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+        .account .order-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .account .order-items {
+            margin: 15px 0;
+        }
+        .account .order-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .account .product-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 15px;
+            border-radius: 4px;
+        }
+        .account .product-info {
+            flex: 1;
+        }
+        .account .order-total {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        .account .status-completed {
+            color: green;
+        }
+        .account .status-pending {
+            color: orange;
+        }
+        .account .status-failed {
+            color: red;
+        }
 /* Start footer */
 .footer {
     font-family: "Tektur", sans-serif;
