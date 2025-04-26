@@ -670,7 +670,7 @@ def callback():
         # Update order status in database
         supabase.table("orders").update({
             "status": "completed" if payment_data.get('status') == 1 else "failed",
-            "payment_time": datetime.now().isoformat()
+            "created_at": datetime.now().isoformat()
         }).eq("app_trans_id", payment_data.get('apptransid')).execute()
 
         # Clear cart if payment successful
