@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect, session, jsonify, abort
 import searchUser
 from time import time
-from datetime import datetime
+from datetime import datetime, timedelta
 import json, hmac, hashlib, urllib.request, urllib.parse, random
 from werkzeug.security import generate_password_hash, check_password_hash
 # Liên kết với file .env (pip install python-dotenv)
@@ -98,12 +98,10 @@ def product(product_id):
     product = supabase.table("products").select("*").eq("product_id", product_id).execute()
     if not product.data:
         abort(404)
-    
-    # Get all reviews for the product
+
     product_reviews = supabase.table("product_reviews").select("*").eq("product_id", product_id).execute()
     print(f"Product reviews: {product_reviews}")  
-    
-    # Get current user's review if exists
+
     current_user_id = None
     if 'email' in session:
         current_user = supabase.table("users").select("user_id").eq("email", session['email']).execute()
@@ -111,15 +109,15 @@ def product(product_id):
             current_user_id = current_user.data[0]['user_id']
             print(f"Current user ID: {current_user_id}")  
     
-    # Get user details for each review
+
     reviews = []
     user_has_reviewed = False
     user_review = None
     
-    if product_reviews.data:  # Check if there are any reviews
+    if product_reviews.data:
         for review in product_reviews.data:
             user = supabase.table("users").select("*").eq("user_id", review['user_id']).execute()
-            if user.data:  # Check if user exists
+            if user.data: 
                 review_data = {
                     'user_id': review['user_id'],
                     'username': user.data[0]['username'],
@@ -129,13 +127,11 @@ def product(product_id):
                 }
                 reviews.append(review_data)
                 
-                # Check if current user has reviewed
                 if review['user_id'] == current_user_id:
                     user_has_reviewed = True
                     user_review = review_data
                     print(f"User has reviewed: {user_review}")
 
-    # Calculate average rating
     avg_rating = sum(review['rating'] for review in reviews) / len(reviews) if reviews else 0
 
     product_data = {
@@ -166,14 +162,12 @@ def delete_review(product_id):
         user_id = supabase.table("users").select("user_id").eq("email", session['email']).execute().data[0]['user_id']
         print(f"Delete review - Product ID: {product_id}, User ID: {user_id}")  
         
-        # Check if review exists before deleting
         existing_review = supabase.table('product_reviews').select("*").eq('product_id', product_id).eq('user_id', user_id).execute()
         print(f"Existing review for deletion: {existing_review}") 
         
         if not existing_review.data:
             return redirect(url_for('product', product_id=product_id, message='Không tìm thấy đánh giá để xóa!', show_message=True))
-        
-        # Delete the review
+
         result = supabase.table('product_reviews').delete().eq('product_id', product_id).eq('user_id', user_id).execute()
         print(f"Delete result: {result}")  
         
@@ -294,19 +288,16 @@ def add_to_cart():
         
     product_id = request.form.get('product_id')
     quantity = int(request.form.get('quantity', 1))
-    
-    # Get product details from database
+   
     response = supabase.table("products").select("*").eq("product_id", product_id).execute()
     if not response.data:
         return jsonify({'success': False, 'message': 'Sản phẩm không tồn tại'}), 404
         
     product = response.data[0]
     
-    # Initialize cart if it doesn't exist
     if 'cart' not in session:
         session['cart'] = []
-        
-    # Check if product already in cart
+
     cart = session['cart']
     for item in cart:
         if item['product_id'] == product_id:
@@ -318,7 +309,6 @@ def add_to_cart():
                 'cart_count': len(cart)
             })
             
-    # Add new item to cart
     cart.append({
         'product_id': product_id,
         'name': product['product_name'],
@@ -432,7 +422,8 @@ def login():
             return render_template('login.html', password_err=password_err)
 
         session['email'] = email
-        session.permanent = True  
+        session.permanent = True 
+        app.permanent_session_lifetime = timedelta(minutes=5)
         return redirect(url_for('index'))
 
     return render_template("login.html")
@@ -502,11 +493,10 @@ def google_callback():
     response = supabase.table("users").select("*").eq("email", id_info['email']).execute()
     
     if not response.data:
-        # Create new user if doesn't exist
         supabase.table("users").insert({
             "username": id_info['name'],
             "email": id_info['email'],
-            "password_hash": generate_password_hash(id_info['sub'])  # Using Google ID as password
+            "password_hash": generate_password_hash(id_info['sub']) 
         }).execute()
     
     session['email'] = id_info['email']
@@ -518,8 +508,6 @@ def logout():
     session.pop('email', None)
     return redirect(url_for('index'))
 
-
-# ZaloPay Configuration
 config = {
     "app_id": os.environ.get("APP_ID"),
     "key1": os.environ.get("KEY1"),
@@ -541,18 +529,16 @@ def create_payment():
         if not cart:
             return jsonify({'success': False, 'message': 'Cart is empty'}), 400
             
-        total_amount = data.get('total', 0)
+        total_amount = int(data.get('total', 0))
         if total_amount <= 0:
             return jsonify({'success': False, 'message': 'Invalid total amount'}), 400
         
         if not config.get("app_id") or not config.get("key1") or not config.get("key2"):
             print("ZaloPay configuration is missing. Check your environment variables.")
             return jsonify({'success': False, 'message': 'Payment service configuration error'}), 500
-        
-        # Generate unique transaction ID
+
         trans_id = random.randrange(1000000)
-        
-        # Create order data
+
         order = {
             "app_id": config["app_id"],
             "app_trans_id": "{:%y%m%d}_{}".format(datetime.today(), trans_id),
@@ -596,7 +582,6 @@ def create_payment():
             hashlib.sha256
         ).hexdigest()
 
-        # Send request to ZaloPay
         response = urllib.request.urlopen(
             url=config["endpoint"],
             data=urllib.parse.urlencode(order).encode()
@@ -604,12 +589,11 @@ def create_payment():
         result = json.loads(response.read())
         
         if result['return_code'] == 1:
-            # Store order in database
+
             supabase.table("orders").insert({
                 "app_trans_id": order["app_trans_id"],
                 "email": session['email'],
                 "status": "pending",
-                "total_amount": total_amount,
             }).execute()
             for item in cart:
                 supabase.table("order_items").insert({
@@ -668,17 +652,14 @@ def callback():
         else:  
             payment_data = data
 
-        # Update order status in database
         supabase.table("orders").update({
             "status": "completed" if payment_data.get('status') == 1 else "failed",
             "created_at": datetime.now().isoformat()
         }).eq("app_trans_id", payment_data.get('apptransid')).execute()
 
-        # Clear cart if payment successful
         if payment_data.get('status') == 1:
             session['cart'] = []
 
-        # Return success response
         return jsonify({
             'return_code': 1,
             'return_message': 'success'
@@ -713,7 +694,6 @@ def zalopay_redirect():
         if not app_trans_id:
             return render_template('payment_error.html', error="Missing ID"), 400
             
-        # Redirect to payment status page
         return redirect(url_for('payment_status', app_trans_id=app_trans_id))
         
     except Exception as e:
@@ -726,7 +706,6 @@ def payment_status(app_trans_id):
         return redirect(url_for('login'))
         
     try:
-        # Query order status from database
         order = supabase.table("orders").select("*").eq("app_trans_id", app_trans_id).execute()
         
         if not order.data:
@@ -734,15 +713,11 @@ def payment_status(app_trans_id):
             
         order = order.data[0]
         
-        # If order is still pending, check with ZaloPay
         if order['status'] == 'pending':
-            # Prepare query parameters
             params = {
                 "app_id": config["app_id"],
                 "app_trans_id": app_trans_id
             }
-
-            # Generate MAC
             data = "{}|{}|{}".format(
                 config["app_id"],
                 app_trans_id,
@@ -755,7 +730,7 @@ def payment_status(app_trans_id):
                 hashlib.sha256
             ).hexdigest()
 
-            # Send request to ZaloPay
+
             response = urllib.request.urlopen(
                 url="https://sb-openapi.zalopay.vn/v2/query",
                 data=urllib.parse.urlencode(params).encode()
@@ -763,30 +738,27 @@ def payment_status(app_trans_id):
             result = json.loads(response.read())
             
             if result['return_code'] == 1:
-                session['cart'] = []
-                # Update order status
-                new_status = "completed"
+                new_status = "completed" if result.get('status') == 1 else "failed"
+                print(f"New status: ",result['return_code'])
+                print(f"New status: ",result['status'])
                 supabase.table("orders").update({
                     "status": new_status,
                     "created_at": datetime.now().isoformat()
                 }).eq("app_trans_id", app_trans_id).execute()
                 
                 order['status'] = new_status
-
-        # Get order items for display
-        order_items = supabase.table("order_items").select("*").eq("app_trans_id", app_trans_id).execute()
         
-        # Calculate total amount from order items
-        total_amount = sum(item['price'] * item['quantity'] for item in order_items.data)
-        
-        return render_template('payment_success.html',
-                            transaction_id=app_trans_id,
-                            amount=total_amount,
-                            items=order_items.data)
+        if order['status'] == 'completed':
+            return render_template('payment_success.html',
+                                transaction_id=app_trans_id,
+                                amount=order['amount'],
+                                items=order['cart'])
+        else:
+            return render_template('payment_error.html',
+                                error="Payment failed or was cancelled")
                                 
     except Exception as e:
         print(f"Error in payment status check: {str(e)}")
         return render_template('payment_error.html', error=str(e))
-
 if __name__ == '__main__':
     app.run(debug=True)
