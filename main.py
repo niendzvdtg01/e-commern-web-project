@@ -609,6 +609,7 @@ def create_payment():
                 "app_trans_id": order["app_trans_id"],
                 "email": session['email'],
                 "status": "pending",
+                "total_amount": total_amount,
             }).execute()
             for item in cart:
                 supabase.table("order_items").insert({
@@ -777,7 +778,6 @@ def payment_status(app_trans_id):
         else:
             return render_template('payment_error.html',
                                 error="Payment failed or was cancelled")
-                                
     except Exception as e:
         print(f"Error in payment status check: {str(e)}")
         return render_template('payment_error.html', error=str(e))
