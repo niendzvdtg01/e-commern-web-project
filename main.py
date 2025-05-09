@@ -726,9 +726,12 @@ def payment_status(app_trans_id):
         return redirect(url_for('login'))
         
     try:
+        # Query order status from database
         order = supabase.table("orders").select("*").eq("app_trans_id", app_trans_id).execute()
+        
         if not order.data:
             return render_template('payment_error.html', error="Order not found")
+            
         order = order.data[0]
         
         # If order is still pending, check with ZaloPay
@@ -758,23 +761,32 @@ def payment_status(app_trans_id):
                 data=urllib.parse.urlencode(params).encode()
             )
             result = json.loads(response.read())
-            session['cart'] = []
-            # Update order status
-            new_status = "completed"
-            supabase.table("orders").update({
+            
+            if result['return_code'] == 1:
+                session['cart'] = []
+                # Update order status
+                new_status = "completed"
+                supabase.table("orders").update({
                     "status": new_status,
                     "created_at": datetime.now().isoformat()
                 }).eq("app_trans_id", app_trans_id).execute()
                 
-            order['status'] = new_status
-            return render_template('payment_success.html',
-                                transaction_id=app_trans_id,
-                                amount=order['amount'],
-                                items=order['cart'])
-        else:
-            return render_template('payment_error.html',
-                                error="Payment failed or was cancelled")
+                order['status'] = new_status
+
+        # Get order items for display
+        order_items = supabase.table("order_items").select("*").eq("app_trans_id", app_trans_id).execute()
+        
+        # Calculate total amount from order items
+        total_amount = sum(item['price'] * item['quantity'] for item in order_items.data)
+        
+        return render_template('payment_success.html',
+                            transaction_id=app_trans_id,
+                            amount=total_amount,
+                            items=order_items.data)
+                                
     except Exception as e:
+        print(f"Error in payment status check: {str(e)}")
         return render_template('payment_error.html', error=str(e))
+
 if __name__ == '__main__':
     app.run(debug=True)
