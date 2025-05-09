@@ -722,44 +722,64 @@ def zalopay_redirect():
   
 @app.route('/payment-status/<app_trans_id>', methods=['GET'])
 def payment_status(app_trans_id):
+    if 'email' not in session:
+        return redirect(url_for('login'))
+        
+    try:
+        # Query order status from database
         order = supabase.table("orders").select("*").eq("app_trans_id", app_trans_id).execute()
+        
+        if not order.data:
+            return render_template('payment_error.html', error="Order not found")
+            
         order = order.data[0]
-        params = {
+        
+        # If order is still pending, check with ZaloPay
+        if order['status'] == 'pending':
+            # Prepare query parameters
+            params = {
                 "app_id": config["app_id"],
                 "app_trans_id": app_trans_id
             }
 
             # Generate MAC
-        data = "{}|{}|{}".format(
+            data = "{}|{}|{}".format(
                 config["app_id"],
                 app_trans_id,
                 config["key1"]
             )
             
-        params["mac"] = hmac.new(
+            params["mac"] = hmac.new(
                 config['key1'].encode(),
                 data.encode(),
                 hashlib.sha256
             ).hexdigest()
 
             # Send request to ZaloPay
-        response = urllib.request.urlopen(
+            response = urllib.request.urlopen(
                 url="https://sb-openapi.zalopay.vn/v2/query",
                 data=urllib.parse.urlencode(params).encode()
             )
-        result = json.loads(response.read())
-        session['cart'] = []
+            result = json.loads(response.read())
+            session['cart'] = []
             # Update order status
-        new_status = "completed"
-        supabase.table("orders").update({
+            new_status = "completed"
+            supabase.table("orders").update({
                     "status": new_status,
                     "created_at": datetime.now().isoformat()
                 }).eq("app_trans_id", app_trans_id).execute()
                 
-        order['status'] = new_status
-        return render_template('payment_success.html',
+            order['status'] = new_status
+            return render_template('payment_success.html',
                                 transaction_id=app_trans_id,
                                 amount=order['amount'],
                                 items=order['cart'])
+        else:
+            return render_template('payment_error.html',
+                                error="Payment failed or was cancelled")
+                                
+    except Exception as e:
+        print(f"Error in payment status check: {str(e)}")
+        return render_template('payment_error.html', error=str(e))
 if __name__ == '__main__':
     app.run(debug=True)
