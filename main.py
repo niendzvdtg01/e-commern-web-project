@@ -711,7 +711,7 @@ def zalopay_redirect():
         # Get the app_trans_id from the data
         app_trans_id = data.get('apptransid')
         if not app_trans_id:
-            return render_template('payment_error.html', error="Missing transaction ID"), 400
+            return render_template('payment_error.html', error="Missing ID"), 400
             
         # Redirect to payment status page
         return redirect(url_for('payment_status', app_trans_id=app_trans_id))
@@ -765,6 +765,8 @@ def payment_status(app_trans_id):
             if result['return_code'] == 1:
                 # Update order status
                 new_status = "completed" if result.get('status') == 1 else "failed"
+                print(f"New status: ",result['return_code'])
+                print(f"New status: ",result['status'])
                 supabase.table("orders").update({
                     "status": new_status,
                     "created_at": datetime.now().isoformat()
