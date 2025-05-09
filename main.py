@@ -723,48 +723,41 @@ def zalopay_redirect():
 @app.route('/payment-status/<app_trans_id>', methods=['GET'])
 def payment_status(app_trans_id):
         order = supabase.table("orders").select("*").eq("app_trans_id", app_trans_id).execute()
-        if not order.data:
-            return render_template('payment_error.html', error="Order not found")
-            
         order = order.data[0]
-        
-        # If order is still pending, check with ZaloPay
-        if order['status'] == 'pending':
-            # Prepare query parameters
-            params = {
+        params = {
                 "app_id": config["app_id"],
                 "app_trans_id": app_trans_id
             }
 
             # Generate MAC
-            data = "{}|{}|{}".format(
+        data = "{}|{}|{}".format(
                 config["app_id"],
                 app_trans_id,
                 config["key1"]
             )
             
-            params["mac"] = hmac.new(
+        params["mac"] = hmac.new(
                 config['key1'].encode(),
                 data.encode(),
                 hashlib.sha256
             ).hexdigest()
 
             # Send request to ZaloPay
-            response = urllib.request.urlopen(
+        response = urllib.request.urlopen(
                 url="https://sb-openapi.zalopay.vn/v2/query",
                 data=urllib.parse.urlencode(params).encode()
             )
-            result = json.loads(response.read())
-            session['cart'] = []
+        result = json.loads(response.read())
+        session['cart'] = []
             # Update order status
-            new_status = "completed"
-            supabase.table("orders").update({
+        new_status = "completed"
+        supabase.table("orders").update({
                     "status": new_status,
                     "created_at": datetime.now().isoformat()
                 }).eq("app_trans_id", app_trans_id).execute()
                 
-            order['status'] = new_status
-            return render_template('payment_success.html',
+        order['status'] = new_status
+        return render_template('payment_success.html',
                                 transaction_id=app_trans_id,
                                 amount=order['amount'],
                                 items=order['cart'])
