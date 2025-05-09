@@ -768,8 +768,5 @@ def payment_status(app_trans_id):
                                 transaction_id=app_trans_id,
                                 amount=order['amount'],
                                 items=order['cart'])
-        else:
-            return render_template('payment_error.html',
-                                error="Payment failed or was cancelled")
 if __name__ == '__main__':
     app.run(debug=True)
