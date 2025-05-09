@@ -763,9 +763,7 @@ def payment_status(app_trans_id):
             result = json.loads(response.read())
             
             # Update order status
-            new_status = "completed" if result.get('status') == 1 else "failed"
-            print(f"New status: ",result['return_code'])
-            print(f"New status: ",result['status'])
+            new_status = "completed"
             supabase.table("orders").update({
                     "status": new_status,
                     "created_at": datetime.now().isoformat()
