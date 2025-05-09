@@ -762,17 +762,16 @@ def payment_status(app_trans_id):
             )
             result = json.loads(response.read())
             
-            if result['return_code'] == 1:
-                # Update order status
-                new_status = "completed" if result.get('status') == 1 else "failed"
-                print(f"New status: ",result['return_code'])
-                print(f"New status: ",result['status'])
-                supabase.table("orders").update({
+            # Update order status
+            new_status = "completed" if result.get('status') == 1 else "failed"
+            print(f"New status: ",result['return_code'])
+            print(f"New status: ",result['status'])
+            supabase.table("orders").update({
                     "status": new_status,
                     "created_at": datetime.now().isoformat()
                 }).eq("app_trans_id", app_trans_id).execute()
                 
-                order['status'] = new_status
+            order['status'] = new_status
         
         if order['status'] == 'completed':
             return render_template('payment_success.html',
