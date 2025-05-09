@@ -722,13 +722,7 @@ def zalopay_redirect():
   
 @app.route('/payment-status/<app_trans_id>', methods=['GET'])
 def payment_status(app_trans_id):
-    if 'email' not in session:
-        return redirect(url_for('login'))
-        
-    try:
-        # Query order status from database
         order = supabase.table("orders").select("*").eq("app_trans_id", app_trans_id).execute()
-        
         if not order.data:
             return render_template('payment_error.html', error="Order not found")
             
@@ -761,7 +755,7 @@ def payment_status(app_trans_id):
                 data=urllib.parse.urlencode(params).encode()
             )
             result = json.loads(response.read())
-            
+            session['cart'] = []
             # Update order status
             new_status = "completed"
             supabase.table("orders").update({
@@ -770,8 +764,6 @@ def payment_status(app_trans_id):
                 }).eq("app_trans_id", app_trans_id).execute()
                 
             order['status'] = new_status
-        
-        if order['status'] == 'completed':
             return render_template('payment_success.html',
                                 transaction_id=app_trans_id,
                                 amount=order['amount'],
@@ -779,9 +771,5 @@ def payment_status(app_trans_id):
         else:
             return render_template('payment_error.html',
                                 error="Payment failed or was cancelled")
-                                
-    except Exception as e:
-        print(f"Error in payment status check: {str(e)}")
-        return render_template('payment_error.html', error=str(e))
 if __name__ == '__main__':
     app.run(debug=True)
