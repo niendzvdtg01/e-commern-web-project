@@ -709,7 +709,6 @@ def zalopay_redirect():
         if checksum != data.get('checksum'):
             return render_template('payment_error.html', error="Invalid checksum"), 400
         
-        # Get the app_trans_id from the data
         app_trans_id = data.get('apptransid')
         if not app_trans_id:
             return render_template('payment_error.html', error="Missing ID"), 400
@@ -727,12 +726,9 @@ def payment_status(app_trans_id):
         return redirect(url_for('login'))
         
     try:
-        # Query order status from database
         order = supabase.table("orders").select("*").eq("app_trans_id", app_trans_id).execute()
-        
         if not order.data:
             return render_template('payment_error.html', error="Order not found")
-            
         order = order.data[0]
         
         # If order is still pending, check with ZaloPay
@@ -779,7 +775,6 @@ def payment_status(app_trans_id):
             return render_template('payment_error.html',
                                 error="Payment failed or was cancelled")
     except Exception as e:
-        print(f"Error in payment status check: {str(e)}")
         return render_template('payment_error.html', error=str(e))
 if __name__ == '__main__':
     app.run(debug=True)
