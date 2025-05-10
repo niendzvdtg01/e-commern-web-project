@@ -739,7 +739,6 @@ def payment_status(app_trans_id):
             
             if result['return_code'] == 1:
                 session['cart'] = []
-                new_status = "completed"
                 new_status = "completed" if result.get('status') == 1 else "failed"
                 supabase.table("orders").update({
                     "status": new_status,
@@ -751,8 +750,8 @@ def payment_status(app_trans_id):
         total_amount = sum(item['price'] * item['quantity'] for item in order_items.data)
         return render_template('payment_success.html',
                                 transaction_id=app_trans_id,
-                                amount=order['amount'],
-                                items=order['cart'])
+                                amount=total_amount,
+                                items=order_items.data,)
                                 
     except Exception as e:
         print(f"Error in payment status check: {str(e)}")
