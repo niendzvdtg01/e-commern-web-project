@@ -738,24 +738,21 @@ def payment_status(app_trans_id):
             result = json.loads(response.read())
             
             if result['return_code'] == 1:
+                session['cart'] = []
+                new_status = "completed"
                 new_status = "completed" if result.get('status') == 1 else "failed"
-                print(f"New status: ",result['return_code'])
-                print(f"New status: ",result['status'])
                 supabase.table("orders").update({
                     "status": new_status,
                     "created_at": datetime.now().isoformat()
                 }).eq("app_trans_id", app_trans_id).execute()
                 
                 order['status'] = new_status
-        
-        if order['status'] == 'completed':
-            return render_template('payment_success.html',
+        order_items = supabase.table("order_items").select("*").eq("app_trans_id", app_trans_id).execute()
+        total_amount = sum(item['price'] * item['quantity'] for item in order_items.data)
+        return render_template('payment_success.html',
                                 transaction_id=app_trans_id,
                                 amount=order['amount'],
                                 items=order['cart'])
-        else:
-            return render_template('payment_error.html',
-                                error="Payment failed or was cancelled")
                                 
     except Exception as e:
         print(f"Error in payment status check: {str(e)}")
