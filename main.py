@@ -739,7 +739,7 @@ def payment_status(app_trans_id):
             
             if result['return_code'] == 1:
                 session['cart'] = []
-                new_status = "completed" if result.get('status') == 1 else "failed"
+                new_status = "completed" 
                 supabase.table("orders").update({
                     "status": new_status,
                     "created_at": datetime.now().isoformat()
