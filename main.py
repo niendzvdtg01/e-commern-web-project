@@ -594,6 +594,7 @@ def create_payment():
                 "app_trans_id": order["app_trans_id"],
                 "email": session['email'],
                 "status": "pending",
+                "total_amount": total_amount,
             }).execute()
             for item in cart:
                 supabase.table("order_items").insert({
@@ -737,15 +738,15 @@ def payment_status(app_trans_id):
             )
             result = json.loads(response.read())
             
-            if result['return_code'] == 1:
-                session['cart'] = []
-                new_status = "completed" 
-                supabase.table("orders").update({
+            
+            session['cart'] = []
+            new_status = "completed" 
+            supabase.table("orders").update({
                     "status": new_status,
                     "created_at": datetime.now().isoformat()
                 }).eq("app_trans_id", app_trans_id).execute()
-                
-                order['status'] = new_status
+            order['status'] = new_status
+        
         order_items = supabase.table("order_items").select("*").eq("app_trans_id", app_trans_id).execute()
         total_amount = sum(item['price'] * item['quantity'] for item in order_items.data)
         return render_template('payment_success.html',
